@@ -27,18 +27,17 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_gravity="center"
-                >
+                android:orientation="vertical">
+
                 <TextView
-                    android:textStyle="bold"
-                    android:textSize="18sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="User Name"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
-                    />
+                    android:text="User Name"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <EditText
 
@@ -50,21 +49,21 @@
                     android:inputType="text"
                     android:minHeight="48dp" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_gravity="center"
-                >
+                android:orientation="vertical">
+
                 <TextView
-                    android:textStyle="bold"
-                    android:textSize="18sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Email ID"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
-                    />
+                    android:text="Email ID"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <EditText
 
@@ -76,20 +75,21 @@
                     android:inputType="textEmailAddress"
                     android:minHeight="48dp" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
-                >
+                android:orientation="vertical">
+
                 <TextView
-                    android:textStyle="bold"
-                    android:textSize="18sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Password" />
+                    android:text="Password"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/pwd_edtxt"
@@ -100,20 +100,21 @@
                     android:inputType="textPassword"
                     android:minHeight="48dp" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
-                >
+                android:orientation="vertical">
+
                 <TextView
-                    android:textStyle="bold"
-                    android:textSize="18sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Retype Password" />
+                    android:text="Retype Password"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/retypepwd_edtxt"
@@ -124,23 +125,25 @@
                     android:inputType="textPassword"
                     android:minHeight="48dp" />
             </LinearLayout>
+
             <Button
-                android:layout_marginTop="25dp"
+                android:id="@+id/register_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginTop="25dp"
                 android:text="Register"
-                android:textSize="22dp"/>
+                android:textSize="22dp" />
 
             <Button
+                android:id="@+id/alreadyRegistered_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="right"
                 android:backgroundTint="@android:color/transparent"
                 android:text="Already have an Account? Login"
                 android:textColor="#03A9F4"
-                android:layout_gravity="right"
-                android:textSize="16sp"
-                />
+                android:textSize="16sp" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
