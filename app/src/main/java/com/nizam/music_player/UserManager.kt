@@ -2,7 +2,7 @@ package com.nizam.music_player
 
 import android.content.Context
 
-class UserManager(private val context: Context) {
+class UserManager(context: Context) {
 
     private val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
     private val loggedInKey = "logged_in"
