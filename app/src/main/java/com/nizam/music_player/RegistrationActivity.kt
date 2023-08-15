@@ -1,12 +1,14 @@
 package com.nizam.music_player
 
 import DBLogin
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import java.util.regex.Pattern
 
@@ -24,7 +26,9 @@ class RegistrationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registration)
-        
+
+
+
         //Checking for user logged in Status and If user Is logged Then he does not need to enter details and directly jumpp back to home Screen.
         val userManager = UserManager(applicationContext)
         if(userManager.isUserLoggedIn()) {
@@ -100,6 +104,26 @@ class RegistrationActivity : AppCompatActivity() {
                     retypedPwd.error = "Passwords Not Matching"
                 }
 
+                //Checking if User Already Exists.
+                if(db.isAlreadyRegistered(name)) {
+                    flag = false
+
+                    //dialog will be Displayed to notify the user.
+                    val builder: AlertDialog.Builder = AlertDialog.Builder(this@RegistrationActivity)
+                    builder.setTitle("Alert")
+                    builder.setPositiveButton("Ok", {dialog, _ ->
+                        dialog.dismiss()
+                    })
+                    builder.setMessage("Account with the given UserName is already registered.")
+                    val dialog = builder.create()
+                    dialog.show()
+
+                    //All EditText Fields will be clear so that new name and values can be entered.
+                    uname.text.clear()
+                    uemail.text.clear()
+                    pwd.text.clear()
+                    retypedPwd.text.clear()
+                }
                 //If all the above Validations are succesfully completed then the below block of code is Executed and User is Registered.
                 if( flag) {
                     try {

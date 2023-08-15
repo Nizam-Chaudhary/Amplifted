@@ -13,6 +13,7 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        //OnClickListener for Register Button to open Registration Page to Register The user if not Registered Already.
         var registerbtn: Button = findViewById(R.id.register_btn)
         registerbtn.setOnClickListener(object : View.OnClickListener {
             override fun onClick(p0: View?) {
