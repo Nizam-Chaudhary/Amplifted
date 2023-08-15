@@ -3,7 +3,6 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.widget.Toast
 
 class DBLogin(context: Context, factory: SQLiteDatabase.CursorFactory?) :
     SQLiteOpenHelper(context, DATABASE_NAME, factory, DATABASE_VERSION) {
@@ -32,22 +31,37 @@ class DBLogin(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         db.close()
     }
 
-    //Funtion To Check If The User Is Already Registered and can Proceed To Login Page.
     @SuppressLint("Range")
-    fun isAlreadyRegistered(name:String):Boolean{
+    fun helper(name:String):String?{
         val db = this.readableDatabase
-        val query = "select $EMAIL_COL from $TABLE_NAME where $NAME_COL = '$name'"
+        val query = "select $PWD_COL from $TABLE_NAME where $NAME_COL = '$name'"
         val cursor = db.rawQuery(query,null)
         var value:String? = null
-        if (cursor.moveToFirst()) {
-            value = cursor.getString(cursor.getColumnIndex(EMAIL_COL))
+        if(cursor.moveToFirst()) {
+            value = cursor.getString(cursor.getColumnIndex(PWD_COL))
         }
         cursor.close()
-        if(value != null) {
+        return value
+    }
+
+    fun validateUser(name:String, pwd:String):Boolean {
+        val result = helper(name)
+        if(result != null && result == pwd) {
             return true
         }
         return false
     }
+
+    //This function can be used check if user is already Registered and
+    //Also to check user is registered or not on Login Page.
+    fun isAvailable(name:String):Boolean{
+        val result = helper(name)
+        if(result != null) {
+            return true
+        }
+        return false
+    }
+
 
     companion object {
         const val DATABASE_NAME = "UserDB"

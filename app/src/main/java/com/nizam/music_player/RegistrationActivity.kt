@@ -99,7 +99,7 @@ class RegistrationActivity : AppCompatActivity() {
             }
 
             //Checking if User Already Exists.
-            if (db.isAlreadyRegistered(name)) {
+            if (db.isAvailable(name)) {
                 flag = false
 
                 //dialog will be Displayed to notify the user.
