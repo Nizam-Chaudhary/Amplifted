@@ -2,6 +2,7 @@ package com.nizam.music_player
 
 import DBLogin
 import android.content.Intent
+import android.content.res.Resources
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -23,6 +24,7 @@ class RegistrationActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setTheme(R.style.Theme_MusicPlayer)
         setContentView(R.layout.activity_registration)
 
 
