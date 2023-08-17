@@ -1,8 +1,6 @@
 package com.nizam.music_player
 
-import DBLogin
 import android.content.Intent
-import android.content.res.Resources
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -16,7 +14,7 @@ class RegistrationActivity : AppCompatActivity() {
 
     // Declared Objects to be used later for different widgets.
     private lateinit var uname: EditText
-    private lateinit var uemail: EditText
+    private lateinit var uEmail: EditText
     private lateinit var pwd: EditText
     private lateinit var retypedPwd: EditText
     private lateinit var register: Button
@@ -28,7 +26,7 @@ class RegistrationActivity : AppCompatActivity() {
         setContentView(R.layout.activity_registration)
 
 
-        //Checking for user logged in Status and If user Is logged Then he does not need to enter details and directly jumpp back to home Screen.
+        //Checking for user logged in Status and If user Is logged Then he does not need to enter details and directly jump back to home Screen.
         val userManager = UserManager(applicationContext)
         if (userManager.isUserLoggedIn()) {
             intent = Intent(applicationContext, MainActivity::class.java)
@@ -37,21 +35,21 @@ class RegistrationActivity : AppCompatActivity() {
 
         //Assigned id of all widgets to declared Objects.
         uname = findViewById(R.id.userName_edtxt)
-        uemail = findViewById(R.id.email_edtxt)
+        uEmail = findViewById(R.id.email_edtxt)
         pwd = findViewById(R.id.pwd_edtxt)
         retypedPwd = findViewById(R.id.retypepwd_edtxt)
 
         register = findViewById(R.id.register_btn)
         alreadyRegistered = findViewById(R.id.alreadyRegistered_btn)
 
-        //OnClick Listner to change activity to login Screen if user is Already Registered.
+        //OnClick Listener to change activity to login Screen if user is Already Registered.
         alreadyRegistered.setOnClickListener {
             startActivity(Intent(applicationContext, LoginActivity::class.java))
         }
 
         /*OnClick Listener for Register Button.
-          it Saves Data to Database checking Various validation put on EditText Fields to enusre proper Data.
-          On Succesfull Registration User is then presented with Home Screen.
+          it Saves Data to Database checking Various validation put on EditText Fields to ensure proper Data.
+          On Successful Registration User is then presented with Home Screen.
         */
 
         register.setOnClickListener {
@@ -63,7 +61,7 @@ class RegistrationActivity : AppCompatActivity() {
 
             //Assigned EditText Values into variables.
             val name = uname.text.toString()
-            val email = uemail.text.toString()
+            val email = uEmail.text.toString()
             val passwd = pwd.text.toString()
             val rePasswd = retypedPwd.text.toString()
 
@@ -73,13 +71,13 @@ class RegistrationActivity : AppCompatActivity() {
                 uname.error = "Must Contain 5 or more characters"
             }
 
-            //Regex for verfication of Email.
+            //Regex for verification of Email.
             val emailRegex = "^[A-Za-z0-9+_.-]+@([A-Za-z0-9.-]+)\\.[A-Za-z]{2,4}$"
 
             //This Block of code matches pattern with email entered and if the value is not proper then we get an error Regarding it to notify the User.
             if (!Pattern.matches(emailRegex, email)) {
                 flag = false
-                uemail.error = "Enter Proper Email"
+                uEmail.error = "Enter Proper Email"
             }
 
             //Validation for Password Length
@@ -116,11 +114,11 @@ class RegistrationActivity : AppCompatActivity() {
 
                 //All EditText Fields will be clear so that new name and values can be entered.
                 uname.text.clear()
-                uemail.text.clear()
+                uEmail.text.clear()
                 pwd.text.clear()
                 retypedPwd.text.clear()
             }
-            //If all the above Validations are succesfully completed then the below block of code is Executed and User is Registered.
+            //If all the above Validations are successfully completed then the below block of code is Executed and User is Registered.
             if (flag) {
                 try {
                     db.registerUser(name, email, passwd)
@@ -128,6 +126,8 @@ class RegistrationActivity : AppCompatActivity() {
 
                 //setting User Logged IN Status.
                 userManager.setUserLoggedIn(true)
+                //setting User Name to sharedPreferences for future use
+                userManager.setUserName(name)
                 Toast.makeText(
                     applicationContext,
                     "User Registered Successfully",

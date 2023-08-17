@@ -1,6 +1,5 @@
 package com.nizam.music_player
 
-import DBLogin
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -35,6 +34,12 @@ class LoginActivity : AppCompatActivity() {
             } else {
                 //Checking password is correct or not.
                 if(db.validateUser(name,passwd)) {
+                    val userManager = UserManager(this@LoginActivity)
+
+                    //Setting User Logged In status and username.
+                    userManager.setUserLoggedIn(true)
+                    userManager.setUserName(name)
+
                     Toast.makeText(this@LoginActivity,"Logged In Successfully",Toast.LENGTH_SHORT).show()
                     startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                 } else {
@@ -45,9 +50,9 @@ class LoginActivity : AppCompatActivity() {
         }
 
         //OnClickListener for Register Button to open Registration Page to Register The user if not Registered Already.
-        val registerbtn: Button = findViewById(R.id.register_btn)
+        val registerBtn: Button = findViewById(R.id.register_btn)
 
-        registerbtn.setOnClickListener {
+        registerBtn.setOnClickListener {
             intent = Intent(applicationContext, RegistrationActivity::class.java)
             startActivity(intent)
         }

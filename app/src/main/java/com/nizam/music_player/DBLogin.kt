@@ -1,3 +1,5 @@
+package com.nizam.music_player
+
 import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
@@ -18,11 +20,11 @@ class DBLogin(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         onCreate(db)
     }
 
-    fun registerUser(uname: String, uemail: String, pwd: String) {
+    fun registerUser(uname: String, uEmail: String, pwd: String) {
         val values = ContentValues()
 
         values.put(NAME_COL, uname)
-        values.put(EMAIL_COL, uemail)
+        values.put(EMAIL_COL, uEmail)
         values.put(PWD_COL, pwd)
 
         val db = this.writableDatabase
