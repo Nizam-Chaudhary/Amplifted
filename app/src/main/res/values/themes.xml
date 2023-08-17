@@ -7,8 +7,8 @@
 
     <style name="Theme.MusicPlayer" parent="Base.Theme.MusicPlayer" />
 
-    <!-- Splash Screen. -->
+    <!--&lt;!&ndash; Splash Screen. &ndash;&gt;
     <style name="splash_screen" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="android:windowBackground">@drawable/splash_screen</item>
-    </style>
+        <item name="android:windowBackground">@drawable/logo</item>
+    </style>-->
 </resources>

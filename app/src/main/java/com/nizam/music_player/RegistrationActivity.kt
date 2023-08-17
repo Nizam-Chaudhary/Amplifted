@@ -7,6 +7,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import java.util.regex.Pattern
 
 
@@ -20,9 +21,11 @@ class RegistrationActivity : AppCompatActivity() {
     private lateinit var register: Button
     private lateinit var alreadyRegistered: Button
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setTheme(R.style.Theme_MusicPlayer)
+        installSplashScreen().apply {  }
         setContentView(R.layout.activity_registration)
 
 
