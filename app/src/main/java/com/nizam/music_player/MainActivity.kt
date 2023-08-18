@@ -11,14 +11,5 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val userManager:UserManager = UserManager(applicationContext)
-
-        val btn = findViewById(R.id.testbtn) as Button
-        btn.setOnClickListener(object:View.OnClickListener{
-            override fun onClick(p0: View?) {
-                startActivity(Intent(applicationContext,RegistrationActivity::class.java))
-                userManager.setUserLoggedIn(false)
-            }
-        })
     }
 }
