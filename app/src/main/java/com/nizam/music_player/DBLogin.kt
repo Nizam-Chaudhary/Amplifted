@@ -34,21 +34,21 @@ class DBLogin(context: Context, factory: SQLiteDatabase.CursorFactory?) :
     }
 
     @SuppressLint("Range")
-    fun helper(name:String):String?{
+    fun helper(name: String): String? {
         val db = this.readableDatabase
         val query = "select $PWD_COL from $TABLE_NAME where $NAME_COL = '$name'"
-        val cursor = db.rawQuery(query,null)
-        var value:String? = null
-        if(cursor.moveToFirst()) {
+        val cursor = db.rawQuery(query, null)
+        var value: String? = null
+        if (cursor.moveToFirst()) {
             value = cursor.getString(cursor.getColumnIndex(PWD_COL))
         }
         cursor.close()
         return value
     }
 
-    fun validateUser(name:String, pwd:String):Boolean {
+    fun validateUser(name: String, pwd: String): Boolean {
         val result = helper(name)
-        if(result != null && result == pwd) {
+        if (result != null && result == pwd) {
             return true
         }
         return false
@@ -56,9 +56,9 @@ class DBLogin(context: Context, factory: SQLiteDatabase.CursorFactory?) :
 
     //This function can be used check if user is already Registered and
     //Also to check user is registered or not on Login Page.
-    fun isAvailable(name:String):Boolean{
+    fun isAvailable(name: String): Boolean {
         val result = helper(name)
-        if(result != null) {
+        if (result != null) {
             return true
         }
         return false
