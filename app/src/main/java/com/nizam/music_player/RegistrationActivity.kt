@@ -22,18 +22,18 @@ class RegistrationActivity : AppCompatActivity() {
     private lateinit var alreadyRegistered: Button
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
-        installSplashScreen().apply {  }
         setContentView(R.layout.activity_registration)
-
 
         //Checking for user logged in Status and If user Is logged Then he does not need to enter details and directly jump back to home Screen.
         val userManager = UserManager(applicationContext)
         if (userManager.isUserLoggedIn()) {
+            splashScreen.setKeepOnScreenCondition { true }
             intent = Intent(applicationContext, MainActivity::class.java)
             startActivity(intent)
+            finish()
         }
 
         //Assigned id of all widgets to declared Objects.
@@ -125,7 +125,8 @@ class RegistrationActivity : AppCompatActivity() {
             if (flag) {
                 try {
                     db.registerUser(name, email, passwd)
-                } catch (_: Exception) {}
+                } catch (_: Exception) {
+                }
 
                 //setting User Logged IN Status.
                 userManager.setUserLoggedIn(true)
