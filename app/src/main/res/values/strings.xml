@@ -7,8 +7,8 @@
     <string name="favorites_icon">Favorites Icon</string>
     <string name="song_name">Song Name</string>
     <string name="start_time">00:00</string>
-    <string name="playtime">loading...</string>
-    <string name="repeat_btn">Repeat</string>
+    <string name="playtime">loading…</string>
+    <string name="song_repeat">Repeat</string>
     <string name="equalizer_btn">Equalizer</string>
     <string name="timer_btn">Timer</string>
     <string name="pause_or_play">Pause or Play</string>
