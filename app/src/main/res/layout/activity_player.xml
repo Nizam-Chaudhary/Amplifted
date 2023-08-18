@@ -131,52 +131,78 @@
             android:textSize="15sp" />
     </LinearLayout>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="horizontal">
+        android:layout_weight="1">
 
         <ImageButton
+            android:id="@+id/imageButton24"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:minHeight="48dp"
+            android:minWidth="48dp"
             android:background="?selectableItemBackgroundBorderless"
             android:contentDescription="@string/song_repeat"
             android:foregroundGravity="bottom"
             android:src="@drawable/repeat_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageButton25"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:ignore="TouchTargetSizeCheck,DuplicateSpeakableTextCheck" />
 
+
         <ImageButton
+            android:id="@+id/imageButton25"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:minHeight="48dp"
+            android:minWidth="48dp"
             android:background="?selectableItemBackgroundBorderless"
             android:contentDescription="@string/equalizer_btn"
             android:src="@drawable/equalizer_icon"
+            app:layout_constraintBottom_toBottomOf="@+id/imageButton24"
+            app:layout_constraintEnd_toStartOf="@+id/imageButton26"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/imageButton24"
+            app:layout_constraintTop_toTopOf="@+id/imageButton24"
             tools:ignore="TouchTargetSizeCheck" />
 
-
         <ImageButton
+            android:id="@+id/imageButton26"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:minHeight="48dp"
+            android:minWidth="48dp"
             android:background="?selectableItemBackgroundBorderless"
             android:contentDescription="@string/timer_btn"
             android:src="@drawable/timer_icon"
+            app:layout_constraintBottom_toBottomOf="@+id/imageButton25"
+            app:layout_constraintEnd_toStartOf="@+id/imageButton27"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/imageButton25"
+            app:layout_constraintTop_toTopOf="@+id/imageButton25"
             tools:ignore="TouchTargetSizeCheck" />
 
-
         <ImageButton
+            android:id="@+id/imageButton27"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:minHeight="48dp"
+            android:minWidth="48dp"
             android:background="?selectableItemBackgroundBorderless"
             android:contentDescription="@string/song_repeat"
             android:src="@drawable/share_icon"
+            app:layout_constraintBottom_toBottomOf="@+id/imageButton26"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/imageButton26"
+            app:layout_constraintTop_toTopOf="@+id/imageButton26"
             tools:ignore="TouchTargetSizeCheck" />
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </LinearLayout>
+
 </LinearLayout>
