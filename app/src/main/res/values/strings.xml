@@ -14,4 +14,7 @@
     <string name="pause_or_play">Pause or Play</string>
     <string name="next_song">Next Song</string>
     <string name="previous_song">Previous Song</string>
+    <string name="favorites">Favorites</string>
+    <string name="playlists">Playlists</string>
+    <string name="add_playlist">Add Playlist</string>
 </resources>
