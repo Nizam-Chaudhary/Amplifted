@@ -23,7 +23,8 @@
             android:background="?selectableItemBackgroundBorderless"
             android:contentDescription="@string/back_button"
             android:src="@drawable/back_icon"
-            app:tint="@android:color/black" />
+            app:tint="@android:color/black"
+            tools:ignore="RedundantDescriptionCheck" />
 
         <TextView
             android:layout_width="0dp"
@@ -41,7 +42,8 @@
             android:background="?selectableItemBackgroundBorderless"
             android:contentDescription="@string/favorites_icon"
             android:src="@drawable/favorite_empty_icon"
-            app:tint="@android:color/holo_red_dark" />
+            app:tint="@android:color/holo_red_dark"
+            tools:ignore="TouchTargetSizeCheck" />
     </LinearLayout>
 
     <com.google.android.material.imageview.ShapeableImageView
@@ -75,9 +77,9 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="25dp"
             android:layout_marginVertical="5dp"
+            android:contentDescription="@string/previous_song"
             app:icon="@drawable/previous_icon"
-            app:iconSize="40dp"
-            android:contentDescription="@string/previous_song"/>
+            app:iconSize="40dp" />
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:layout_width="wrap_content"
@@ -85,19 +87,19 @@
             android:layout_marginHorizontal="25dp"
             android:layout_marginVertical="5dp"
             android:backgroundTint="@android:color/holo_red_light"
+            android:contentDescription="@string/pause_or_play"
             app:icon="@drawable/pause_icon"
             app:iconSize="50dp"
-            app:iconTint="@color/white"
-            android:contentDescription="@string/pause_or_play"/>
+            app:iconTint="@color/white" />
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="25dp"
             android:layout_marginVertical="5dp"
+            android:contentDescription="@string/next_song"
             app:icon="@drawable/next_icon"
-            app:iconSize="40dp"
-            android:contentDescription="@string/next_song"/>
+            app:iconSize="40dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -141,9 +143,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="?selectableItemBackgroundBorderless"
-            android:contentDescription="@string/repeat_btn"
+            android:contentDescription="@string/song_repeat"
+            android:foregroundGravity="bottom"
             android:src="@drawable/repeat_icon"
-            android:foregroundGravity="bottom"/>
+            tools:ignore="TouchTargetSizeCheck,DuplicateSpeakableTextCheck" />
 
         <ImageButton
             android:layout_width="wrap_content"
@@ -151,7 +154,8 @@
             android:layout_weight="1"
             android:background="?selectableItemBackgroundBorderless"
             android:contentDescription="@string/equalizer_btn"
-            android:src="@drawable/equalizer_icon" />
+            android:src="@drawable/equalizer_icon"
+            tools:ignore="TouchTargetSizeCheck" />
 
 
         <ImageButton
@@ -160,7 +164,8 @@
             android:layout_weight="1"
             android:background="?selectableItemBackgroundBorderless"
             android:contentDescription="@string/timer_btn"
-            android:src="@drawable/timer_icon" />
+            android:src="@drawable/timer_icon"
+            tools:ignore="TouchTargetSizeCheck" />
 
 
         <ImageButton
@@ -168,8 +173,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="?selectableItemBackgroundBorderless"
-            android:contentDescription="@string/repeat_btn"
-            android:src="@drawable/share_icon" />
+            android:contentDescription="@string/song_repeat"
+            android:src="@drawable/share_icon"
+            tools:ignore="TouchTargetSizeCheck" />
 
 
     </LinearLayout>
