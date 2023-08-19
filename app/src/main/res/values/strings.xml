@@ -28,4 +28,6 @@
     <string name="retype_above_password">Retype Above Password</string>
     <string name="register">Register</string>
     <string name="enter_password">Enter Password</string>
+    <string name="login">Login</string>
+    <string name="forgot_password">Forgot Password</string>
 </resources>
