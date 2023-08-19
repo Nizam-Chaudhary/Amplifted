@@ -12,8 +12,8 @@ import java.util.regex.Pattern
 class RegistrationActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val binding = ActivityRegistrationBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
+        val binding = ActivityRegistrationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val userManager = UserManager(this@RegistrationActivity)
@@ -112,8 +112,8 @@ class RegistrationActivity : AppCompatActivity() {
                 ).show()
 
                 //After Registration Homepage is Opened.
-                intent = Intent(applicationContext, MainActivity::class.java)
-                startActivity(intent)
+                startActivity(Intent(applicationContext, MainActivity::class.java))
+                finish()
             }
         }
     }
