@@ -2,51 +2,33 @@ package com.nizam.music_player
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.nizam.music_player.databinding.ActivityRegistrationBinding
 import java.util.regex.Pattern
 
 
 class RegistrationActivity : AppCompatActivity() {
 
-    // Declared Objects to be used later for different widgets.
-    private lateinit var uname: EditText
-    private lateinit var uEmail: EditText
-    private lateinit var pwd: EditText
-    private lateinit var retypedPwd: EditText
-    private lateinit var register: Button
-    private lateinit var alreadyRegistered: Button
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
+        val binding = ActivityRegistrationBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_registration)
+        setContentView(binding.root)
 
         //Checking for user logged in Status and If user Is logged Then he does not need to enter details and directly jump back to home Screen.
         val userManager = UserManager(applicationContext)
         if (userManager.isUserLoggedIn()) {
             splashScreen.setKeepOnScreenCondition { true }
-            intent = Intent(applicationContext, MainActivity::class.java)
+            intent = Intent(this@RegistrationActivity, MainActivity::class.java)
             startActivity(intent)
             finish()
         }
 
-        //Assigned id of all widgets to declared Objects.
-        uname = findViewById(R.id.userName_edtxt)
-        uEmail = findViewById(R.id.email_edtxt)
-        pwd = findViewById(R.id.pwd_edtxt)
-        retypedPwd = findViewById(R.id.retypepwd_edtxt)
-
-        register = findViewById(R.id.register_btn)
-        alreadyRegistered = findViewById(R.id.alreadyRegistered_btn)
-
         //OnClick Listener to change activity to login Screen if user is Already Registered.
-        alreadyRegistered.setOnClickListener {
+        binding.alreadyRegisteredBtn.setOnClickListener {
             startActivity(Intent(applicationContext, LoginActivity::class.java))
         }
 
@@ -55,7 +37,7 @@ class RegistrationActivity : AppCompatActivity() {
           On Successful Registration User is then presented with Home Screen.
         */
 
-        register.setOnClickListener {
+        binding.registerBtn.setOnClickListener {
             // variable flag is to be used for checking various validations on EditText Field for proper data.
             var flag = true
 
@@ -63,15 +45,15 @@ class RegistrationActivity : AppCompatActivity() {
             val db = DBLogin(applicationContext, null)
 
             //Assigned EditText Values into variables.
-            val name = uname.text.toString()
-            val email = uEmail.text.toString()
-            val passwd = pwd.text.toString()
-            val rePasswd = retypedPwd.text.toString()
+            val name = binding.userNameEdtxt.text.toString()
+            val email = binding.emailEdtxt.text.toString()
+            val passwd = binding.pwdEdtxt.text.toString()
+            val rePasswd = binding.retypepwdEdtxt.text.toString()
 
             //validation for userName Field.
             if (name.length < 5) {
                 flag = false
-                uname.error = "Must Contain 5 or more characters"
+                binding.userNameEdtxt.error = "Must Contain 5 or more characters"
             }
 
             //Regex for verification of Email.
@@ -80,25 +62,25 @@ class RegistrationActivity : AppCompatActivity() {
             //This Block of code matches pattern with email entered and if the value is not proper then we get an error Regarding it to notify the User.
             if (!Pattern.matches(emailRegex, email)) {
                 flag = false
-                uEmail.error = "Enter Proper Email"
+                binding.emailEdtxt.error = "Enter Proper Email"
             }
 
             //Validation for Password Length
             if (passwd.length < 8) {
                 flag = false
-                pwd.error = "Must Contain 8 or more characters"
+                binding.pwdEdtxt.error = "Must Contain 8 or more characters"
             }
 
             //checking that password is not equal to User Name for Security Purpose.
             if (passwd == name) {
                 flag = false
-                pwd.error = "User Name and Password Must be different"
+                binding.pwdEdtxt.error = "User Name and Password Must be different"
             }
 
             //Checking if both passwords are matching.
             if (passwd != rePasswd) {
                 flag = false
-                retypedPwd.error = "Passwords Not Matching"
+                binding.retypepwdEdtxt.error = "Passwords Not Matching"
             }
 
             //Checking if User Already Exists.
@@ -116,10 +98,10 @@ class RegistrationActivity : AppCompatActivity() {
                 dialog.show()
 
                 //All EditText Fields will be clear so that new name and values can be entered.
-                uname.text.clear()
-                uEmail.text.clear()
-                pwd.text.clear()
-                retypedPwd.text.clear()
+                binding.userNameEdtxt.text.clear()
+                binding.emailEdtxt.text.clear()
+                binding.pwdEdtxt.text.clear()
+                binding.retypepwdEdtxt.text.clear()
             }
             //If all the above Validations are successfully completed then the below block of code is Executed and User is Registered.
             if (flag) {
