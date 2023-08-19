@@ -19,6 +19,7 @@
 
 
             <Button
+                android:id="@+id/shuffleButton"
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -30,6 +31,7 @@
                 android:textColor="@color/black" />
 
             <Button
+                android:id="@+id/favoritesButton"
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -41,6 +43,7 @@
                 android:textColor="@color/black" />
 
             <Button
+                android:id="@+id/playlistsButton"
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -54,6 +57,7 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/songsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
