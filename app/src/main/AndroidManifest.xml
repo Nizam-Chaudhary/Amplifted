@@ -25,14 +25,7 @@
         <activity
             android:name=".RegistrationActivity"
             android:exported="true"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.App.Starting">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".PlayerActivity"
             android:screenOrientation="portrait"
@@ -44,7 +37,13 @@
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"
-            android:exported="false" />
+            android:exported="true"
+            android:theme="@style/Theme.App.Starting" >
+                <intent-filter>
+                    <action android:name="android.intent.action.MAIN" />
+                    <category android:name="android.intent.category.LAUNCHER" />
+                </intent-filter>
+        </activity>
     </application>
 
 </manifest>

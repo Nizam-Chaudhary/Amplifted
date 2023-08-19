@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.nizam.music_player.databinding.ActivityRegistrationBinding
 import java.util.regex.Pattern
 
@@ -13,19 +12,11 @@ import java.util.regex.Pattern
 class RegistrationActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val splashScreen = installSplashScreen()
         val binding = ActivityRegistrationBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        //Checking for user logged in Status and If user Is logged Then he does not need to enter details and directly jump back to home Screen.
-        val userManager = UserManager(applicationContext)
-        if (userManager.isUserLoggedIn()) {
-            splashScreen.setKeepOnScreenCondition { true }
-            intent = Intent(this@RegistrationActivity, MainActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
+        val userManager = UserManager(this@RegistrationActivity)
 
         //OnClick Listener to change activity to login Screen if user is Already Registered.
         binding.alreadyRegisteredBtn.setOnClickListener {
