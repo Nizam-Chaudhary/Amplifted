@@ -17,4 +17,15 @@
     <string name="favorites">Favorites</string>
     <string name="playlists">Playlists</string>
     <string name="add_playlist">Add Playlist</string>
+    <string name="register_image">Register Image</string>
+    <string name="user_name">User Name</string>
+    <string name="email_id">Email ID</string>
+    <string name="password">Password</string>
+    <string name="retype_password">Retype Password</string>
+    <string name="already_have_an_account_login">Already have an Account? Login</string>
+    <string name="enter_email_id">Enter Email ID.</string>
+    <string name="enter_user_name">Enter User Name.</string>
+    <string name="retype_above_password">Retype Above Password</string>
+    <string name="register">Register</string>
+    <string name="enter_password">Enter Password</string>
 </resources>
