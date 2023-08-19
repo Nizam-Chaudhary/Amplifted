@@ -39,6 +39,7 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(this@LoginActivity, "Logged In Successfully", Toast.LENGTH_SHORT)
                         .show()
                     startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                    finish()
                 } else {
                     //error on incorrect password.
                     binding.pwdEdtxt.error = "Incorrect Password"
@@ -49,6 +50,7 @@ class LoginActivity : AppCompatActivity() {
         //OnClickListener for Register Button to open Registration Page to Register The user if not Registered Already.
         binding.registerBtn.setOnClickListener {
             startActivity(Intent(this@LoginActivity, RegistrationActivity::class.java))
+            finish()
         }
     }
 }
