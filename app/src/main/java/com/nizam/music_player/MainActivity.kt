@@ -14,15 +14,15 @@ class MainActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
         val userManager = UserManager(this@MainActivity)
         if (userManager.isUserLoggedIn()) {
             splashScreen.setKeepOnScreenCondition { true }
-            intent = Intent(this@MainActivity, LoginActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this@MainActivity, LoginActivity::class.java))
             finish()
         }
+        setContentView(binding.root)
+
         //Checking for user logged in Status and If user Is logged Then he does not need to enter details and directly jump back to home Screen.
         binding.shuffleButton.setOnClickListener {
             startActivity(Intent(this@MainActivity,PlaylistActivity::class.java))
