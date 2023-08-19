@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
 
         val userManager = UserManager(this@MainActivity)
-        if (userManager.isUserLoggedIn()) {
+        if (!userManager.isUserLoggedIn()) {
             splashScreen.setKeepOnScreenCondition { true }
             startActivity(Intent(this@MainActivity, LoginActivity::class.java))
             finish()
