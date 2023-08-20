@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
         }
         setContentView(binding.root)
         updateOrRequestPermission()
+
         //For Navigation Drawer
         val drawerLayout:DrawerLayout = findViewById(R.id.drawerLayout)
         toggle = ActionBarDrawerToggle(this@MainActivity,drawerLayout,R.string.open,R.string.close)
@@ -42,7 +43,7 @@ class MainActivity : AppCompatActivity() {
 
         //Checking for user logged in Status and If user Is logged Then he does not need to enter details and directly jump back to home Screen.
         binding.shuffleButton.setOnClickListener {
-            startActivity(Intent(this@MainActivity,PlaylistActivity::class.java))
+            startActivity(Intent(this@MainActivity,PlayerActivity::class.java))
         }
 
         binding.favoritesButton.setOnClickListener {
