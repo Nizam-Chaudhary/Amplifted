@@ -34,4 +34,8 @@
     <string name="close">Close</string>
     <string name="welcome">Welcome,</string>
     <string name="to_world_of_music">To World Of Music</string>
+    <string name="nav_menu_icon">Welcome,</string>
+    <string name="settings">Settings</string>
+    <string name="about">About</string>
+    <string name="exit">Exit</string>
 </resources>

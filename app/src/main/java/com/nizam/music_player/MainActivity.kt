@@ -44,6 +44,16 @@ class MainActivity : AppCompatActivity() {
         val userNameHeader: TextView = headerView.findViewById(R.id.userNameHeader)
         userNameHeader.text=userManager.getUserName()
 
+        //On Click for menu drawer menu Item
+        binding.navView.setNavigationItemSelectedListener { it ->
+            when(it.itemId) {
+                R.id.navSettings -> Toast.makeText(this@MainActivity,"Settings",Toast.LENGTH_SHORT).show()
+                R.id.navAbout -> Toast.makeText(this@MainActivity,"About",Toast.LENGTH_SHORT).show()
+                R.id.navExit -> finish()
+            }
+            true
+        }
+
         //Checking for user logged in Status and If user Is logged Then he does not need to enter details and directly jump back to home Screen.
         binding.shuffleButton.setOnClickListener {
             startActivity(Intent(this@MainActivity,PlayerActivity::class.java))
