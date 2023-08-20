@@ -18,6 +18,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nizam.music_player.databinding.ActivityMainBinding
 import java.io.File
+import kotlin.random.Random
 
 class MainActivity : AppCompatActivity() {
     private lateinit var toggle: ActionBarDrawerToggle
@@ -66,7 +67,10 @@ class MainActivity : AppCompatActivity() {
 
         //Checking for user logged in Status and If user Is logged Then he does not need to enter details and directly jump back to home Screen.
         binding.shuffleButton.setOnClickListener {
-            startActivity(Intent(this@MainActivity,PlayerActivity::class.java))
+            val intent = Intent(this@MainActivity,PlayerActivity::class.java)
+            intent.putExtra("index", Random.nextInt(0, musicListMA.size - 1))
+            intent.putExtra("class","MainActivity")
+            startActivity(intent)
         }
 
         binding.favoritesButton.setOnClickListener {

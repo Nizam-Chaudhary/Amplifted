@@ -27,7 +27,13 @@ class PlayerActivity : AppCompatActivity() {
 
         when(intent.getStringExtra("class")) {
             "MusicAdapter" -> {
+                musicListPA.addAll(MainActivity.musicListMA)
                 createMediaPlayer()
+            }
+
+            "MainActivity" -> {
+                musicListPA.addAll(MainActivity.musicListMA)
+                songPosition = intent.getIntExtra("index",0)
                 createMediaPlayer()
             }
         }
@@ -42,7 +48,7 @@ class PlayerActivity : AppCompatActivity() {
     }
 
     private fun shuffleSong() {
-        binding.shuffleSong.setOnClickListener{
+        binding.shuffleButton.setOnClickListener{
             songPosition = Random.nextInt(0, musicListPA.size-1)
             createMediaPlayer()
         }
@@ -50,16 +56,22 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun playPreviousSong() {
         binding.previousSong.setOnClickListener{
-            songPosition -= 1
-            //mediaPlayer!!.reset()
+            if(songPosition == 0) {
+                songPosition = musicListPA.size - 1
+            } else {
+                songPosition--
+            }
             createMediaPlayer()
         }
     }
 
     private fun playNextSong() {
         binding.nextSong.setOnClickListener{
-            songPosition += 1
-            //mediaPlayer!!.reset()
+            if(songPosition == musicListPA.size - 1 ) {
+                songPosition = 0
+            } else {
+                songPosition++
+            }
             createMediaPlayer()
         }
     }
@@ -82,10 +94,11 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun createMediaPlayer() {
         try{
-            musicListPA.addAll(MainActivity.musicListMA)
+
             setLayout()
             if(mediaPlayer == null) {
                 mediaPlayer = MediaPlayer()
+                createMediaPlayer()
             } else {
                 mediaPlayer!!.reset()
                 mediaPlayer!!.setDataSource(musicListPA[songPosition].path)
@@ -94,7 +107,7 @@ class PlayerActivity : AppCompatActivity() {
                 isSongPlaying = true
                 binding.pausePlayButton.setIconResource(R.drawable.pause_icon)
             }
-        } catch(e:Exception) {}
+        } catch(_:Exception) {}
     }
     private fun setLayout() {
         Glide.with(this@PlayerActivity)

@@ -124,8 +124,9 @@
         android:layout_height="wrap_content"
         android:layout_weight="1">
 
+
         <ImageButton
-            android:id="@+id/shuffleSong"
+            android:id="@+id/repeatSong"
             android:layout_width="48dp"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackgroundBorderless"
@@ -134,14 +135,12 @@
             android:minWidth="48dp"
             android:minHeight="48dp"
             android:src="@drawable/repeat_icon"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/timer"
+            app:layout_constraintBottom_toBottomOf="@+id/shuffleButton"
+            app:layout_constraintEnd_toStartOf="@+id/shuffleButton"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.5"
+            app:layout_constraintTop_toTopOf="@+id/shuffleButton"
             tools:ignore="TouchTargetSizeCheck,DuplicateSpeakableTextCheck" />
-
 
         <ImageButton
             android:id="@+id/equalizer"
@@ -152,12 +151,11 @@
             android:minWidth="48dp"
             android:minHeight="48dp"
             android:src="@drawable/equalizer_icon"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/favorites"
+            app:layout_constraintBottom_toBottomOf="@+id/timer"
+            app:layout_constraintEnd_toStartOf="@+id/timer"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/timer"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/shuffleButton"
+            app:layout_constraintTop_toTopOf="@+id/timer"
             tools:ignore="TouchTargetSizeCheck" />
 
         <ImageButton
@@ -169,12 +167,12 @@
             android:minWidth="48dp"
             android:minHeight="48dp"
             android:src="@drawable/timer_icon"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/equalizer"
+
+            app:layout_constraintBottom_toBottomOf="@+id/favorites"
+            app:layout_constraintEnd_toStartOf="@+id/favorites"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/shuffleSong"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/equalizer"
+            app:layout_constraintTop_toTopOf="@+id/favorites"
             tools:ignore="TouchTargetSizeCheck" />
 
         <ImageButton
@@ -189,9 +187,25 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/equalizer"
+            app:layout_constraintStart_toEndOf="@+id/timer"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5"
+            tools:ignore="TouchTargetSizeCheck" />
+
+        <ImageButton
+            android:id="@+id/shuffleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackgroundBorderless"
+            android:contentDescription="@string/shuffle_btn"
+            android:minWidth="48dp"
+            android:minHeight="48dp"
+            android:src="@drawable/shuffle_icon"
+            app:layout_constraintBottom_toBottomOf="@+id/equalizer"
+            app:layout_constraintEnd_toStartOf="@+id/equalizer"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/repeatSong"
+            app:layout_constraintTop_toTopOf="@+id/equalizer"
             tools:ignore="TouchTargetSizeCheck" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
