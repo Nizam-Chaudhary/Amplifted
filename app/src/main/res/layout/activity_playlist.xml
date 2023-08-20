@@ -6,39 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".PlaylistActivity">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:elevation="5dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?selectableItemBackgroundBorderless"
-            android:contentDescription="@string/back_button"
-            android:src="@drawable/back_icon"
-            tools:ignore="RedundantDescriptionCheck" />
-
-        <TextView
-            android:layout_width="343dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/playlists"
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            android:layout_gravity="center"/>
-
-
-
-    </androidx.cardview.widget.CardView>
-
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
