@@ -23,6 +23,19 @@ class PlayerActivity : AppCompatActivity() {
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        initializeLayout()
+
+        playPauseSong()
+
+        playNextSong()
+
+        playPreviousSong()
+
+        shuffleSong()
+    }
+
+    private fun initializeLayout() {
         songPosition = intent.getIntExtra("index",0)
 
         when(intent.getStringExtra("class")) {
@@ -37,14 +50,6 @@ class PlayerActivity : AppCompatActivity() {
                 createMediaPlayer()
             }
         }
-
-        playPauseSong()
-
-        playNextSong()
-
-        playPreviousSong()
-
-        shuffleSong()
     }
 
     private fun shuffleSong() {
