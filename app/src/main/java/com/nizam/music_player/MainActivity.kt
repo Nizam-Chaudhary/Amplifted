@@ -1,10 +1,12 @@
 package com.nizam.music_player
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
@@ -14,6 +16,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nizam.music_player.databinding.ActivityMainBinding
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
     private lateinit var toggle: ActionBarDrawerToggle
@@ -37,6 +40,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         updateOrRequestPermission()
 
+        musicListMA = getAllAudioFiles()
+
         //For Navigation Drawer
         toggle = ActionBarDrawerToggle(this@MainActivity,binding.drawerLayout,R.string.open,R.string.close)
         binding.drawerLayout.addDrawerListener(toggle)
@@ -49,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         userNameHeader.text=userManager.getUserName()
 
         //On Click for menu drawer menu Item
-        binding.navView.setNavigationItemSelectedListener { it ->
+        binding.navView.setNavigationItemSelectedListener {
             when(it.itemId) {
                 R.id.navSettings -> Toast.makeText(this@MainActivity,"Settings",Toast.LENGTH_SHORT).show()
                 R.id.navAbout -> Toast.makeText(this@MainActivity,"About",Toast.LENGTH_SHORT).show()
@@ -80,7 +85,7 @@ class MainActivity : AppCompatActivity() {
         binding.songsRecyclerView.setHasFixedSize(true)
         binding.songsRecyclerView.setItemViewCacheSize(20)
         binding.songsRecyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
-        musicRecyclerViewAdapter = MusicRecyclerViewAdapter(this@MainActivity,songsList)
+        musicRecyclerViewAdapter = MusicRecyclerViewAdapter(this@MainActivity, musicListMA)
             binding.songsRecyclerView.adapter = musicRecyclerViewAdapter
     }
 
@@ -138,5 +143,44 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    @SuppressLint("Recycle", "Range")
+    private fun getAllAudioFiles():ArrayList<SongsData> {
+        val tempList = ArrayList<SongsData>()
+        val selection = MediaStore.Audio.Media.IS_MUSIC + " != 0"
+        val projection = arrayOf(
+            MediaStore.Audio.Media._ID,
+            MediaStore.Audio.Media.TITLE,
+            MediaStore.Audio.Media.ALBUM,
+            MediaStore.Audio.Media.ARTIST,
+            MediaStore.Audio.Media.DURATION,
+            MediaStore.Audio.Media.DATA
+        )
+        val cursor = this.contentResolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,projection,selection,null,MediaStore.Audio.Media.TITLE,null)
+        if(cursor != null) {
+            if(cursor.moveToFirst()) {
+                do {
+                    val titleC = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE))
+                    val idC = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media._ID))
+                    val albumC = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM))
+                    val artistC = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST))
+                    val pathC = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA))
+                    val durationC = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION))
+
+                    val music = SongsData(id = idC,title = titleC, album = albumC,duration = durationC, path = pathC, artist = artistC)
+                    val file = File(music.path)
+                    if(file.exists()) {
+                        tempList.add(music)
+                    }
+                }while (cursor.moveToNext())
+            }
+            cursor.close()
+        }
+        return tempList
+    }
+
+    companion object{
+        lateinit var musicListMA: ArrayList<SongsData>
     }
 }

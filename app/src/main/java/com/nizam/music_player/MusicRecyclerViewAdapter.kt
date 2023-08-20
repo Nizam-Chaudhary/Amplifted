@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.nizam.music_player.databinding.MusicRecyclerViewBinding
 
-class MusicRecyclerViewAdapter(private var context: Context, private var songsList: ArrayList<String>):RecyclerView.Adapter<MusicRecyclerViewAdapter.SongsData>(){
+class MusicRecyclerViewAdapter(private var context: Context, private var songsList: ArrayList<com.nizam.music_player.SongsData>):RecyclerView.Adapter<MusicRecyclerViewAdapter.SongsData>(){
     class SongsData(binding:MusicRecyclerViewBinding):RecyclerView.ViewHolder(binding.root) {
         val title = binding.songName
         val album= binding.albumName
@@ -23,6 +23,9 @@ class MusicRecyclerViewAdapter(private var context: Context, private var songsLi
     }
 
     override fun onBindViewHolder(holder: SongsData, position: Int) {
-        holder.title.text = songsList[position]
+        holder.title.text = songsList[position].title
+        holder.album.text = songsList[position].album
+        holder.duration.text = (songsList[position].duration/3600).toString()
+
     }
 }

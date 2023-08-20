@@ -4,14 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="55dp"
-    android:layout_marginBottom="5dp">
+    android:layout_marginBottom="5dp"
+    tools:ignore="TextSizeCheck">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/songImageView"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:src="@drawable/icon"
         android:layout_marginStart="5dp"
+        android:src="@drawable/icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -23,12 +24,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
+        android:gravity="center_vertical"
         android:padding="3dp"
+        android:singleLine="true"
         android:text="@string/app_name"
         android:textColor="@color/black"
         android:textSize="16sp"
-        android:gravity="center_vertical"
-        android:singleLine="true"
         app:layout_constraintStart_toEndOf="@+id/songImageView"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -36,22 +37,23 @@
         android:id="@+id/albumName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
-        android:padding="5dp"
         android:layout_marginStart="10dp"
+        android:layout_marginTop="1dp"
+        android:gravity="center_vertical"
+        android:padding="5dp"
+        android:singleLine="true"
         android:text="@string/app_name"
         android:textColor="@color/black"
         android:textSize="12sp"
-        android:gravity="center_vertical"
-        android:singleLine="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/songImageView"
-        app:layout_constraintTop_toBottomOf="@+id/songName" />
+        app:layout_constraintTop_toBottomOf="@+id/songName"
+        tools:ignore="VisualLintBounds" />
 
     <TextView
         android:id="@+id/songPlayTime"
         android:layout_width="50dp"
-            android:layout_height="50dp"
+        android:layout_height="50dp"
         android:gravity="center"
         android:padding="5dp"
         android:text="@string/start_time"
@@ -61,7 +63,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
