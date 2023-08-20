@@ -12,10 +12,12 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.nizam.music_player.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var toggle: ActionBarDrawerToggle
+    private lateinit var musicRecyclerViewAdapter: MusicRecyclerViewAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -25,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
 
+        //checking if user is Logged in or Not if not then open Login Activity first.
         val userManager = UserManager(this@MainActivity)
         if (!userManager.isUserLoggedIn()) {
             splashScreen.setKeepOnScreenCondition { true }
@@ -39,6 +42,7 @@ class MainActivity : AppCompatActivity() {
         binding.drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         //setting useName
         val headerView = binding.navView.getHeaderView(0)
         val userNameHeader: TextView = headerView.findViewById(R.id.userNameHeader)
@@ -66,6 +70,18 @@ class MainActivity : AppCompatActivity() {
         binding.playlistsButton.setOnClickListener {
             startActivity(Intent(this@MainActivity,PlaylistActivity::class.java))
         }
+
+        val songsList = ArrayList<String>()
+        songsList.add("1 Song")
+        songsList.add("2 Song")
+        songsList.add("3 Song")
+        songsList.add("4 Song")
+        songsList.add("5 Song")
+        binding.songsRecyclerView.setHasFixedSize(true)
+        binding.songsRecyclerView.setItemViewCacheSize(20)
+        binding.songsRecyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
+        musicRecyclerViewAdapter = MusicRecyclerViewAdapter(this@MainActivity,songsList)
+            binding.songsRecyclerView.adapter = musicRecyclerViewAdapter
     }
 
 
