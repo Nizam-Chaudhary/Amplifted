@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.nizam.music_player.databinding.ActivityPlayerBinding
+import kotlin.random.Random
 
 class PlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPlayerBinding
@@ -25,10 +26,42 @@ class PlayerActivity : AppCompatActivity() {
         songPosition = intent.getIntExtra("index",0)
 
         when(intent.getStringExtra("class")) {
-            "MusicAdapter" -> createMediaPlayer()
+            "MusicAdapter" -> {
+                createMediaPlayer()
+                createMediaPlayer()
+            }
         }
 
         playPauseSong()
+
+        playNextSong()
+
+        playPreviousSong()
+
+        shuffleSong()
+    }
+
+    private fun shuffleSong() {
+        binding.shuffleSong.setOnClickListener{
+            songPosition = Random.nextInt(0, musicListPA.size-1)
+            createMediaPlayer()
+        }
+    }
+
+    private fun playPreviousSong() {
+        binding.previousSong.setOnClickListener{
+            songPosition -= 1
+            //mediaPlayer!!.reset()
+            createMediaPlayer()
+        }
+    }
+
+    private fun playNextSong() {
+        binding.nextSong.setOnClickListener{
+            songPosition += 1
+            //mediaPlayer!!.reset()
+            createMediaPlayer()
+        }
     }
 
     private fun playPauseSong() {
