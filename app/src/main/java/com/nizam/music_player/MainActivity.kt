@@ -23,55 +23,33 @@ import kotlin.random.Random
 class MainActivity : AppCompatActivity() {
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var musicRecyclerViewAdapter: MusicRecyclerViewAdapter
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var userManager:UserManager
+    private lateinit var splashScreen: androidx.core.splashscreen.SplashScreen
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         //applying splash Screen
-        val splashScreen = installSplashScreen()
+        splashScreen = installSplashScreen()
 
         super.onCreate(savedInstanceState)
-        val binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        userManager = UserManager(this@MainActivity)
+        checkUserLoggedIn()
 
-        //checking if user is Logged in or Not if not then open Login Activity first.
-        val userManager = UserManager(this@MainActivity)
-        if (!userManager.isUserLoggedIn()) {
-            splashScreen.setKeepOnScreenCondition { true }
-            startActivity(Intent(this@MainActivity, LoginActivity::class.java))
-            finish()
-        }
         setContentView(binding.root)
+
         updateOrRequestPermission()
 
         musicListMA = getAllAudioFiles()
 
-        //For Navigation Drawer
-        toggle = ActionBarDrawerToggle(this@MainActivity,binding.drawerLayout,R.string.open,R.string.close)
-        binding.drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        setToggleButtonForNavigationDrawer()
 
-        //setting useName
-        val headerView = binding.navView.getHeaderView(0)
-        val userNameHeader: TextView = headerView.findViewById(R.id.userNameHeader)
-        userNameHeader.text=userManager.getUserName()
+        setUserNameOnDrawerHeader()
 
-        //On Click for menu drawer menu Item
-        binding.navView.setNavigationItemSelectedListener {
-            when(it.itemId) {
-                R.id.navSettings -> Toast.makeText(this@MainActivity,"Settings",Toast.LENGTH_SHORT).show()
-                R.id.navAbout -> Toast.makeText(this@MainActivity,"About",Toast.LENGTH_SHORT).show()
-                R.id.navExit -> finish()
-            }
-            true
-        }
+        navMenuItemClick()
 
-        //Checking for user logged in Status and If user Is logged Then he does not need to enter details and directly jump back to home Screen.
-        binding.shuffleButton.setOnClickListener {
-            val intent = Intent(this@MainActivity,PlayerActivity::class.java)
-            intent.putExtra("index", Random.nextInt(0, musicListMA.size - 1))
-            intent.putExtra("class","MainActivity")
-            startActivity(intent)
-        }
+        shuffleSong()
 
         binding.favoritesButton.setOnClickListener {
             startActivity(Intent(this@MainActivity,FavoriteActivity::class.java))
@@ -81,11 +59,62 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this@MainActivity,PlaylistActivity::class.java))
         }
 
+        setRecyclerViewAdapter()
+    }
+
+    private fun setRecyclerViewAdapter() {
         binding.songsRecyclerView.setHasFixedSize(true)
         binding.songsRecyclerView.setItemViewCacheSize(20)
         binding.songsRecyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
         musicRecyclerViewAdapter = MusicRecyclerViewAdapter(this@MainActivity, musicListMA)
-            binding.songsRecyclerView.adapter = musicRecyclerViewAdapter
+        binding.songsRecyclerView.adapter = musicRecyclerViewAdapter
+    }
+
+    private fun shuffleSong() {
+        //Checking for user logged in Status and If user Is logged Then he does not need to enter details and directly jump back to home Screen.
+        binding.shuffleButton.setOnClickListener {
+            val intent = Intent(this@MainActivity,PlayerActivity::class.java)
+            intent.putExtra("index", Random.nextInt(0, musicListMA.size - 1))
+            intent.putExtra("class","MainActivity")
+            startActivity(intent)
+        }
+    }
+
+    private fun navMenuItemClick() {
+        //On Click for menu drawer menu Item
+        binding.navView.setNavigationItemSelectedListener {
+            when(it.itemId) {
+                R.id.navSettings -> Toast.makeText(this@MainActivity,"Settings",Toast.LENGTH_SHORT).show()
+                R.id.navAbout -> Toast.makeText(this@MainActivity,"About",Toast.LENGTH_SHORT).show()
+                R.id.navExit -> finish()
+            }
+            true
+        }
+    }
+
+    private fun setUserNameOnDrawerHeader() {
+        //setting useName
+        val headerView = binding.navView.getHeaderView(0)
+        val userNameHeader: TextView = headerView.findViewById(R.id.userNameHeader)
+        userNameHeader.text=userManager.getUserName()
+    }
+
+    private fun setToggleButtonForNavigationDrawer() {
+        //For Navigation Drawer
+        toggle = ActionBarDrawerToggle(this@MainActivity,binding.drawerLayout,R.string.open,R.string.close)
+        binding.drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+    }
+
+    private fun checkUserLoggedIn() {
+        //checking if user is Logged in or Not if not then open Login Activity first.
+        if (!userManager.isUserLoggedIn()) {
+            splashScreen.setKeepOnScreenCondition { true }
+            startActivity(Intent(this@MainActivity, LoginActivity::class.java))
+            finish()
+        }
     }
 
 
