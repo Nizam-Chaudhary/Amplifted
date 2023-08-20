@@ -11,7 +11,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.drawerlayout.widget.DrawerLayout
 import com.nizam.music_player.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -35,9 +34,8 @@ class MainActivity : AppCompatActivity() {
         updateOrRequestPermission()
 
         //For Navigation Drawer
-        val drawerLayout:DrawerLayout = findViewById(R.id.drawerLayout)
-        toggle = ActionBarDrawerToggle(this@MainActivity,drawerLayout,R.string.open,R.string.close)
-        drawerLayout.addDrawerListener(toggle)
+        toggle = ActionBarDrawerToggle(this@MainActivity,binding.drawerLayout,R.string.open,R.string.close)
+        binding.drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
