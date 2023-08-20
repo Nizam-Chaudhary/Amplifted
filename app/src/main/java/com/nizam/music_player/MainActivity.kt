@@ -5,13 +5,18 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.Toast
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.drawerlayout.widget.DrawerLayout
 import com.nizam.music_player.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var toggle: ActionBarDrawerToggle
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         //applying splash Screen
@@ -28,6 +33,12 @@ class MainActivity : AppCompatActivity() {
         }
         setContentView(binding.root)
         updateOrRequestPermission()
+        //For Navigation Drawer
+        val drawerLayout:DrawerLayout = findViewById(R.id.drawerLayout)
+        toggle = ActionBarDrawerToggle(this@MainActivity,drawerLayout,R.string.open,R.string.close)
+        drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         //Checking for user logged in Status and If user Is logged Then he does not need to enter details and directly jump back to home Screen.
         binding.shuffleButton.setOnClickListener {
@@ -41,6 +52,13 @@ class MainActivity : AppCompatActivity() {
         binding.playlistsButton.setOnClickListener {
             startActivity(Intent(this@MainActivity,PlaylistActivity::class.java))
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(toggle.onOptionsItemSelected(item)) {
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     //For Requesting Runtime Permission.
