@@ -76,12 +76,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this@MainActivity,PlaylistActivity::class.java))
         }
 
-        val songsList = ArrayList<String>()
-        songsList.add("1 Song")
-        songsList.add("2 Song")
-        songsList.add("3 Song")
-        songsList.add("4 Song")
-        songsList.add("5 Song")
         binding.songsRecyclerView.setHasFixedSize(true)
         binding.songsRecyclerView.setItemViewCacheSize(20)
         binding.songsRecyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
@@ -155,7 +149,7 @@ class MainActivity : AppCompatActivity() {
             MediaStore.Audio.Media.ALBUM,
             MediaStore.Audio.Media.ARTIST,
             MediaStore.Audio.Media.DURATION,
-            MediaStore.Audio.Media.DATA
+            MediaStore.Audio.Media.DATA,
         )
         val cursor = this.contentResolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,projection,selection,null,MediaStore.Audio.Media.TITLE,null)
         if(cursor != null) {

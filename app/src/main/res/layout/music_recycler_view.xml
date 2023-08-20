@@ -21,7 +21,7 @@
 
     <TextView
         android:id="@+id/songName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:gravity="center_vertical"
@@ -30,15 +30,15 @@
         android:text="@string/app_name"
         android:textColor="@color/black"
         android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/songPlayTime"
         app:layout_constraintStart_toEndOf="@+id/songImageView"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/albumName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="1dp"
         android:gravity="center_vertical"
         android:padding="5dp"
         android:singleLine="true"
@@ -46,8 +46,11 @@
         android:textColor="@color/black"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/songPlayTime"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/songImageView"
         app:layout_constraintTop_toBottomOf="@+id/songName"
+        app:layout_constraintVertical_bias="0.0"
         tools:ignore="VisualLintBounds" />
 
     <TextView
