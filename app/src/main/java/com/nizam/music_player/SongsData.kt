@@ -10,12 +10,13 @@ data class SongsData(
     val duration: Long = 0,
     val path: String,
     val artUri: String
-) {
+)
 
-}
-
-fun formatDuration(duration: Long):String {
-    val minutes = TimeUnit.MINUTES.convert(duration, TimeUnit.MILLISECONDS).toInt()
-    val second = (TimeUnit.SECONDS.convert(duration, TimeUnit.MILLISECONDS) - minutes*TimeUnit.SECONDS.convert(1,TimeUnit.SECONDS)).toInt()
-    return (String().format("%2d:%2d",minutes,second))
+fun formatDuration(duration: Long): String {
+    val minutes = TimeUnit.MINUTES.convert(duration, TimeUnit.MILLISECONDS)
+    val seconds = (TimeUnit.SECONDS.convert(duration, TimeUnit.MILLISECONDS) - minutes * 60)
+    return String.format("%2d:", minutes) + if (seconds < 10) String.format(
+        "0%d",
+        seconds
+    ) else String.format("%2d", seconds)
 }

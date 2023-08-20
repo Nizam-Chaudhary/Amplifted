@@ -27,7 +27,7 @@ class MusicRecyclerViewAdapter(private var context: Context, private var songsLi
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.title.text = songsList[position].title
         holder.album.text = songsList[position].album
-        holder.duration.text = formatDuration(songsList[position].duration)
+        holder.duration.text =formatDuration(songsList[position].duration)// (songsList[position].duration/1000).toString()
         Glide.with(context)
             .load(songsList[position].artUri)
             .apply(RequestOptions().placeholder(R.drawable.icon).centerCrop())
