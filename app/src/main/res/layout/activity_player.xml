@@ -8,64 +8,12 @@
     android:orientation="vertical"
     tools:context=".PlayerActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1">
 
-        <ImageButton
-            android:id="@+id/imageButton30"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?selectableItemBackgroundBorderless"
-            android:contentDescription="@string/back_button"
-            android:src="@drawable/back_icon"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/textView4"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.5"
-            app:tint="@android:color/black"
-            tools:ignore="RedundantDescriptionCheck" />
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="136dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="@string/app_name"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/imageButton34"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/imageButton30"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.5" />
-
-        <ImageButton
-            android:id="@+id/imageButton34"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?selectableItemBackgroundBorderless"
-            android:contentDescription="@string/favorites_icon"
-            android:src="@drawable/favorite_empty_icon"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/textView4"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.492"
-            app:tint="@android:color/holo_red_dark"
-            tools:ignore="TouchTargetSizeCheck" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.imageview.ShapeableImageView
         android:layout_width="250dp"
         android:layout_height="250dp"
-        android:layout_margin="10dp"
+        android:layout_margin="25dp"
         android:scaleType="fitXY"
         android:src="@drawable/icon"
         app:shapeAppearanceOverlay="@style/curved"
@@ -228,7 +176,7 @@
             android:contentDescription="@string/song_repeat"
             android:minWidth="48dp"
             android:minHeight="48dp"
-            android:src="@drawable/share_icon"
+            android:src="@drawable/favorite_empty_icon"
             app:layout_constraintBottom_toBottomOf="@+id/imageButton26"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
