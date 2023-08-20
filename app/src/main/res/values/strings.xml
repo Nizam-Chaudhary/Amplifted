@@ -32,4 +32,6 @@
     <string name="forgot_password">Forgot Password</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
+    <string name="welcome">Welcome,</string>
+    <string name="to_world_of_music">To World Of Music</string>
 </resources>
