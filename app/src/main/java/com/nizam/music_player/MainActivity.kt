@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -38,6 +39,10 @@ class MainActivity : AppCompatActivity() {
         binding.drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        //setting useName
+        val headerView = binding.navView.getHeaderView(0)
+        val userNameHeader: TextView = headerView.findViewById(R.id.userNameHeader)
+        userNameHeader.text=userManager.getUserName()
 
         //Checking for user logged in Status and If user Is logged Then he does not need to enter details and directly jump back to home Screen.
         binding.shuffleButton.setOnClickListener {
@@ -52,6 +57,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this@MainActivity,PlaylistActivity::class.java))
         }
     }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if(toggle.onOptionsItemSelected(item)) {
