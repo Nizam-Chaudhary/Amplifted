@@ -15,8 +15,5 @@ data class SongsData(
 fun formatDuration(duration: Long): String {
     val minutes = TimeUnit.MINUTES.convert(duration, TimeUnit.MILLISECONDS)
     val seconds = (TimeUnit.SECONDS.convert(duration, TimeUnit.MILLISECONDS) - minutes * 60)
-    return String.format("%2d:", minutes) + if (seconds < 10) String.format(
-        "0%d",
-        seconds
-    ) else String.format("%2d", seconds)
+    return String.format("%02d:%02d",minutes,seconds)
 }
