@@ -10,6 +10,7 @@ android {
     defaultConfig {
         applicationId = "com.nizam.music_player"
         minSdk = 21
+        //noinspection OldTargetApi
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
@@ -54,4 +55,5 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.15.1")
     annotationProcessor("com.github.bumptech.glide:compiler:4.15.1")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    implementation("androidx.media:media:1.6.0")
 }
