@@ -2,9 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -16,36 +18,38 @@
         android:theme="@style/primary.Theme.MusicPlayer"
         tools:targetApi="33">
         <activity
+            android:name=".RequestPermission"
+            android:exported="false" />
+        <activity
             android:name=".PlaylistActivity"
-            android:screenOrientation="portrait"
-            android:exported="false">
-        </activity>
+            android:exported="false"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".FavoriteActivity"
-            android:screenOrientation="portrait"
-            android:exported="false">
-        </activity>
+            android:exported="false"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".RegistrationActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".PlayerActivity"
-            android:screenOrientation="portrait"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".LoginActivity"
-            android:screenOrientation="portrait"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="portrait"
             android:exported="true"
-            android:theme="@style/Theme.App.Starting" >
-                <intent-filter>
-                    <action android:name="android.intent.action.MAIN" />
-                    <category android:name="android.intent.category.LAUNCHER" />
-                </intent-filter>
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.App.Starting">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

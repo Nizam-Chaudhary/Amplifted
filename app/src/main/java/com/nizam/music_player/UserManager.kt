@@ -20,6 +20,7 @@ class UserManager(context: Context) {
         editor.apply()
     }
 
+
     fun isUserLoggedIn(): Boolean {
         return sharedPreferences.getBoolean(loggedInKey, false)
     }
@@ -27,6 +28,9 @@ class UserManager(context: Context) {
     fun getUserName(): String {
         return sharedPreferences.getString(userNameKey, null).toString()
     }
+
+
+
 }
 
 

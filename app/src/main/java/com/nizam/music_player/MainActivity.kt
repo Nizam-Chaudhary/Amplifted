@@ -39,7 +39,8 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
-        updateOrRequestPermission()
+        checkAppHasPermission()
+
 
         musicListMA = getAllAudioFiles()
 
@@ -60,6 +61,15 @@ class MainActivity : AppCompatActivity() {
         }
 
         setRecyclerViewAdapter()
+    }
+
+    private fun checkAppHasPermission() {
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU)
+            hasPermission = ActivityCompat.checkSelfPermission(this@MainActivity,Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+        else
+            hasPermission = ActivityCompat.checkSelfPermission(this@MainActivity,Manifest.permission.READ_MEDIA_AUDIO) == PackageManager.PERMISSION_GRANTED
+        if(!hasPermission)
+            updateOrRequestPermission()
     }
 
     private fun setRecyclerViewAdapter() {
@@ -126,6 +136,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     //For Requesting Runtime Permission.
+
     private fun updateOrRequestPermission() {
         if(ActivityCompat.checkSelfPermission(this@MainActivity, Manifest.permission.READ_MEDIA_AUDIO) == PackageManager.PERMISSION_DENIED ){
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -142,7 +153,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -156,8 +166,8 @@ class MainActivity : AppCompatActivity() {
                 if(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(this@MainActivity,"Permission Granted",Toast.LENGTH_SHORT).show()
                 } else {
-                    ActivityCompat.requestPermissions(this@MainActivity, arrayOf(Manifest.permission.READ_MEDIA_AUDIO),1)
-                    Toast.makeText(this@MainActivity,"Permission Not Granted",Toast.LENGTH_SHORT).show()
+                    splashScreen.setKeepOnScreenCondition{true}
+                    startActivity(Intent(this@MainActivity,RequestPermission::class.java))
                 }
             }
         } else {
@@ -166,8 +176,8 @@ class MainActivity : AppCompatActivity() {
                 if(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(this@MainActivity,"Permission Granted",Toast.LENGTH_SHORT).show()
                 } else {
-                    ActivityCompat.requestPermissions(this@MainActivity, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),2)
-                    Toast.makeText(this@MainActivity,"Permission Not Granted",Toast.LENGTH_SHORT).show()
+                    splashScreen.setKeepOnScreenCondition{true}
+                    startActivity(Intent(this@MainActivity,RequestPermission::class.java))
                 }
             }
         }
@@ -213,5 +223,7 @@ class MainActivity : AppCompatActivity() {
 
     companion object{
         lateinit var musicListMA: ArrayList<SongsData>
+        var hasPermission = false
+
     }
 }
