@@ -54,11 +54,27 @@ class PlayerActivity : AppCompatActivity() {
 
     private fun shuffleSong() {
         binding.shuffleButton.setOnClickListener{
-            songPosition = Random.nextInt(0, musicListPA.size-1)
+            songPosition = randomNumber()
             createMediaPlayer()
         }
     }
 
+    //generates Random number other than current song playing.
+    private fun randomNumber():Int {
+        var temp = Random.nextInt(0, musicListPA.size)
+        while (temp == songPosition) {
+            temp = Random.nextInt(
+                0,
+                musicListPA.size
+            )
+            if(temp != songPosition) {
+                break
+            }
+        }
+        return temp
+    }
+
+    //this function is used to play the previous song and it responds to previousSongButton.
     private fun playPreviousSong() {
         binding.previousSong.setOnClickListener{
             if(songPosition == 0) {
