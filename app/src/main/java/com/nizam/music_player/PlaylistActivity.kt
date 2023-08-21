@@ -8,6 +8,7 @@ class PlaylistActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_playlist)
 
+        //setting title and back button on ToolBar.
         supportActionBar?.setTitle(R.string.playlists)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }

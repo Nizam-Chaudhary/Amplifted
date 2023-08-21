@@ -7,15 +7,28 @@ import androidx.appcompat.app.AppCompatActivity
 import com.nizam.music_player.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
-
+    private lateinit var binding:ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivityLoginBinding.inflate(layoutInflater)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        loginUser()
 
-        //onClickListener for Login Button to Login To Application If all validations are passed.
+        notRegistered()
+    }
+
+    //this function open Registration page if user is not registered.
+    private fun notRegistered() {
+        binding.registerBtn.setOnClickListener {
+            startActivity(Intent(this@LoginActivity, RegistrationActivity::class.java))
+            finish()
+        }
+    }
+
+    //this function checks all validations and log's in the user if fields are valid.
+    private fun loginUser() {
         binding.loginBtn.setOnClickListener {
 
 
@@ -45,12 +58,6 @@ class LoginActivity : AppCompatActivity() {
                     binding.pwdEdtxt.error = "Incorrect Password"
                 }
             }
-        }
-
-        //OnClickListener for Register Button to open Registration Page to Register The user if not Registered Already.
-        binding.registerBtn.setOnClickListener {
-            startActivity(Intent(this@LoginActivity, RegistrationActivity::class.java))
-            finish()
         }
     }
 }

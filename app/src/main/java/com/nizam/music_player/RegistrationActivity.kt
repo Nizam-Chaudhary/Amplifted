@@ -10,24 +10,34 @@ import java.util.regex.Pattern
 
 
 class RegistrationActivity : AppCompatActivity() {
-
+    private lateinit var binding: ActivityRegistrationBinding
+    private lateinit var userManager:UserManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivityRegistrationBinding.inflate(layoutInflater)
+        binding = ActivityRegistrationBinding.inflate(layoutInflater)
+
         setContentView(binding.root)
 
-        val userManager = UserManager(this@RegistrationActivity)
+        userManager = UserManager(this@RegistrationActivity)
 
+        alreadyRegistered()
+
+        registerUser()
+    }
+
+    private fun alreadyRegistered() {
         //OnClick Listener to change activity to login Screen if user is Already Registered.
         binding.alreadyRegisteredBtn.setOnClickListener {
             startActivity(Intent(applicationContext, LoginActivity::class.java))
         }
+    }
 
+    private fun registerUser(
+    ) {
         /*OnClick Listener for Register Button.
           it Saves Data to Database checking Various validation put on EditText Fields to ensure proper Data.
           On Successful Registration User is then presented with Home Screen.
         */
-
         binding.registerBtn.setOnClickListener {
             // variable flag is to be used for checking various validations on EditText Field for proper data.
             var flag = true
@@ -78,15 +88,7 @@ class RegistrationActivity : AppCompatActivity() {
             if (db.isAvailable(name)) {
                 flag = false
 
-                //dialog will be Displayed to notify the user.
-                val builder: AlertDialog.Builder = AlertDialog.Builder(this@RegistrationActivity)
-                builder.setTitle("Alert")
-                builder.setPositiveButton("Ok") { dialog, _ ->
-                    dialog.dismiss()
-                }
-                builder.setMessage("Account with the given UserName is already registered.")
-                val dialog = builder.create()
-                dialog.show()
+                dialogUserAlreadyExists()
 
                 //All EditText Fields will be clear so that new name and values can be entered.
                 binding.userNameEdtxt.text.clear()
@@ -101,10 +103,8 @@ class RegistrationActivity : AppCompatActivity() {
                 } catch (_: Exception) {
                 }
 
-                //setting User Logged IN Status.
-                userManager.setUserLoggedIn(true)
-                //setting User Name to sharedPreferences for future use
-                userManager.setUserName(name)
+                setUserStatus(name)
+
                 Toast.makeText(
                     applicationContext,
                     "User Registered Successfully",
@@ -116,5 +116,24 @@ class RegistrationActivity : AppCompatActivity() {
                 finish()
             }
         }
+    }
+
+    private fun setUserStatus(name: String) {
+        //setting User Logged IN Status.
+        userManager.setUserLoggedIn(true)
+        //setting User Name to sharedPreferences for future use
+        userManager.setUserName(name)
+    }
+
+    private fun dialogUserAlreadyExists() {
+        //dialog will be Displayed to notify the user.
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this@RegistrationActivity)
+        builder.setTitle("Alert")
+        builder.setPositiveButton("Ok") { dialog, _ ->
+            dialog.dismiss()
+        }
+        builder.setMessage("Account with the given UserName is already registered.")
+        val dialog = builder.create()
+        dialog.show()
     }
 }

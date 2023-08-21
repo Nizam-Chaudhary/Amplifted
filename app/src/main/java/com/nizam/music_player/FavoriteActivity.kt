@@ -8,6 +8,7 @@ class FavoriteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_favorite)
 
+        //setting title and back button on ToolBar.
         supportActionBar?.setTitle(R.string.favorites)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }

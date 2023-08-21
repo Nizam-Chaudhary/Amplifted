@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
 
+        //initializing binding variable
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         userManager = UserManager(this@MainActivity)
@@ -63,15 +64,18 @@ class MainActivity : AppCompatActivity() {
         checkAndSetAdapter()
     }
 
+    //This function is used to check if the app has permission or not.
     private fun checkAppHasPermission() {
         hasPermission = if(Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU)
             ActivityCompat.checkSelfPermission(this@MainActivity,Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
         else
             ActivityCompat.checkSelfPermission(this@MainActivity,Manifest.permission.READ_MEDIA_AUDIO) == PackageManager.PERMISSION_GRANTED
+        //if app does not has permission then requesting for it.
         if(!hasPermission)
             updateOrRequestPermission()
     }
 
+    //this function checks if app has permission call function setRecyclerViewAdapter()  to set the adapter.
     private fun checkAndSetAdapter() {
         if(hasPermission) {
             musicListMA = getAllAudioFiles()
@@ -79,6 +83,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
+    //this function sets the adapter.
     private fun setRecyclerViewAdapter() {
         binding.songsRecyclerView.setHasFixedSize(true)
         binding.songsRecyclerView.setItemViewCacheSize(20)
@@ -87,6 +93,7 @@ class MainActivity : AppCompatActivity() {
         binding.songsRecyclerView.adapter = musicRecyclerViewAdapter
     }
 
+    //this function creates an random index from the list of songs pass it start playing random song.
     private fun shuffleSong() {
         //Checking for user logged in Status and If user Is logged Then he does not need to enter details and directly jump back to home Screen.
         binding.shuffleButton.setOnClickListener {
@@ -109,6 +116,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    //this function is used to set the username on the DrawerHeader.
     private fun setUserNameOnDrawerHeader() {
         //setting useName
         val headerView = binding.navView.getHeaderView(0)
@@ -116,13 +124,13 @@ class MainActivity : AppCompatActivity() {
         userNameHeader.text=userManager.getUserName()
     }
 
+    //this function set toggle button for DrawerLayout
     private fun setToggleButtonForNavigationDrawer() {
         //For Navigation Drawer
         toggle = ActionBarDrawerToggle(this@MainActivity,binding.drawerLayout,R.string.open,R.string.close)
         binding.drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
     }
 
     private fun checkUserLoggedIn() {
@@ -133,7 +141,6 @@ class MainActivity : AppCompatActivity() {
             finish()
         }
     }
-
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if(toggle.onOptionsItemSelected(item)) {
@@ -160,6 +167,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    //onResponse to the permission Dialog an action is performed.
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -167,8 +175,8 @@ class MainActivity : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
+        //checking android api version.
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-
             if(requestCode == 1) {
                 if(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     hasPermission = true
@@ -191,10 +199,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    //this function is used to load all files into ArrayList from the Storage
     @SuppressLint("Recycle", "Range")
     private fun getAllAudioFiles():ArrayList<SongsData> {
         val tempList = ArrayList<SongsData>()
+        //selection refers to the type of file to fetch
         val selection = MediaStore.Audio.Media.IS_MUSIC + " != 0"
+        //projection refers to the information need in form of array.
         val projection = arrayOf(
             MediaStore.Audio.Media._ID,
             MediaStore.Audio.Media.TITLE,
@@ -204,7 +215,9 @@ class MainActivity : AppCompatActivity() {
             MediaStore.Audio.Media.DATA,
             MediaStore.Audio.Media.ALBUM_ID
         )
+        //loading all data into cursor.
         val cursor = this.contentResolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,projection,selection,null,MediaStore.Audio.Media.TITLE,null)
+        //if cursor is not null then adding all values to tempList.
         if(cursor != null) {
             if(cursor.moveToFirst()) {
                 do {

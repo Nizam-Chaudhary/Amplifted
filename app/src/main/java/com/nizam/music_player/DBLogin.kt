@@ -20,6 +20,7 @@ class DBLogin(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         onCreate(db)
     }
 
+    //this function is used to Enter data into the table.
     fun registerUser(uname: String, uEmail: String, pwd: String) {
         val values = ContentValues()
 
@@ -33,6 +34,7 @@ class DBLogin(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         db.close()
     }
 
+    //this function works as helper function to validateUser() and isAvailable.
     @SuppressLint("Range")
     fun helper(name: String): String? {
         val db = this.readableDatabase
@@ -46,6 +48,7 @@ class DBLogin(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         return value
     }
 
+    //this function is used to validate User.
     fun validateUser(name: String, pwd: String): Boolean {
         val result = helper(name)
         if (result != null && result == pwd) {
@@ -65,6 +68,7 @@ class DBLogin(context: Context, factory: SQLiteDatabase.CursorFactory?) :
     }
 
 
+    //Common Needed Values.
     companion object {
         const val DATABASE_NAME = "UserDB"
         const val DATABASE_VERSION = 1

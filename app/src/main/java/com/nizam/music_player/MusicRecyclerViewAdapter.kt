@@ -28,18 +28,31 @@ class MusicRecyclerViewAdapter(private var context: Context, private var songsLi
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
+        //setting all values from arrayList into respective widgets
         holder.title.text = songsList[position].title
         holder.album.text = songsList[position].album
-        holder.duration.text =formatDuration(songsList[position].duration)// (songsList[position].duration/1000).toString()
+        holder.duration.text =formatDuration(songsList[position].duration)
+
+        //setting image of album.
         Glide.with(context)
             .load(songsList[position].artUri)
             .apply(RequestOptions().placeholder(R.drawable.icon).centerCrop())
             .into(holder.image)
-        holder.root.setOnClickListener{
-            val intent = Intent(context,PlayerActivity::class.java)
-            intent.putExtra("index",position)
-            intent.putExtra("class","MusicAdapter")
-            ContextCompat.startActivity(context,intent,null)
+
+        //playing Song on PlayerActivity
+        playSong(holder, position)
+    }
+
+    //this function plays songs on  PlayerActivity
+    private fun playSong(
+        holder: Holder,
+        position: Int
+    ) {
+        holder.root.setOnClickListener {
+            val intent = Intent(context, PlayerActivity::class.java)
+            intent.putExtra("index", position)
+            intent.putExtra("class", "MusicAdapter")
+            ContextCompat.startActivity(context, intent, null)
         }
     }
 }
