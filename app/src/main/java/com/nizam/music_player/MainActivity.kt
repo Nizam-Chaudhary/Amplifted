@@ -33,16 +33,16 @@ class MainActivity : AppCompatActivity() {
         splashScreen = installSplashScreen()
 
         super.onCreate(savedInstanceState)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
+
         userManager = UserManager(this@MainActivity)
+
         checkUserLoggedIn()
 
         setContentView(binding.root)
 
         checkAppHasPermission()
-
-
-        musicListMA = getAllAudioFiles()
 
         setToggleButtonForNavigationDrawer()
 
@@ -60,16 +60,23 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this@MainActivity,PlaylistActivity::class.java))
         }
 
-        setRecyclerViewAdapter()
+        checkAndSetAdapter()
     }
 
     private fun checkAppHasPermission() {
-        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU)
-            hasPermission = ActivityCompat.checkSelfPermission(this@MainActivity,Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+        hasPermission = if(Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU)
+            ActivityCompat.checkSelfPermission(this@MainActivity,Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
         else
-            hasPermission = ActivityCompat.checkSelfPermission(this@MainActivity,Manifest.permission.READ_MEDIA_AUDIO) == PackageManager.PERMISSION_GRANTED
+            ActivityCompat.checkSelfPermission(this@MainActivity,Manifest.permission.READ_MEDIA_AUDIO) == PackageManager.PERMISSION_GRANTED
         if(!hasPermission)
             updateOrRequestPermission()
+    }
+
+    private fun checkAndSetAdapter() {
+        if(hasPermission) {
+            musicListMA = getAllAudioFiles()
+            setRecyclerViewAdapter()
+        }
     }
 
     private fun setRecyclerViewAdapter() {
@@ -164,20 +171,21 @@ class MainActivity : AppCompatActivity() {
 
             if(requestCode == 1) {
                 if(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this@MainActivity,"Permission Granted",Toast.LENGTH_SHORT).show()
+                    hasPermission = true
+                    checkAndSetAdapter()
                 } else {
-                    splashScreen.setKeepOnScreenCondition{true}
                     startActivity(Intent(this@MainActivity,RequestPermission::class.java))
+                    finish()
                 }
             }
         } else {
-
             if(requestCode == 2) {
                 if(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this@MainActivity,"Permission Granted",Toast.LENGTH_SHORT).show()
+                    hasPermission = true
+                    checkAndSetAdapter()
                 } else {
-                    splashScreen.setKeepOnScreenCondition{true}
                     startActivity(Intent(this@MainActivity,RequestPermission::class.java))
+                    finish()
                 }
             }
         }
