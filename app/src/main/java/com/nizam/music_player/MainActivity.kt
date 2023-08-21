@@ -62,6 +62,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         checkAndSetAdapter()
+
+        refreshLayout()
     }
 
     //This function is used to check if the app has permission or not.
@@ -80,6 +82,8 @@ class MainActivity : AppCompatActivity() {
         if(hasPermission) {
             musicListMA = getAllAudioFiles()
             setRecyclerViewAdapter()
+        } else {
+            checkAppHasPermission()
         }
     }
 
@@ -242,6 +246,14 @@ class MainActivity : AppCompatActivity() {
         return tempList
     }
 
+    //refreshes the layout to get changes on song list.
+    private fun refreshLayout(){
+        binding.refreshLayout.setOnRefreshListener {
+            binding.refreshLayout.isRefreshing=true
+            checkAndSetAdapter()
+            binding.refreshLayout.isRefreshing=false
+        }
+    }
     companion object{
         lateinit var musicListMA: ArrayList<SongsData>
         var hasPermission = false
