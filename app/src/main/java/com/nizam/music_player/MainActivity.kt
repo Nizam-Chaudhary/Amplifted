@@ -82,8 +82,6 @@ class MainActivity : AppCompatActivity() {
         if(hasPermission) {
             musicListMA = getAllAudioFiles()
             setRecyclerViewAdapter()
-        } else {
-            checkAppHasPermission()
         }
     }
 
