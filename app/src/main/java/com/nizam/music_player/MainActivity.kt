@@ -102,7 +102,7 @@ class MainActivity : AppCompatActivity() {
         //Checking for user logged in Status and If user Is logged Then he does not need to enter details and directly jump back to home Screen.
         binding.shuffleButton.setOnClickListener {
             val intent = Intent(this@MainActivity,PlayerActivity::class.java)
-            intent.putExtra("index", Random.nextInt(0, musicListMA.size - 1))
+            intent.putExtra("index", Random.nextInt(0, musicListMA.size))
             intent.putExtra("class","MainActivity")
             startActivity(intent)
         }
