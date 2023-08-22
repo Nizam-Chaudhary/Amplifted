@@ -1,5 +1,6 @@
 package com.nizam.music_player
 
+import android.annotation.SuppressLint
 import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
@@ -13,12 +14,14 @@ import com.nizam.music_player.databinding.ActivityPlayerBinding
 import kotlin.random.Random
 
 class PlayerActivity : AppCompatActivity(),ServiceConnection {
-    private lateinit var binding: ActivityPlayerBinding
-    private var isSongPlaying = false
+
     companion object {
+        var isSongPlaying = false
         var musicListPA = ArrayList<SongsData>()
         var songPosition = 0
         var musicService:MusicService? = null
+        @SuppressLint("StaticFieldLeak")
+        lateinit var binding: ActivityPlayerBinding
     }
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -156,6 +159,7 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection {
     //plays the songs if it is paused.
     private fun playMusic() {
         binding.pausePlayButton.setIconResource(R.drawable.pause_icon)
+        musicService!!.showNotification(R.drawable.pause_icon_notification)
         isSongPlaying = true
         musicService!!.mediaPlayer!!.start()
     }
@@ -163,6 +167,7 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection {
     //pauses the songs if it is playing.
     private fun pauseMusic() {
         binding.pausePlayButton.setIconResource(R.drawable.play_icon)
+        musicService!!.showNotification(R.drawable.play_icon_notification)
         isSongPlaying = false
         musicService!!.mediaPlayer!!.pause()
     }
@@ -171,7 +176,7 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection {
         val binder = service as MusicService.MyBinder
         musicService = binder.currentService()
         createMediaPlayer()
-        musicService!!.showNotification()
+        musicService!!.showNotification(R.drawable.pause_icon_notification)
     }
 
     override fun onServiceDisconnected(name: ComponentName?) {
