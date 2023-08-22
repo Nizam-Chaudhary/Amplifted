@@ -2,6 +2,7 @@ package com.nizam.music_player
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Service
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -271,7 +272,9 @@ class MainActivity : AppCompatActivity() {
             if(PlayerActivity.isSongPlaying) {
                 PlayerActivity.musicService!!.mediaPlayer!!.stop()
             }
-            PlayerActivity.musicService!!.stopForeground(true)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                PlayerActivity.musicService!!.stopForeground(Service.STOP_FOREGROUND_REMOVE)
+            }
         }
     }
 
