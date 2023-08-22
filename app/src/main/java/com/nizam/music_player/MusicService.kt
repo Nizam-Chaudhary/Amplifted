@@ -51,17 +51,34 @@ class MusicService : Service() {
             .addAction(playPauseButton, "Play", playPausePendingIntent)
             .addAction(R.drawable.next_icon_notification, "Next", nextPendingIntent)
             .setContentTitle(PlayerActivity.musicListPA[PlayerActivity.songPosition].title)
-            .setContentText(PlayerActivity.musicListPA[PlayerActivity.songPosition].path)
+            .setContentText(PlayerActivity.musicListPA[PlayerActivity.songPosition].artist)
             .setStyle(
                 androidx.media.app.NotificationCompat.MediaStyle()
                     .setMediaSession(mediaSession.sessionToken)
             )
             .setSmallIcon(R.drawable.music_icon_notification)
             .setLargeIcon(image)
-            .setPriority(NotificationCompat.PRIORITY_MAX)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setOnlyAlertOnce(true)
             .build()
         startForeground(7, notification)
+    }
+    fun createMediaPlayer() {
+        setLayout(baseContext)
+        try{
+            if(PlayerActivity.musicService!!.mediaPlayer == null) {
+                PlayerActivity.musicService!!.mediaPlayer = MediaPlayer()
+                createMediaPlayer()
+            } else {
+                PlayerActivity.musicService!!.mediaPlayer!!.reset()
+                PlayerActivity.musicService!!.mediaPlayer!!.setDataSource(PlayerActivity.musicListPA[PlayerActivity.songPosition].path)
+                PlayerActivity.musicService!!.mediaPlayer!!.prepare()
+                PlayerActivity.musicService!!.mediaPlayer!!.start()
+                PlayerActivity.isSongPlaying = true
+                PlayerActivity.binding.pausePlayButton.setIconResource(R.drawable.pause_icon)
+                showNotification(R.drawable.pause_icon_notification)
+            }
+        } catch(_:Exception) {}
     }
 }

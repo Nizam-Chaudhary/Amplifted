@@ -1,6 +1,9 @@
 package com.nizam.music_player
 
+import android.content.Context
 import android.media.MediaMetadataRetriever
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import java.util.concurrent.TimeUnit
 
 data class SongsData(
@@ -25,4 +28,29 @@ fun getImageArt(path: String): ByteArray? {
     val retriever = MediaMetadataRetriever()
     retriever.setDataSource(path)
     return retriever.embeddedPicture
+}
+
+fun playPreviousSong() {
+    if(PlayerActivity.songPosition == 0) {
+        PlayerActivity.songPosition = PlayerActivity.musicListPA.size - 1
+    } else {
+        PlayerActivity.songPosition--
+    }
+}
+
+//this function is used to play the next song and it responds.
+fun playNextSong() {
+    if(PlayerActivity.songPosition == PlayerActivity.musicListPA.size - 1 ) {
+        PlayerActivity.songPosition = 0
+    } else {
+        PlayerActivity.songPosition++
+    }
+}
+
+fun setLayout(context: Context) {
+    Glide.with(context)
+        .load(PlayerActivity.musicListPA[PlayerActivity.songPosition].artUri)
+        .apply(RequestOptions().placeholder(R.drawable.icon).centerCrop())
+        .into(PlayerActivity.binding.albumImage)
+    PlayerActivity.binding.songName.text = PlayerActivity.musicListPA[PlayerActivity.songPosition].title
 }

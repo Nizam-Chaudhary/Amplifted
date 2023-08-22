@@ -4,12 +4,9 @@ import android.annotation.SuppressLint
 import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.IBinder
 import androidx.appcompat.app.AppCompatActivity
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.nizam.music_player.databinding.ActivityPlayerBinding
 import kotlin.random.Random
 
@@ -40,11 +37,25 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection {
 
         playPauseSong()
 
-        playNextSong()
+        nextSong()
 
-        playPreviousSong()
+        previousSong()
 
         shuffleSong()
+    }
+
+    private fun previousSong() {
+        binding.previousSong.setOnClickListener{
+            playPreviousSong()
+            musicService!!.createMediaPlayer()
+        }
+    }
+
+    private fun nextSong() {
+        binding.nextSong.setOnClickListener{
+            playNextSong()
+            musicService!!.createMediaPlayer()
+        }
     }
 
     //Initializes layout and all variable and retrieves the value from intent.
@@ -67,7 +78,7 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection {
     private fun shuffleSong() {
         binding.shuffleButton.setOnClickListener{
             songPosition = randomNumber()
-            createMediaPlayer()
+            musicService!!.createMediaPlayer()
         }
     }
 
@@ -87,28 +98,6 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection {
     }
 
     //this function is used to play the previous song and it responds to previousSongButton.
-    private fun playPreviousSong() {
-        binding.previousSong.setOnClickListener{
-            if(songPosition == 0) {
-                songPosition = musicListPA.size - 1
-            } else {
-                songPosition--
-            }
-            createMediaPlayer()
-        }
-    }
-
-    //this function is used to play the next song and it responds to nextSongButton.
-    private fun playNextSong() {
-        binding.nextSong.setOnClickListener{
-            if(songPosition == musicListPA.size - 1 ) {
-                songPosition = 0
-            } else {
-                songPosition++
-            }
-            createMediaPlayer()
-        }
-    }
 
     //plays or Pauses the song..
     private fun playPauseSong() {
@@ -129,32 +118,10 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection {
     }
 
     //this function initializes Media-player if it is null and starts playing the song if it is already initialized.
-    private fun createMediaPlayer() {
-        try{
 
-            setLayout()
-            if(musicService!!.mediaPlayer == null) {
-                musicService!!.mediaPlayer = MediaPlayer()
-                createMediaPlayer()
-            } else {
-                musicService!!.mediaPlayer!!.reset()
-                musicService!!.mediaPlayer!!.setDataSource(musicListPA[songPosition].path)
-                musicService!!.mediaPlayer!!.prepare()
-                musicService!!.mediaPlayer!!.start()
-                isSongPlaying = true
-                binding.pausePlayButton.setIconResource(R.drawable.pause_icon)
-            }
-        } catch(_:Exception) {}
-    }
 
     //setting song name and album image to the song.
-    private fun setLayout() {
-        Glide.with(this@PlayerActivity)
-            .load(musicListPA[songPosition].artUri)
-            .apply(RequestOptions().placeholder(R.drawable.icon).centerCrop())
-            .into(binding.albumImage)
-        binding.songName.text = musicListPA[songPosition].title
-    }
+
 
     //plays the songs if it is paused.
     private fun playMusic() {
@@ -175,8 +142,7 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection {
     override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
         val binder = service as MusicService.MyBinder
         musicService = binder.currentService()
-        createMediaPlayer()
-        musicService!!.showNotification(R.drawable.pause_icon_notification)
+        musicService!!.createMediaPlayer()
     }
 
     override fun onServiceDisconnected(name: ComponentName?) {
