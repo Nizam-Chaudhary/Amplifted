@@ -28,8 +28,8 @@ class MusicService : Service() {
     fun showNotification() {
         val notification = NotificationCompat.Builder(baseContext, ApplicationClass.CHANNEL_ID)
             .setContentTitle(PlayerActivity.musicListPA[PlayerActivity.songPosition].title)
-            .setContentText(PlayerActivity.musicListPA[PlayerActivity.songPosition].artist)
-            .setSmallIcon(R.drawable.playlist_icon)
+            .setContentText(PlayerActivity.musicListPA[PlayerActivity.songPosition].path)
+            .setSmallIcon(R.drawable.music_icon_notification)
             .setLargeIcon(BitmapFactory.decodeResource(resources, R.drawable.icon))
             .setStyle(
                 androidx.media.app.NotificationCompat.MediaStyle()
@@ -38,9 +38,9 @@ class MusicService : Service() {
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setOnlyAlertOnce(true)
-            .addAction(R.drawable.previous_icon, "Previous", null)
-            .addAction(R.drawable.play_icon, "Play", null)
-            .addAction(R.drawable.next_icon, "Next", null)
+            .addAction(R.drawable.previous_icon_notification, "Previous", null)
+            .addAction(R.drawable.play_icon_notification, "Play", null)
+            .addAction(R.drawable.next_icon_notification, "Next", null)
             .addAction(R.drawable.exit_icon, "Exit", null)
             .build()
         startForeground(7, notification)
