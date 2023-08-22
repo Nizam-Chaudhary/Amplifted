@@ -26,6 +26,7 @@ class MusicService : Service() {
         }
     }
 
+
     fun showNotification(playPauseButton: Int) {
 
         val previousIntent = Intent(baseContext,NotificationReceiver::class.java).setAction(ApplicationClass.PREVIOUS)
@@ -37,6 +38,14 @@ class MusicService : Service() {
         val playPauseIntent = Intent(baseContext,NotificationReceiver::class.java).setAction(ApplicationClass.PLAY_PAUSE)
         val playPausePendingIntent = PendingIntent.getBroadcast(baseContext,0,playPauseIntent,PendingIntent.FLAG_IMMUTABLE)
 
+        val imageArt = getImageArt(PlayerActivity.musicListPA[PlayerActivity.songPosition].path)
+
+        //creating Bitmap from ByteArray
+       val image = if ( imageArt != null) {
+            BitmapFactory.decodeByteArray(imageArt,0,imageArt.size)
+        } else {
+            BitmapFactory.decodeResource(this@MusicService.resources,R.drawable.music_icon_notification)
+        }
         val notification = NotificationCompat.Builder(baseContext, ApplicationClass.CHANNEL_ID)
             .addAction(R.drawable.previous_icon_notification, "Previous", previousPendingIntent)
             .addAction(playPauseButton, "Play", playPausePendingIntent)
@@ -48,7 +57,7 @@ class MusicService : Service() {
                     .setMediaSession(mediaSession.sessionToken)
             )
             .setSmallIcon(R.drawable.music_icon_notification)
-            .setLargeIcon(BitmapFactory.decodeResource(resources, R.drawable.icon))
+            .setLargeIcon(image)
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setOnlyAlertOnce(true)
