@@ -264,10 +264,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
+
         super.onDestroy()
-        Log.i("onDestroy","Song paused")
-        PlayerActivity.musicService!!.mediaPlayer!!.stop()
-        PlayerActivity.musicService!!.stopForeground(true)
-        PlayerActivity.musicService = null
+        if(PlayerActivity.musicService != null) {
+            Log.i("onDestroy","Song paused")
+            if(PlayerActivity.isSongPlaying) {
+                PlayerActivity.musicService!!.mediaPlayer!!.stop()
+            }
+            PlayerActivity.musicService!!.stopForeground(true)
+        }
     }
+
 }
