@@ -6,7 +6,9 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.media.MediaPlayer
 import android.os.Binder
+import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
 import android.support.v4.media.session.MediaSessionCompat
 import androidx.core.app.NotificationCompat
 
@@ -14,6 +16,7 @@ class MusicService : Service() {
     private var myBinder = MyBinder()
     var mediaPlayer: MediaPlayer? = null
     private lateinit var mediaSession: MediaSessionCompat
+    private lateinit var runnable: Runnable
 
     override fun onBind(intent: Intent?): IBinder {
         mediaSession = MediaSessionCompat(baseContext, "Amplifted")
@@ -33,10 +36,10 @@ class MusicService : Service() {
         val previousPendingIntent = PendingIntent.getBroadcast(baseContext,0,previousIntent,PendingIntent.FLAG_IMMUTABLE)
 
         val nextIntent = Intent(baseContext,NotificationReceiver::class.java).setAction(ApplicationClass.NEXT)
-        val nextPendingIntent = PendingIntent.getBroadcast(baseContext,0,nextIntent,PendingIntent.FLAG_IMMUTABLE)
+        val nextPendingIntent = PendingIntent.getBroadcast(baseContext,1,nextIntent,PendingIntent.FLAG_IMMUTABLE)
 
         val playPauseIntent = Intent(baseContext,NotificationReceiver::class.java).setAction(ApplicationClass.PLAY_PAUSE)
-        val playPausePendingIntent = PendingIntent.getBroadcast(baseContext,0,playPauseIntent,PendingIntent.FLAG_IMMUTABLE)
+        val playPausePendingIntent = PendingIntent.getBroadcast(baseContext,2,playPauseIntent,PendingIntent.FLAG_IMMUTABLE)
 
         val imageArt = getImageArt(PlayerActivity.musicListPA[PlayerActivity.songPosition].path)
 
@@ -61,11 +64,11 @@ class MusicService : Service() {
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setOnlyAlertOnce(true)
+            .setGroup(ApplicationClass.CHANNEL_ID)
             .build()
         startForeground(7, notification)
     }
     fun createMediaPlayer() {
-        setLayout(baseContext)
         try{
             if(PlayerActivity.musicService!!.mediaPlayer == null) {
                 PlayerActivity.musicService!!.mediaPlayer = MediaPlayer()
@@ -74,11 +77,21 @@ class MusicService : Service() {
                 PlayerActivity.musicService!!.mediaPlayer!!.reset()
                 PlayerActivity.musicService!!.mediaPlayer!!.setDataSource(PlayerActivity.musicListPA[PlayerActivity.songPosition].path)
                 PlayerActivity.musicService!!.mediaPlayer!!.prepare()
+                setLayout(baseContext)
                 PlayerActivity.musicService!!.mediaPlayer!!.start()
                 PlayerActivity.isSongPlaying = true
                 PlayerActivity.binding.pausePlayButton.setIconResource(R.drawable.pause_icon)
                 showNotification(R.drawable.pause_icon_notification)
             }
         } catch(_:Exception) {}
+    }
+
+    fun syncSeekBar() {
+        runnable = Runnable {
+            PlayerActivity.binding.progressDuration.text = formatDuration(mediaPlayer!!.currentPosition.toLong())
+            PlayerActivity.binding.seekBarPA.progress = mediaPlayer!!.currentPosition
+            Handler(Looper.getMainLooper()).postDelayed(runnable,200)
+        }
+        Handler(Looper.getMainLooper()).postDelayed(runnable,200)
     }
 }

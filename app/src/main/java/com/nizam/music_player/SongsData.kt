@@ -19,7 +19,7 @@ data class SongsData(
 //global function to format duration of songs.
 fun formatDuration(duration: Long): String {
     val minutes = TimeUnit.MINUTES.convert(duration, TimeUnit.MILLISECONDS)
-    val seconds = (TimeUnit.SECONDS.convert(duration, TimeUnit.MILLISECONDS) - minutes * 60)
+    val seconds = (TimeUnit.SECONDS.convert(duration, TimeUnit.MILLISECONDS) - minutes * TimeUnit.SECONDS.convert(1,TimeUnit.MINUTES))
     return String.format("%02d:%02d",minutes,seconds)
 }
 
@@ -53,4 +53,7 @@ fun setLayout(context: Context) {
         .apply(RequestOptions().placeholder(R.drawable.icon).centerCrop())
         .into(PlayerActivity.binding.albumImage)
     PlayerActivity.binding.songName.text = PlayerActivity.musicListPA[PlayerActivity.songPosition].title
+    PlayerActivity.binding.duration.text = formatDuration(PlayerActivity.musicService!!.mediaPlayer!!.duration.toLong())
+    PlayerActivity.binding.seekBarPA.max = PlayerActivity.musicService!!.mediaPlayer!!.duration
+    
 }
