@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
@@ -260,5 +261,13 @@ class MainActivity : AppCompatActivity() {
         lateinit var musicListMA: ArrayList<SongsData>
         var hasPermission = false
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.i("onDestroy","Song paused")
+        PlayerActivity.musicService!!.mediaPlayer!!.stop()
+        PlayerActivity.musicService!!.stopForeground(true)
+        PlayerActivity.musicService = null
     }
 }
