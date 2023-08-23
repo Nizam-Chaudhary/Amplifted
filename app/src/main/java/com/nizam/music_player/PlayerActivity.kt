@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.media.MediaPlayer
 import android.media.audiofx.AudioEffect
+import android.net.Uri
 import android.os.Bundle
 import android.os.IBinder
 import android.view.Menu
@@ -16,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nizam.music_player.databinding.ActivityPlayerBinding
+
 
 @Suppress("DEPRECATION")
 class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompletionListener{
@@ -65,6 +67,17 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
 
         showBottomDialogTimer()
 
+        shareSong()
+    }
+
+    private fun shareSong() {
+        binding.shareButton.setOnClickListener{
+            val shareIntent = Intent()
+            shareIntent.action = Intent.ACTION_SEND
+            shareIntent.type = "audio/*"
+            shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(musicListPA[songPosition].path))
+            startActivity(Intent.createChooser(shareIntent,"Share Music File!"))
+        }
     }
 
     private fun equalizer() {
