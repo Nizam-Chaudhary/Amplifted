@@ -8,9 +8,12 @@ import android.media.MediaPlayer
 import android.media.audiofx.AudioEffect
 import android.os.Bundle
 import android.os.IBinder
+import android.widget.LinearLayout
 import android.widget.SeekBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nizam.music_player.databinding.ActivityPlayerBinding
 import kotlin.random.Random
 
@@ -26,6 +29,10 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
         lateinit var binding: ActivityPlayerBinding
         var repeat = false
         var shuffle = false
+        var fifteenMinutes = false
+        var thirtyMinutes = false
+        var sixtyMinutes = false
+
     }
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -55,6 +62,8 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
         repeatSong()
 
         equalizer()
+
+        showBottomDialogTimer()
 
     }
 
@@ -224,5 +233,75 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
             musicService!!.createMediaPlayer()
         }
         musicService!!.createMediaPlayer()
+    }
+
+    private fun showBottomDialogTimer() {
+        if(fifteenMinutes || thirtyMinutes || sixtyMinutes)
+            binding.timer.setImageResource(R.drawable.timer_icon_true)
+        binding.timer.setOnClickListener{
+            if(!(fifteenMinutes || thirtyMinutes || sixtyMinutes)) {
+                val dialog = BottomSheetDialog(this@PlayerActivity)
+                dialog.setContentView(R.layout.bottom_sheet_layout)
+                dialog.show()
+                dialog.findViewById<LinearLayout>(R.id.fifteenMinutes)?.setOnClickListener {
+                    fifteenMinutes = true
+                    Thread{
+                        Thread.sleep(15 * 60000)
+                        if(fifteenMinutes) {
+                            exitApplication()
+                            fifteenMinutes = false
+                        }
+                    }.start()
+                    binding.timer.setImageResource(R.drawable.timer_icon_true)
+                    dialog.dismiss()
+                }
+                dialog.findViewById<LinearLayout>(R.id.thirtyMinutes)?.setOnClickListener {
+                    thirtyMinutes = true
+                    Thread{
+                        Thread.sleep(30 * 60000)
+                        if(thirtyMinutes) {
+                            exitApplication()
+                            thirtyMinutes = false
+                        }
+                    }.start()
+                    binding.timer.setImageResource(R.drawable.timer_icon_true)
+                    dialog.dismiss()
+                }
+                dialog.findViewById<LinearLayout>(R.id.sixtyMinutes)?.setOnClickListener {
+                    sixtyMinutes = true
+                    Thread{
+                        Thread.sleep(60 * 60000)
+                        if(sixtyMinutes) {
+                            exitApplication()
+                            sixtyMinutes = false
+                        }
+                    }.start()
+                    binding.timer.setImageResource(R.drawable.timer_icon_true)
+                    dialog.dismiss()
+                }
+            } else {
+                val dialog = MaterialAlertDialogBuilder(this@PlayerActivity)
+                    .setTitle("Cancel Timer")
+                    .setMessage("Do you want to cancel the timer?")
+                    .setPositiveButton("Yes"){dialog,_ ->
+                        fifteenMinutes = false
+                        thirtyMinutes = false
+                        sixtyMinutes = false
+                        dialog.dismiss()
+                        binding.timer.setImageResource(R.drawable.timer_icon)
+                    }
+                    .setNegativeButton("No"){dialog,_ ->
+                        dialog.dismiss()
+                    }
+                dialog.show()
+            }
+        }
+    }
+
+    private fun exitApplication() {
+        val intent = Intent(this@PlayerActivity,MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        intent.putExtra("EXIT",true)
+        startActivity(intent)
     }
 }

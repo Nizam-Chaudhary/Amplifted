@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/fifteenMinutes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        tools:ignore="UseCompoundDrawables">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/_15_minutes"
+            android:minHeight="48dp"
+            android:minWidth="48dp"
+            android:src="@drawable/timer_icon" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="20dp"
+            android:gravity="center"
+            android:text="@string/_15_minutes"
+            android:textColor="@color/black"
+            android:textSize="22sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/thirtyMinutes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        tools:ignore="UseCompoundDrawables">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/_15_minutes"
+            android:minWidth="48dp"
+            android:minHeight="48dp"
+            android:src="@drawable/timer_icon" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="20dp"
+            android:gravity="center"
+            android:text="@string/_30_minutes"
+            android:textColor="@color/black"
+            android:textSize="22sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/sixtyMinutes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        tools:ignore="UseCompoundDrawables">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/_15_minutes"
+            android:minWidth="48dp"
+            android:minHeight="48dp"
+            android:src="@drawable/timer_icon" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="20dp"
+            android:gravity="center"
+            android:text="@string/_60_minutes"
+            android:textColor="@color/black"
+            android:textSize="22sp" />
+    </LinearLayout>
+
+
+</LinearLayout>

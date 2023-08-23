@@ -9,7 +9,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
@@ -41,6 +40,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         userManager = UserManager(this@MainActivity)
+
+        if(intent.getBooleanExtra("EXIT",false)) finish()
 
         checkUserLoggedIn()
 
@@ -282,7 +283,6 @@ class MainActivity : AppCompatActivity() {
 
         super.onDestroy()
         if(PlayerActivity.musicService != null) {
-            Log.i("onDestroy","Song paused")
             if(PlayerActivity.isSongPlaying) {
                 PlayerActivity.musicService!!.mediaPlayer!!.stop()
             }
