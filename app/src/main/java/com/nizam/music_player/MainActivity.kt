@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nizam.music_player.databinding.ActivityMainBinding
 import java.io.File
 import kotlin.random.Random
@@ -118,7 +119,19 @@ class MainActivity : AppCompatActivity() {
             when(it.itemId) {
                 R.id.navSettings -> Toast.makeText(this@MainActivity,"Settings",Toast.LENGTH_SHORT).show()
                 R.id.navAbout -> Toast.makeText(this@MainActivity,"About",Toast.LENGTH_SHORT).show()
-                R.id.navExit -> finish()
+                R.id.navExit -> {
+                    val dialog = MaterialAlertDialogBuilder(this@MainActivity)
+                        .setTitle("Exit!")
+                        .setCancelable(false)
+                        .setMessage("Do you want to Close the App?")
+                        .setPositiveButton("Yes") { _, _ ->
+                            finish()
+                        }
+                        .setNegativeButton("Cancel") { dialog, _ ->
+                            dialog.dismiss()
+                        }
+                    dialog.show()
+                }
             }
             true
         }

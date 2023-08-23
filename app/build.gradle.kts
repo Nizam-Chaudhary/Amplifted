@@ -4,6 +4,13 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        getByName("debug") {
+            storeFile = file("/home/nizam/HDD/Mega/College/Sem 5/Project/Music-Player.jks")
+            storePassword = "Nizam6353"
+            keyPassword = "Nizam6353"
+        }
+    }
     namespace = "com.nizam.music_player"
     compileSdk = 33
 
@@ -12,10 +19,11 @@ android {
         minSdk = 21
         //noinspection OldTargetApi
         targetSdk = 33
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 4
+        versionName = "4.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig = signingConfigs.getByName("debug")
     }
 
     buildTypes {
@@ -25,6 +33,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
