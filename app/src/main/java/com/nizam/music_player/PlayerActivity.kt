@@ -25,6 +25,7 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
         @SuppressLint("StaticFieldLeak")
         lateinit var binding: ActivityPlayerBinding
         var repeat = false
+        var shuffle = false
     }
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -119,6 +120,7 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
 
     //Initializes layout and all variable and retrieves the value from intent.
     private fun initializeLayout() {
+        if(shuffle) binding.shuffleButton.setImageResource(R.drawable.shuffle_icon_true)
         songPosition = intent.getIntExtra("index",0)
 
         when(intent.getStringExtra("class")) {
@@ -136,8 +138,13 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
     //this function generates an random index and shuffles the song.
     private fun shuffleSong() {
         binding.shuffleButton.setOnClickListener{
-            songPosition = randomNumber()
-            musicService!!.createMediaPlayer()
+            shuffle = if(shuffle) {
+                binding.shuffleButton.setImageResource(R.drawable.shuffle_icon)
+                false
+            } else {
+                binding.shuffleButton.setImageResource(R.drawable.shuffle_icon_true)
+                true
+            }
         }
     }
 
@@ -212,6 +219,10 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
     override fun onCompletion(p0: MediaPlayer?) {
         if(!repeat)
             playNextSong()
+        if(!repeat && shuffle) {
+            songPosition = randomNumber()
+            musicService!!.createMediaPlayer()
+        }
         musicService!!.createMediaPlayer()
     }
 }
