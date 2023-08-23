@@ -82,6 +82,7 @@ class MusicService : Service() {
                 PlayerActivity.isSongPlaying = true
                 PlayerActivity.binding.pausePlayButton.setIconResource(R.drawable.pause_icon)
                 showNotification(R.drawable.pause_icon_notification)
+
             }
         } catch(_:Exception) {}
     }

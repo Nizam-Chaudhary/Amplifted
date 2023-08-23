@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.IBinder
 import android.widget.SeekBar
@@ -11,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.nizam.music_player.databinding.ActivityPlayerBinding
 import kotlin.random.Random
 
-class PlayerActivity : AppCompatActivity(),ServiceConnection {
+class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompletionListener{
 
     companion object {
         var isSongPlaying = false
@@ -43,6 +44,8 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection {
         previousSong()
 
         shuffleSong()
+
+
 
         binding.seekBarPA.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
@@ -156,10 +159,15 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection {
         val binder = service as MusicService.MyBinder
         musicService = binder.currentService()
         musicService!!.createMediaPlayer()
-        musicService!!.syncSeekBar()
+        musicService!!.mediaPlayer!!.setOnCompletionListener(this)
     }
 
     override fun onServiceDisconnected(name: ComponentName?) {
         musicService = null
+    }
+
+    override fun onCompletion(p0: MediaPlayer?) {
+        playNextSong()
+        musicService!!.createMediaPlayer()
     }
 }

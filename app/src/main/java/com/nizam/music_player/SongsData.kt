@@ -55,5 +55,5 @@ fun setLayout(context: Context) {
     PlayerActivity.binding.songName.text = PlayerActivity.musicListPA[PlayerActivity.songPosition].title
     PlayerActivity.binding.duration.text = formatDuration(PlayerActivity.musicService!!.mediaPlayer!!.duration.toLong())
     PlayerActivity.binding.seekBarPA.max = PlayerActivity.musicService!!.mediaPlayer!!.duration
-    
+    PlayerActivity.musicService!!.syncSeekBar()
 }
