@@ -8,6 +8,7 @@ import android.media.MediaPlayer
 import android.media.audiofx.AudioEffect
 import android.os.Bundle
 import android.os.IBinder
+import android.view.Menu
 import android.widget.LinearLayout
 import android.widget.SeekBar
 import android.widget.Toast
@@ -119,6 +120,16 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
                 musicService!!.createMediaPlayer()
             }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.fav_icon_menu,menu)
+        val favoritesButton = menu?.findItem(R.id.menuFavoritesButton)
+        favoritesButton?.setOnMenuItemClickListener {
+            Toast.makeText(this@PlayerActivity,"Favorites",Toast.LENGTH_SHORT).show()
+            true
+        }
+        return super.onCreateOptionsMenu(menu)
     }
 
     private fun nextSong() {
