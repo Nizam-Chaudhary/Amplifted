@@ -3,6 +3,7 @@ package com.nizam.music_player
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.MediaPlayer
 import android.os.Binder
@@ -43,28 +44,32 @@ class MusicService : Service() {
 
         val imageArt = getImageArt(PlayerActivity.musicListPA[PlayerActivity.songPosition].path)
 
+        val options = BitmapFactory.Options()
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888
+        options.inSampleSize = 1
         //creating Bitmap from ByteArray
        val image = if ( imageArt != null) {
-            BitmapFactory.decodeByteArray(imageArt,0,imageArt.size)
+            BitmapFactory.decodeByteArray(imageArt,0,imageArt.size,options)
         } else {
             BitmapFactory.decodeResource(this@MusicService.resources,R.drawable.music_icon_notification)
         }
+
+
         val notification = NotificationCompat.Builder(baseContext, ApplicationClass.CHANNEL_ID)
+            .setContentTitle(PlayerActivity.musicListPA[PlayerActivity.songPosition].title)
+            .setContentText(PlayerActivity.musicListPA[PlayerActivity.songPosition].artist)
+            .setSmallIcon(R.drawable.music_icon_notification)
+            .setLargeIcon(image)
             .addAction(R.drawable.previous_icon_notification, "Previous", previousPendingIntent)
             .addAction(playPauseButton, "Play", playPausePendingIntent)
             .addAction(R.drawable.next_icon_notification, "Next", nextPendingIntent)
-            .setContentTitle(PlayerActivity.musicListPA[PlayerActivity.songPosition].title)
-            .setContentText(PlayerActivity.musicListPA[PlayerActivity.songPosition].artist)
-            .setStyle(
-                androidx.media.app.NotificationCompat.MediaStyle()
-                    .setMediaSession(mediaSession.sessionToken)
-            )
-            .setSmallIcon(R.drawable.music_icon_notification)
-            .setLargeIcon(image)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setPriority(NotificationCompat.PRIORITY_MAX)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setOnlyAlertOnce(true)
             .setGroup(ApplicationClass.CHANNEL_ID)
+            .setStyle(androidx.media.app.NotificationCompat.MediaStyle().setShowActionsInCompactView(0)
+                    .setMediaSession(mediaSession.sessionToken)
+            )
             .build()
         startForeground(7, notification)
     }
