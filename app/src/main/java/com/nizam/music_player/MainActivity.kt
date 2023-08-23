@@ -9,11 +9,13 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -40,7 +42,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         userManager = UserManager(this@MainActivity)
-
         if(intent.getBooleanExtra("EXIT",false)) finish()
 
         checkUserLoggedIn()
@@ -48,6 +49,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         checkAppHasPermission()
+
+        search = false
 
         setToggleButtonForNavigationDrawer()
 
@@ -68,6 +71,32 @@ class MainActivity : AppCompatActivity() {
         checkAndSetAdapter()
 
         refreshLayout()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.search_view_menu,menu)
+        val searchView = menu?.findItem(R.id.searchView)?.actionView as SearchView
+        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean = true
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+
+                if(newText != null) {
+                    musicListSearched = ArrayList()
+                    val userInput = newText.lowercase()
+                    for(song in musicListMA) {
+                        if(song.title.lowercase().contains(userInput))
+                            musicListSearched.add(song)
+                    }
+                    search = true
+                    musicRecyclerViewAdapter.updateMusicList(musicListSearched)
+                }
+
+                return true
+            }
+
+        })
+        return super.onCreateOptionsMenu(menu)
     }
 
     //This function is used to check if the app has permission or not.
@@ -276,7 +305,8 @@ class MainActivity : AppCompatActivity() {
     companion object{
         lateinit var musicListMA: ArrayList<SongsData>
         var hasPermission = false
-
+        lateinit var musicListSearched: ArrayList<SongsData>
+        var search = false
     }
 
     override fun onDestroy() {

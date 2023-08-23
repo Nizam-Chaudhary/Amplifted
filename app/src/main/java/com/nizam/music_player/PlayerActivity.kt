@@ -113,16 +113,20 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
     }
 
     private fun previousSong() {
-        binding.previousSong.setOnClickListener{
-            playPreviousSong()
-            musicService!!.createMediaPlayer()
+        if(musicListPA.size != 1) {
+            binding.previousSong.setOnClickListener{
+                playPreviousSong()
+                musicService!!.createMediaPlayer()
+            }
         }
     }
 
     private fun nextSong() {
-        binding.nextSong.setOnClickListener{
-            playNextSong()
-            musicService!!.createMediaPlayer()
+        if(musicListPA.size != 1){
+            binding.nextSong.setOnClickListener{
+                playNextSong()
+                musicService!!.createMediaPlayer()
+            }
         }
     }
 
@@ -133,10 +137,15 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
 
         when(intent.getStringExtra("class")) {
             "MusicAdapter" -> {
+                musicListPA = ArrayList()
                 musicListPA.addAll(MainActivity.musicListMA)
             }
-
+            "SearchedList" -> {
+                musicListPA = ArrayList()
+                musicListPA.addAll(MainActivity.musicListSearched)
+            }
             "MainActivity" -> {
+                musicListPA = ArrayList()
                 musicListPA.addAll(MainActivity.musicListMA)
                 songPosition = intent.getIntExtra("index",0)
             }

@@ -2,6 +2,7 @@ package com.nizam.music_player
 
 import android.content.Context
 import android.media.MediaMetadataRetriever
+import android.util.Log
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import java.util.concurrent.TimeUnit
@@ -24,6 +25,9 @@ fun getImageArt(path: String): ByteArray? {
 }
 
 fun playPreviousSong() {
+    if(PlayerActivity.musicListPA.size == 1) {
+        return
+    }
     if(PlayerActivity.lastSong != -1) {
         PlayerActivity.songPosition = PlayerActivity.lastSong
         PlayerActivity.lastSong = -1
@@ -38,6 +42,7 @@ fun playPreviousSong() {
 
 //this function is used to play the next song and it responds.
 fun playNextSong() {
+    Log.i("Tag",PlayerActivity.musicListPA.size.toString())
     if(PlayerActivity.shuffle){
         PlayerActivity.lastSong = PlayerActivity.songPosition
         PlayerActivity.songPosition = getRandomNumber()

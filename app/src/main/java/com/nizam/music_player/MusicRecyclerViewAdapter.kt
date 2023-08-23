@@ -1,5 +1,6 @@
 package com.nizam.music_player
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
@@ -49,10 +50,24 @@ class MusicRecyclerViewAdapter(private var context: Context, private var songsLi
         position: Int
     ) {
         holder.root.setOnClickListener {
-            val intent = Intent(context, PlayerActivity::class.java)
-            intent.putExtra("index", position)
-            intent.putExtra("class", "MusicAdapter")
-            ContextCompat.startActivity(context, intent, null)
+            when{
+                MainActivity.search -> sendIntent("SearchedList",position)
+                else -> sendIntent("MusicAdapter",position)
+            }
         }
+    }
+
+    private fun sendIntent(reference:String,position: Int) {
+        val intent = Intent(context, PlayerActivity::class.java)
+        intent.putExtra("index", position)
+        intent.putExtra("class", reference)
+        ContextCompat.startActivity(context, intent, null)
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateMusicList(searchList: ArrayList<SongsData>) {
+        songsList = ArrayList()
+        songsList.addAll(searchList)
+        notifyDataSetChanged()
     }
 }
