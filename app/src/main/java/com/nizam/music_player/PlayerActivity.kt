@@ -15,7 +15,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nizam.music_player.databinding.ActivityPlayerBinding
-import kotlin.random.Random
 
 @Suppress("DEPRECATION")
 class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompletionListener{
@@ -32,7 +31,7 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
         var fifteenMinutes = false
         var thirtyMinutes = false
         var sixtyMinutes = false
-
+        var lastSong = -1
     }
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -157,20 +156,7 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
         }
     }
 
-    //generates Random number other than current song playing.
-    private fun randomNumber():Int {
-        var temp = Random.nextInt(0, musicListPA.size)
-        while (temp == songPosition) {
-            temp = Random.nextInt(
-                0,
-                musicListPA.size
-            )
-            if(temp != songPosition) {
-                break
-            }
-        }
-        return temp
-    }
+
 
     //this function is used to play the previous song and it responds to previousSongButton.
 
@@ -229,7 +215,7 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
         if(!repeat)
             playNextSong()
         if(!repeat && shuffle) {
-            songPosition = randomNumber()
+            songPosition = getRandomNumber()
             musicService!!.createMediaPlayer()
         }
         musicService!!.createMediaPlayer()
