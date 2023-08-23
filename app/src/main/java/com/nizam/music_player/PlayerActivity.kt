@@ -21,6 +21,7 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
         var musicService:MusicService? = null
         @SuppressLint("StaticFieldLeak")
         lateinit var binding: ActivityPlayerBinding
+        var repeat = false
     }
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -45,8 +46,25 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
 
         shuffleSong()
 
+        onSeekBarChange()
 
+        repeatSong()
 
+    }
+
+    private fun repeatSong() {
+        binding.repeatSong.setOnClickListener{
+            if(repeat) {
+                repeat = false
+                binding.repeatSong.setImageResource(R.drawable.repeat_icon)
+            } else {
+                repeat = true
+                binding.repeatSong.setImageResource(R.drawable.repeat_icon_true)
+            }
+        }
+    }
+
+    private fun onSeekBarChange() {
         binding.seekBarPA.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
                 if(p2) musicService!!.mediaPlayer!!.seekTo(p1)
@@ -57,7 +75,6 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
             override fun onStopTrackingTouch(p0: SeekBar?) = Unit
 
         })
-
     }
 
     private fun previousSong() {
@@ -167,7 +184,8 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
     }
 
     override fun onCompletion(p0: MediaPlayer?) {
-        playNextSong()
+        if(!repeat)
+            playNextSong()
         musicService!!.createMediaPlayer()
     }
 }

@@ -56,4 +56,9 @@ fun setLayout(context: Context) {
     PlayerActivity.binding.duration.text = formatDuration(PlayerActivity.musicService!!.mediaPlayer!!.duration.toLong())
     PlayerActivity.binding.seekBarPA.max = PlayerActivity.musicService!!.mediaPlayer!!.duration
     PlayerActivity.musicService!!.syncSeekBar()
+    if(PlayerActivity.repeat) {
+        PlayerActivity.binding.repeatSong.setImageResource(R.drawable.repeat_icon_true)
+    } else {
+        PlayerActivity.binding.repeatSong.setImageResource(R.drawable.repeat_icon)
+    }
 }
