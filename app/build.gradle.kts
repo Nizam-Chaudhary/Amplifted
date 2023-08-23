@@ -9,6 +9,7 @@ android {
             storeFile = file("/home/nizam/HDD/Mega/College/Sem 5/Project/Music-Player.jks")
             storePassword = "Nizam6353"
             keyPassword = "Nizam6353"
+            keyAlias = "mykey"
         }
     }
     namespace = "com.nizam.music_player"

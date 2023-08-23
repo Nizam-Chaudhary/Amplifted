@@ -74,6 +74,7 @@
                 android:id="@+id/songsRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:scrollbars="vertical"
                 tools:listitem="@layout/music_recycler_view"/>
         </LinearLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
