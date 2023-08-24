@@ -64,6 +64,9 @@ fun setLayout(context: Context) {
     PlayerActivity.binding.duration.text = formatDuration(PlayerActivity.musicService!!.mediaPlayer!!.duration.toLong())
     PlayerActivity.binding.seekBarPA.max = PlayerActivity.musicService!!.mediaPlayer!!.duration
     PlayerActivity.musicService!!.syncSeekBar()
+    if(!PlayerActivity.isSongPlaying) {
+        PlayerActivity.binding.pausePlayButton.setIconResource(R.drawable.play_icon)
+    }
 
     //now setting layout for Now Playing Fragment
     Glide.with(context)

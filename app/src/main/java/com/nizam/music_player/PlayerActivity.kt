@@ -235,8 +235,6 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
     //this function initializes Media-player if it is null and starts playing the song if it is already initialized.
 
 
-    //setting song name and album image to the song.
-
 
     //plays the songs if it is paused.
     private fun playMusic() {
