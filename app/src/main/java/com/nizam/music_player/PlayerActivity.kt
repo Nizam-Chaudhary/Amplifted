@@ -160,24 +160,36 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
     //Initializes layout and all variable and retrieves the value from intent.
     private fun initializeLayout() {
         if(shuffle) binding.shuffleButton.setImageResource(R.drawable.shuffle_icon_true)
-        songPosition = intent.getIntExtra("index",0)
+
 
         when(intent.getStringExtra("class")) {
             "MusicAdapter" -> {
-                startPlayerService()
-                musicListPA = ArrayList()
-                musicListPA.addAll(MainActivity.musicListMA)
+                if(musicService != null && songPosition == intent.getIntExtra("index",0)){
+                    setLayout(baseContext)
+                    musicListPA.addAll(MainActivity.musicListMA)
+                } else {
+                    startPlayerService()
+                    musicListPA = ArrayList()
+                    musicListPA.addAll(MainActivity.musicListMA)
+                    songPosition = intent.getIntExtra("index",0)
+                }
             }
             "SearchedList" -> {
                 startPlayerService()
                 musicListPA = ArrayList()
                 musicListPA.addAll(MainActivity.musicListSearched)
+                songPosition = intent.getIntExtra("index",0)
             }
             "MainActivity" -> {
-                startPlayerService()
-                musicListPA = ArrayList()
-                musicListPA.addAll(MainActivity.musicListMA)
-                songPosition = intent.getIntExtra("index",0)
+                if(musicService != null && songPosition == intent.getIntExtra("index",0)){
+                    setLayout(baseContext)
+                    musicListPA.addAll(MainActivity.musicListMA)
+                } else {
+                    startPlayerService()
+                    musicListPA = ArrayList()
+                    musicListPA.addAll(MainActivity.musicListMA)
+                    songPosition = intent.getIntExtra("index",0)
+                }
             }
             "Now Playing" -> {
                 setLayout(baseContext)
