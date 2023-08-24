@@ -42,10 +42,6 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
 
         binding = ActivityPlayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        //for starting service
-        val intent = Intent(this@PlayerActivity,MusicService::class.java)
-        bindService(intent,this@PlayerActivity, BIND_AUTO_CREATE)
-        startService(intent)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
@@ -68,6 +64,13 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
         showBottomDialogTimer()
 
         shareSong()
+    }
+
+    private fun startPlayerService() {
+        //for starting service
+        val intent = Intent(this@PlayerActivity,MusicService::class.java)
+        bindService(intent,this@PlayerActivity, BIND_AUTO_CREATE)
+        startService(intent)
     }
 
     private fun shareSong() {
@@ -161,17 +164,23 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
 
         when(intent.getStringExtra("class")) {
             "MusicAdapter" -> {
+                startPlayerService()
                 musicListPA = ArrayList()
                 musicListPA.addAll(MainActivity.musicListMA)
             }
             "SearchedList" -> {
+                startPlayerService()
                 musicListPA = ArrayList()
                 musicListPA.addAll(MainActivity.musicListSearched)
             }
             "MainActivity" -> {
+                startPlayerService()
                 musicListPA = ArrayList()
                 musicListPA.addAll(MainActivity.musicListMA)
                 songPosition = intent.getIntExtra("index",0)
+            }
+            "Now Playing" -> {
+                setLayout(baseContext)
             }
         }
     }
@@ -221,6 +230,7 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
     private fun playMusic() {
         binding.pausePlayButton.setIconResource(R.drawable.pause_icon)
         musicService!!.showNotification(R.drawable.pause_icon_notification)
+        NowPlaying.binding.nowPlayingPlayPause.setImageResource(R.drawable.pause_icon_notification)
         isSongPlaying = true
         musicService!!.mediaPlayer!!.start()
     }
@@ -229,6 +239,7 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
     private fun pauseMusic() {
         binding.pausePlayButton.setIconResource(R.drawable.play_icon)
         musicService!!.showNotification(R.drawable.play_icon_notification)
+        NowPlaying.binding.nowPlayingPlayPause.setImageResource(R.drawable.play_icon_notification)
         isSongPlaying = false
         musicService!!.mediaPlayer!!.pause()
     }

@@ -64,6 +64,14 @@ fun setLayout(context: Context) {
     PlayerActivity.binding.duration.text = formatDuration(PlayerActivity.musicService!!.mediaPlayer!!.duration.toLong())
     PlayerActivity.binding.seekBarPA.max = PlayerActivity.musicService!!.mediaPlayer!!.duration
     PlayerActivity.musicService!!.syncSeekBar()
+
+    //now setting layout for Now Playing Fragment
+    Glide.with(context)
+        .load(PlayerActivity.musicListPA[PlayerActivity.songPosition].artUri)
+        .apply(RequestOptions().placeholder(R.drawable.icon).centerCrop())
+        .into(NowPlaying.binding.nowPlayingAlbumArt)
+    NowPlaying.binding.nowPlayingSongName.text = PlayerActivity.musicListPA[PlayerActivity.songPosition].title
+    NowPlaying.binding.nowPlayingArtistName.text = PlayerActivity.musicListPA[PlayerActivity.songPosition].artist
     if(PlayerActivity.repeat) {
         PlayerActivity.binding.repeatSong.setImageResource(R.drawable.repeat_icon_true)
     } else {

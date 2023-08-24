@@ -21,17 +21,21 @@ class NotificationReceiver:BroadcastReceiver() {
     }
 
 
+    //plays the music from notification
     private fun playMusic() {
         PlayerActivity.isSongPlaying = true
         PlayerActivity.musicService!!.mediaPlayer!!.start()
         PlayerActivity.musicService!!.showNotification(R.drawable.pause_icon_notification)
+        NowPlaying.binding.nowPlayingPlayPause.setImageResource(R.drawable.pause_icon_notification)
         PlayerActivity.binding.pausePlayButton.setIconResource(R.drawable.pause_icon)
     }
 
+    //pauses the music from notification
     private fun pauseMusic() {
         PlayerActivity.isSongPlaying = false
         PlayerActivity.musicService!!.mediaPlayer!!.pause()
         PlayerActivity.musicService!!.showNotification(R.drawable.play_icon_notification)
+        NowPlaying.binding.nowPlayingPlayPause.setImageResource(R.drawable.play_icon_notification)
         PlayerActivity.binding.pausePlayButton.setIconResource(R.drawable.play_icon)
     }
 
