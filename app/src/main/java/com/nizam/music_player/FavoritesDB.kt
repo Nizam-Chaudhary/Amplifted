@@ -11,16 +11,16 @@ class FavoritesDB(context: Context, factory: SQLiteDatabase.CursorFactory?, priv
     DATABASE_NAME,factory, DATABASE_VERSION) {
 
     companion object{
-        private const val DATABASE_NAME = "Favorites"
-        private const val DATABASE_VERSION = 1
+        const val DATABASE_NAME = "Favorites"
+        const val DATABASE_VERSION = 1
 
-        private const val ID_COL = "id"
-        private const val TITLE_COL = "title"
-        private const val ALBUM_COL = "album"
-        private const val ARTIST_COL = "artist"
-        private const val DURATION_COL = "duration"
-        private const val PATH_COL = "path"
-        private const val ART_URI_COL = "artUri"
+        const val ID_COL = "id"
+        const val TITLE_COL = "title"
+        const val ALBUM_COL = "album"
+        const val ARTIST_COL = "artist"
+        const val DURATION_COL = "duration"
+        const val PATH_COL = "path"
+        const val ART_URI_COL = "artUri"
     }
 
 
@@ -65,9 +65,9 @@ class FavoritesDB(context: Context, factory: SQLiteDatabase.CursorFactory?, priv
         return false
     }
 
-    private fun getFavorites(): Cursor? {
+    fun getFavorites(): Cursor? {
         val db = this.readableDatabase
-        val query = "SELECT * FROM ${userName}Favorites SORT BY $TITLE_COL ASC"
+        val query = "SELECT * FROM ${userName}Favorites ORDER BY $TITLE_COL"
         return db.rawQuery(query,null)
     }
 

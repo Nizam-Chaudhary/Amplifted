@@ -1,10 +1,12 @@
 package com.nizam.music_player
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.media.MediaMetadataRetriever
 import android.util.Log
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import java.io.File
 import java.util.concurrent.TimeUnit
 import kotlin.random.Random
 
@@ -95,4 +97,32 @@ fun getRandomNumber():Int {
         }
     }
     return temp
+}
+
+@SuppressLint("Range")
+fun getSongData(favoritesDB:FavoritesDB): ArrayList<SongsData> {
+    val songsList:ArrayList<SongsData> = ArrayList()
+    val cursor = favoritesDB.getFavorites()
+    if(cursor != null){
+        if(cursor.moveToFirst()){
+            do {
+                val idC = cursor.getString(cursor.getColumnIndex(FavoritesDB.ID_COL))
+                val titleC = cursor.getString(cursor.getColumnIndex(FavoritesDB.TITLE_COL))
+                val albumC = cursor.getString(cursor.getColumnIndex(FavoritesDB.ALBUM_COL))
+                val artistC = cursor.getString(cursor.getColumnIndex(FavoritesDB.ARTIST_COL))
+                val durationC = cursor.getLong(cursor.getColumnIndex(FavoritesDB.DURATION_COL))
+                val pathC = cursor.getString(cursor.getColumnIndex(FavoritesDB.PATH_COL))
+                val artUriC = cursor.getString(cursor.getColumnIndex(FavoritesDB.ART_URI_COL))
+
+                val music = SongsData(id = idC,title = titleC,album = albumC,artist = artistC,duration = durationC,path = pathC,artUri = artUriC)
+
+                val file = File(music.path)
+                if(file.exists()) {
+                    songsList.add(music)
+                }
+            } while(cursor.moveToNext())
+            cursor.close()
+        }
+    }
+    return songsList
 }

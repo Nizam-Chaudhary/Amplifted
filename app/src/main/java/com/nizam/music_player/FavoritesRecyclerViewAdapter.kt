@@ -12,7 +12,7 @@ import com.nizam.music_player.databinding.FavoritesRecyclerViewBinding
 
 class FavoritesRecyclerViewAdapter(private var context:Context, private val songsList: ArrayList<SongsData>) : RecyclerView.Adapter<FavoritesRecyclerViewAdapter.Holder>() {
     class Holder(binding: FavoritesRecyclerViewBinding):RecyclerView.ViewHolder(binding.root) {
-        val title = binding.favortiesSongName
+        val title = binding.favoritesSongName
         val albumArt = binding.favoritesAlbumArt
         val root = binding.root
     }
@@ -28,7 +28,8 @@ class FavoritesRecyclerViewAdapter(private var context:Context, private val song
     override fun onBindViewHolder(holder: Holder, position: Int) {
         //setting all values from arrayList into respective widgets
         holder.title.text = songsList[position].title
-        
+        holder.title.isSelected = true
+
         //setting image of album.
         Glide.with(context)
             .load(songsList[position].artUri)

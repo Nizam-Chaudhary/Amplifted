@@ -155,6 +155,9 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
             if(favoritesDB.songExists(musicListPA[songPosition].title)) {
                 favoritesDB.removeFromFavorites(musicListPA[songPosition].title)
                 favoritesButton.setIcon(R.drawable.favorite_empty_icon)
+                if(intent.getStringExtra("class") == "FavoritesAdapter") {
+                    musicListPA = getSongData(favoritesDB)
+                }
             } else {
                 favoritesDB.addToFavorites(musicListPA[songPosition])
                 favoritesButton.setIcon(R.drawable.favorite_filled_icon)
@@ -209,6 +212,18 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
             }
             "Now Playing" -> {
                 setLayout(baseContext)
+            }
+
+            "FavoritesAdapter" -> {
+                if(musicService != null && songPosition == intent.getIntExtra("index",0)){
+                    setLayout(baseContext)
+                    musicListPA.addAll(FavoriteActivity.favoritesList)
+                } else {
+                    startPlayerService()
+                    musicListPA = ArrayList()
+                    musicListPA.addAll(FavoriteActivity.favoritesList)
+                    songPosition = intent.getIntExtra("index",0)
+                }
             }
         }
     }
