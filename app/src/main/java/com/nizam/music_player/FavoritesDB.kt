@@ -54,7 +54,7 @@ class FavoritesDB(context: Context, factory: SQLiteDatabase.CursorFactory?, priv
     fun songExists(name: String): Boolean {
         val db = this.readableDatabase
 
-        val query = "SELECT $ID_COL FROM ${userName}Favorites WHERE $TITLE_COL = $name"
+        val query = "SELECT $ID_COL FROM ${userName}Favorites WHERE $TITLE_COL = '$name'"
         val cursor = db.rawQuery(query,null)
         var value: String? = null
         if(cursor.moveToFirst())
@@ -73,7 +73,7 @@ class FavoritesDB(context: Context, factory: SQLiteDatabase.CursorFactory?, priv
 
     fun removeFromFavorites(name:String) {
         val db = this.writableDatabase
-        val query = "DELETE FROM ${userName}Favorites WHERE $TITLE_COL=$name"
+        val query = "DELETE FROM ${userName}Favorites WHERE $TITLE_COL= '$name'"
         db.execSQL(query)
     }
 }

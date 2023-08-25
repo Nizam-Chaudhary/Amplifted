@@ -22,6 +22,12 @@ import com.nizam.music_player.databinding.ActivityPlayerBinding
 @Suppress("DEPRECATION")
 class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompletionListener{
 
+    private val userManager by lazy {
+        UserManager(this)
+    }
+    private val favoritesDB by lazy {
+        FavoritesDB(this@PlayerActivity,null,userManager.getUserName())
+    }
     companion object {
         var isSongPlaying = false
         var musicListPA = ArrayList<SongsData>()
@@ -35,6 +41,7 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
         var thirtyMinutes = false
         var sixtyMinutes = false
         var lastSong = -1
+
     }
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -141,8 +148,17 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.fav_icon_menu,menu)
         val favoritesButton = menu?.findItem(R.id.menuFavoritesButton)
+        if(favoritesDB.songExists(musicListPA[songPosition].title)) {
+            favoritesButton?.setIcon(R.drawable.favorite_filled_icon)
+        }
         favoritesButton?.setOnMenuItemClickListener {
-            Toast.makeText(this@PlayerActivity,"Favorites",Toast.LENGTH_SHORT).show()
+            if(favoritesDB.songExists(musicListPA[songPosition].title)) {
+                favoritesDB.removeFromFavorites(musicListPA[songPosition].title)
+                favoritesButton.setIcon(R.drawable.favorite_empty_icon)
+            } else {
+                favoritesDB.addToFavorites(musicListPA[songPosition])
+                favoritesButton.setIcon(R.drawable.favorite_filled_icon)
+            }
             true
         }
         return super.onCreateOptionsMenu(menu)
