@@ -44,4 +44,5 @@
     <string name="search_song">Search Song</string>
     <string name="share_song">Share Song</string>
     <string name="now_playing_fragment">Now Playing fragment</string>
+    <string name="album_art">Album Art</string>
 </resources>
