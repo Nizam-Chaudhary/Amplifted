@@ -1,10 +1,12 @@
 package com.nizam.music_player
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.nizam.music_player.databinding.ActivityFavoriteBinding
+import kotlin.random.Random
 
 class FavoriteActivity : AppCompatActivity() {
     companion object{
@@ -32,6 +34,20 @@ class FavoriteActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         setRecyclerViewAdapter()
+
+        shuffleSong()
+    }
+
+    private fun shuffleSong() {
+        binding.favoritesShuffle.setOnClickListener{
+            if(favoritesList.size != 0) {
+                val intent = Intent(this@FavoriteActivity,PlayerActivity::class.java)
+                intent.putExtra("class","FavoriteActivity")
+                intent.putExtra("index", Random.nextInt(0, favoritesList.size))
+                startActivity(intent)
+                PlayerActivity.shuffle = true
+            }
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

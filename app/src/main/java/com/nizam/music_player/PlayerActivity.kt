@@ -150,9 +150,6 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
 
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        /*if(menu is MenuBuilder) {
-            (menu as MenuBuilder).setOptionalIconsVisible(true)
-        }*/
         menuInflater.inflate(R.menu.share_icon_menu,menu)
         menu?.findItem(R.id.shareMenu)?.setOnMenuItemClickListener {
             val shareIntent = Intent()
@@ -207,6 +204,19 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
                     songPosition = intent.getIntExtra("index",0)
                 }
             }
+
+            "FavoriteActivity" -> {
+                if(musicService != null && songPosition == intent.getIntExtra("index",0)) {
+                    setLayout(baseContext)
+                    musicListPA.addAll(FavoriteActivity.favoritesList)
+                } else {
+                    startPlayerService()
+                    musicListPA = ArrayList()
+                    musicListPA.addAll(FavoriteActivity.favoritesList)
+                    songPosition = intent.getIntExtra("index",0)
+                }
+            }
+
             "Now Playing" -> {
                 setLayout(baseContext)
             }
