@@ -7,7 +7,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
-class FavoritesDB(context: Context, factory: SQLiteDatabase.CursorFactory, private val userName: String): SQLiteOpenHelper(context,
+class FavoritesDB(context: Context, factory: SQLiteDatabase.CursorFactory?, private val userName: String): SQLiteOpenHelper(context,
     DATABASE_NAME,factory, DATABASE_VERSION) {
 
     companion object{
@@ -69,5 +69,11 @@ class FavoritesDB(context: Context, factory: SQLiteDatabase.CursorFactory, priva
         val db = this.readableDatabase
         val query = "SELECT * FROM ${userName}Favorites SORT BY $TITLE_COL ASC"
         return db.rawQuery(query,null)
+    }
+
+    fun removeFromFavorites(name:String) {
+        val db = this.writableDatabase
+        val query = "DELETE FROM ${userName}Favorites WHERE $TITLE_COL=$name"
+        db.execSQL(query)
     }
 }
