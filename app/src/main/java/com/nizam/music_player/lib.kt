@@ -70,6 +70,15 @@ fun setLayout(context: Context) {
         PlayerActivity.binding.pausePlayButton.setIconResource(R.drawable.play_icon)
     }
 
+    val userManager = UserManager(context)
+    val favoritesDB = FavoritesDB(context,null,userManager.getUserName())
+    //setting favorites icon.
+    if(favoritesDB.songExists(PlayerActivity.musicListPA[PlayerActivity.songPosition].title)) {
+        PlayerActivity.binding.favoritesButton.setImageResource(R.drawable.favorite_filled_icon)
+    } else {
+        PlayerActivity.binding.favoritesButton.setImageResource(R.drawable.favorite_empty_icon)
+    }
+
     //now setting layout for Now Playing Fragment
     Glide.with(context)
         .load(PlayerActivity.musicListPA[PlayerActivity.songPosition].artUri)

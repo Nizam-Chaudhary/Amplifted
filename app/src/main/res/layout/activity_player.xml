@@ -168,22 +168,22 @@
             android:minHeight="48dp"
             android:src="@drawable/timer_icon"
 
-            app:layout_constraintBottom_toBottomOf="@+id/shareButton"
-            app:layout_constraintEnd_toStartOf="@+id/shareButton"
+            app:layout_constraintBottom_toBottomOf="@+id/favoritesButton"
+            app:layout_constraintEnd_toStartOf="@+id/favoritesButton"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/equalizer"
-            app:layout_constraintTop_toTopOf="@+id/shareButton"
+            app:layout_constraintTop_toTopOf="@+id/favoritesButton"
             tools:ignore="TouchTargetSizeCheck" />
 
         <ImageButton
-            android:id="@+id/shareButton"
+            android:id="@+id/favoritesButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackgroundBorderless"
             android:contentDescription="@string/share_song"
             android:minWidth="48dp"
             android:minHeight="48dp"
-            android:src="@drawable/share_icon"
+            android:src="@drawable/favorite_empty_icon"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"

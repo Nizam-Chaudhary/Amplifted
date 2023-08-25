@@ -70,7 +70,20 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
 
         showBottomDialogTimer()
 
-        shareSong()
+        //shareSong()
+
+        binding.favoritesButton.setOnClickListener {
+            if(favoritesDB.songExists(musicListPA[songPosition].title)) {
+                favoritesDB.removeFromFavorites(musicListPA[songPosition].title)
+                binding.favoritesButton.setImageResource(R.drawable.favorite_empty_icon)
+                if(intent.getStringExtra("class") == "FavoritesAdapter") {
+                    musicListPA = getSongData(favoritesDB)
+                }
+            } else {
+                favoritesDB.addToFavorites(musicListPA[songPosition])
+                binding.favoritesButton.setImageResource(R.drawable.favorite_filled_icon)
+            }
+        }
     }
 
     private fun startPlayerService() {
@@ -78,16 +91,6 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
         val intent = Intent(this@PlayerActivity,MusicService::class.java)
         bindService(intent,this@PlayerActivity, BIND_AUTO_CREATE)
         startService(intent)
-    }
-
-    private fun shareSong() {
-        binding.shareButton.setOnClickListener{
-            val shareIntent = Intent()
-            shareIntent.action = Intent.ACTION_SEND
-            shareIntent.type = "audio/*"
-            shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(musicListPA[songPosition].path))
-            startActivity(Intent.createChooser(shareIntent,"Share Music File!"))
-        }
     }
 
     private fun equalizer() {
@@ -145,26 +148,21 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
         }
     }
 
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.fav_icon_menu,menu)
-        val favoritesButton = menu?.findItem(R.id.menuFavoritesButton)
-        if(favoritesDB.songExists(musicListPA[songPosition].title)) {
-            favoritesButton?.setIcon(R.drawable.favorite_filled_icon)
-        }
-        favoritesButton?.setOnMenuItemClickListener {
-            if(favoritesDB.songExists(musicListPA[songPosition].title)) {
-                favoritesDB.removeFromFavorites(musicListPA[songPosition].title)
-                favoritesButton.setIcon(R.drawable.favorite_empty_icon)
-                if(intent.getStringExtra("class") == "FavoritesAdapter") {
-                    musicListPA = getSongData(favoritesDB)
-                }
-            } else {
-                favoritesDB.addToFavorites(musicListPA[songPosition])
-                favoritesButton.setIcon(R.drawable.favorite_filled_icon)
-            }
+        /*if(menu is MenuBuilder) {
+            (menu as MenuBuilder).setOptionalIconsVisible(true)
+        }*/
+        menuInflater.inflate(R.menu.share_icon_menu,menu)
+        menu?.findItem(R.id.shareMenu)?.setOnMenuItemClickListener {
+            val shareIntent = Intent()
+            shareIntent.action = Intent.ACTION_SEND
+            shareIntent.type = "audio/*"
+            shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(musicListPA[songPosition].path))
+            startActivity(Intent.createChooser(shareIntent,"Share Music File!"))
             true
         }
-        return super.onCreateOptionsMenu(menu)
+        return true
     }
 
     private fun nextSong() {
@@ -179,7 +177,6 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
     //Initializes layout and all variable and retrieves the value from intent.
     private fun initializeLayout() {
         if(shuffle) binding.shuffleButton.setImageResource(R.drawable.shuffle_icon_true)
-
 
         when(intent.getStringExtra("class")) {
             "MusicAdapter" -> {
@@ -263,9 +260,6 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
         return super.onSupportNavigateUp()
     }
 
-    //this function initializes Media-player if it is null and starts playing the song if it is already initialized.
-
-
 
     //plays the songs if it is paused.
     private fun playMusic() {
@@ -301,10 +295,10 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
             playNextSong()
         if(!repeat && shuffle) {
             songPosition = getRandomNumber()
-            musicService!!.createMediaPlayer()
         }
         musicService!!.createMediaPlayer()
     }
+
 
     private fun showBottomDialogTimer() {
         if(fifteenMinutes || thirtyMinutes || sixtyMinutes)

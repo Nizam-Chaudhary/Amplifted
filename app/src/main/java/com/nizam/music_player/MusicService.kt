@@ -87,7 +87,6 @@ class MusicService : Service() {
                 PlayerActivity.isSongPlaying = true
                 PlayerActivity.binding.pausePlayButton.setIconResource(R.drawable.pause_icon)
                 showNotification(R.drawable.pause_icon_notification)
-
             }
         } catch(_:Exception) {}
     }
@@ -96,8 +95,8 @@ class MusicService : Service() {
         runnable = Runnable {
             PlayerActivity.binding.progressDuration.text = formatDuration(mediaPlayer!!.currentPosition.toLong())
             PlayerActivity.binding.seekBarPA.progress = mediaPlayer!!.currentPosition
-            Handler(Looper.getMainLooper()).postDelayed(runnable,200)
+            Handler(Looper.getMainLooper()).postDelayed(runnable,1000)
         }
-        Handler(Looper.getMainLooper()).postDelayed(runnable,200)
+        Handler(Looper.getMainLooper()).postDelayed(runnable,1000)
     }
 }
