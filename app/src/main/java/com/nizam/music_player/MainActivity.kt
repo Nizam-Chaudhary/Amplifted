@@ -320,6 +320,7 @@ class MainActivity : AppCompatActivity() {
                 PlayerActivity.musicService!!.stopForeground(Service.STOP_FOREGROUND_REMOVE)
             }
         }
+        PlayerActivity.musicService = null
     }
 
 }
