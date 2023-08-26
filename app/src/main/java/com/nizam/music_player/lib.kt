@@ -70,8 +70,7 @@ fun setLayout(context: Context) {
         PlayerActivity.binding.pausePlayButton.setIconResource(R.drawable.play_icon)
     }
 
-    val userManager = UserManager(context)
-    val favoritesDB = FavoritesDB(context,null,userManager.getUserName())
+    val favoritesDB = FavoritesDB(context,null)
     //setting favorites icon.
     if(favoritesDB.songExists(PlayerActivity.musicListPA[PlayerActivity.songPosition].title)) {
         PlayerActivity.binding.favoritesButton.setImageResource(R.drawable.favorite_filled_icon)

@@ -11,7 +11,6 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -28,7 +27,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var toggle: ActionBarDrawerToggle
     private lateinit var musicRecyclerViewAdapter: MusicRecyclerViewAdapter
     private lateinit var binding: ActivityMainBinding
-    private lateinit var userManager:UserManager
     private lateinit var splashScreen: androidx.core.splashscreen.SplashScreen
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,14 +39,11 @@ class MainActivity : AppCompatActivity() {
         //initializing binding variable
         binding = ActivityMainBinding.inflate(layoutInflater)
 
-        userManager = UserManager(this@MainActivity)
+        checkAppHasPermission()
+
         if(intent.getBooleanExtra("EXIT",false)) finish()
 
-        checkUserLoggedIn()
-
         setContentView(binding.root)
-
-        checkAppHasPermission()
 
         search = false
 
@@ -171,9 +166,8 @@ class MainActivity : AppCompatActivity() {
     //this function is used to set the username on the DrawerHeader.
     private fun setUserNameOnDrawerHeader() {
         //setting useName
-        val headerView = binding.navView.getHeaderView(0)
-        val userNameHeader: TextView = headerView.findViewById(R.id.userNameHeader)
-        userNameHeader.text=userManager.getUserName()
+        //val headerView = binding.navView.getHeaderView(0)
+        //val userNameHeader: TextView = headerView.findViewById(R.id.userNameHeader)
     }
 
     //this function set toggle button for DrawerLayout
@@ -183,15 +177,6 @@ class MainActivity : AppCompatActivity() {
         binding.drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-    }
-
-    private fun checkUserLoggedIn() {
-        //checking if user is Logged in or Not if not then open Login Activity first.
-        if (!userManager.isUserLoggedIn()) {
-            splashScreen.setKeepOnScreenCondition { true }
-            startActivity(Intent(this@MainActivity, LoginActivity::class.java))
-            finish()
-        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

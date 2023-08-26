@@ -7,7 +7,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
-class FavoritesDB(context: Context, factory: SQLiteDatabase.CursorFactory?, private val userName: String): SQLiteOpenHelper(context,
+class FavoritesDB(context: Context, factory: SQLiteDatabase.CursorFactory?): SQLiteOpenHelper(context,
     DATABASE_NAME,factory, DATABASE_VERSION) {
 
     companion object{
@@ -25,12 +25,12 @@ class FavoritesDB(context: Context, factory: SQLiteDatabase.CursorFactory?, priv
 
 
     override fun onCreate(p0: SQLiteDatabase?) {
-        val query = "CREATE TABLE IF NOT EXISTS ${userName}Favorites($ID_COL TEXT PRIMARY KEY, $TITLE_COL TEXT, $ALBUM_COL TEXT, $ARTIST_COL TEXT, $DURATION_COL INTEGER, $PATH_COL TEXT, $ART_URI_COL TEXT)"
+        val query = "CREATE TABLE IF NOT EXISTS Favorites($ID_COL TEXT PRIMARY KEY, $TITLE_COL TEXT, $ALBUM_COL TEXT, $ARTIST_COL TEXT, $DURATION_COL INTEGER, $PATH_COL TEXT, $ART_URI_COL TEXT)"
         p0?.execSQL(query)
     }
 
     override fun onUpgrade(p0: SQLiteDatabase?, p1: Int, p2: Int) {
-        p0?.execSQL("DROP TABLE IF EXISTS ${userName}Favorites")
+        p0?.execSQL("DROP TABLE IF EXISTS Favorites")
     }
 
     fun addToFavorites(songsData: SongsData) {
@@ -45,7 +45,7 @@ class FavoritesDB(context: Context, factory: SQLiteDatabase.CursorFactory?, priv
         values.put(ART_URI_COL,songsData.artUri)
 
         val db = this.writableDatabase
-        db.insert("${userName}Favorites",null,values)
+        db.insert("Favorites",null,values)
 
         db.close()
     }
@@ -54,7 +54,7 @@ class FavoritesDB(context: Context, factory: SQLiteDatabase.CursorFactory?, priv
     fun songExists(name: String): Boolean {
         val db = this.readableDatabase
 
-        val query = "SELECT $ID_COL FROM ${userName}Favorites WHERE $TITLE_COL = '$name'"
+        val query = "SELECT $ID_COL FROM Favorites WHERE $TITLE_COL = '$name'"
         val cursor = db.rawQuery(query,null)
         var value: String? = null
         if(cursor.moveToFirst())
@@ -67,13 +67,13 @@ class FavoritesDB(context: Context, factory: SQLiteDatabase.CursorFactory?, priv
 
     fun getFavorites(): Cursor? {
         val db = this.readableDatabase
-        val query = "SELECT * FROM ${userName}Favorites ORDER BY $TITLE_COL"
+        val query = "SELECT * FROM Favorites ORDER BY $TITLE_COL"
         return db.rawQuery(query,null)
     }
 
     fun removeFromFavorites(name:String) {
         val db = this.writableDatabase
-        val query = "DELETE FROM ${userName}Favorites WHERE $TITLE_COL= '$name'"
+        val query = "DELETE FROM Favorites WHERE $TITLE_COL= '$name'"
         db.execSQL(query)
     }
 }

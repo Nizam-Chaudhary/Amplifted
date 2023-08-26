@@ -10,16 +10,13 @@ import kotlin.random.Random
 
 class FavoriteActivity : AppCompatActivity() {
     companion object{
-
         lateinit var favoritesList:ArrayList<SongsData>
     }
 
     private lateinit var binding: ActivityFavoriteBinding
-    private val userManager by lazy {
-        UserManager(this)
-    }
+
     private val favoritesDB: FavoritesDB by lazy {
-        FavoritesDB(this@FavoriteActivity,null,userManager.getUserName())
+        FavoritesDB(this@FavoriteActivity,null)
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

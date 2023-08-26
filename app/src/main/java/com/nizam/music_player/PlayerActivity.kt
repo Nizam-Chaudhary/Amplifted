@@ -22,11 +22,8 @@ import com.nizam.music_player.databinding.ActivityPlayerBinding
 @Suppress("DEPRECATION")
 class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompletionListener{
 
-    private val userManager by lazy {
-        UserManager(this)
-    }
     private val favoritesDB by lazy {
-        FavoritesDB(this@PlayerActivity,null,userManager.getUserName())
+        FavoritesDB(this@PlayerActivity,null)
     }
     companion object {
         var isSongPlaying = false

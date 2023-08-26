@@ -32,15 +32,7 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".RegistrationActivity"
-            android:exported="true"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".PlayerActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".LoginActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
