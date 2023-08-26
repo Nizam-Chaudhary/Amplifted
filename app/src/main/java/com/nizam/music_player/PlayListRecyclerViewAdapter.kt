@@ -11,10 +11,6 @@ import com.nizam.music_player.databinding.FavoritesRecyclerViewBinding
 
 class PlayListRecyclerViewAdapter(private val context: Context,private val playList: ArrayList<PlayListData>):RecyclerView.Adapter<PlayListRecyclerViewAdapter.Holder>(){
 
-    /*private val playListDB:PlaylistsDB by lazy {
-        PlaylistsDB(context,null)
-    }*/
-
     class Holder(binding: FavoritesRecyclerViewBinding):RecyclerView.ViewHolder(binding.root) {
         val playListName = binding.favoritesSongName
         val playListImage = binding.favoritesAlbumArt
