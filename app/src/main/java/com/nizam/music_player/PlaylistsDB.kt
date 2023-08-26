@@ -109,4 +109,16 @@ class PlaylistsDB(context: Context, factory: SQLiteDatabase.CursorFactory?):
         }
         return list
     }
+
+    @SuppressLint("Range")
+    fun getPlayListArtUri(playListName: String): String? {
+        var artUri:String? = null
+        val db = this.readableDatabase
+        val query = "Select $ART_URI_COL from $PLAYLIST where $PLAYLIST_NAME_COL = '$playListName' Order by $TITLE_COL Limit 1"
+        val cursor = db.rawQuery(query,null)
+        if(cursor.moveToFirst()) {
+            artUri = cursor.getString(cursor.getColumnIndex(PLAYLIST_NAME_COL))
+        }
+        return artUri
+    }
 }
