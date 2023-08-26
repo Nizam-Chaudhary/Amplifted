@@ -31,6 +31,7 @@ class FavoritesDB(context: Context, factory: SQLiteDatabase.CursorFactory?): SQL
 
     override fun onUpgrade(p0: SQLiteDatabase?, p1: Int, p2: Int) {
         p0?.execSQL("DROP TABLE IF EXISTS Favorites")
+        onCreate(p0)
     }
 
     fun addToFavorites(songsData: SongsData) {
