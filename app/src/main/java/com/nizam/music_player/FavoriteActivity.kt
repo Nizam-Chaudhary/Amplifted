@@ -2,7 +2,6 @@ package com.nizam.music_player
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.nizam.music_player.databinding.ActivityFavoriteBinding
@@ -53,7 +52,6 @@ class FavoriteActivity : AppCompatActivity() {
     }
 
     private fun setRecyclerViewAdapter() {
-        Log.i("Favorites","recyclerView")
         binding.favoritesRecyclerView.setHasFixedSize(true)
         binding.favoritesRecyclerView.setItemViewCacheSize(10)
         binding.favoritesRecyclerView.layoutManager = GridLayoutManager(this@FavoriteActivity,2)
