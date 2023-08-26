@@ -1,9 +1,11 @@
 package com.nizam.music_player
 
 import android.os.Bundle
-import android.util.Log
+import android.widget.EditText
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nizam.music_player.databinding.ActivityPlaylistBinding
 
 class PlaylistActivity : AppCompatActivity() {
@@ -24,7 +26,39 @@ class PlaylistActivity : AppCompatActivity() {
         //setting title and back button on ToolBar.
         supportActionBar?.setTitle(R.string.playlists)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        setRecyclerViewAdapter()
+
+        addPlayList()
     }
+
+    private fun addPlayList() {
+        binding.addPlaylist.setOnClickListener {
+            createDialog()
+        }
+    }
+
+    private fun createDialog() {
+        val playListName = EditText(this@PlaylistActivity)
+        playListName.hint = "Enter Playlist Name"
+        val linearLayout = LinearLayout(this@PlaylistActivity)
+        linearLayout.orientation = LinearLayout.VERTICAL
+        linearLayout.setPadding(50,30,50,30)
+        linearLayout.addView(playListName)
+        val dialog = MaterialAlertDialogBuilder(this@PlaylistActivity)
+            .setView(linearLayout)
+            .setTitle("Create PlayList")
+            .setPositiveButton("Ok") {_,_ ->
+                playListDB.createPlayList(playListName.text.toString())
+                setRecyclerViewAdapter()
+            }
+            .setNegativeButton("Cancel") {dialog,_ ->
+                dialog.dismiss()
+            }
+        dialog.show()
+    }
+
+
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
@@ -32,7 +66,6 @@ class PlaylistActivity : AppCompatActivity() {
     }
 
     private fun setRecyclerViewAdapter() {
-        Log.i("Favorites","recyclerView")
         binding.playListRecyclerView.setHasFixedSize(true)
         binding.playListRecyclerView.setItemViewCacheSize(10)
         binding.playListRecyclerView.layoutManager = GridLayoutManager(this@PlaylistActivity,2)
