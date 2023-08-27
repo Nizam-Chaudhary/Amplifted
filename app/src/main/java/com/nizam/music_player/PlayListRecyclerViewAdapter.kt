@@ -11,6 +11,9 @@ import com.nizam.music_player.databinding.FavoritesRecyclerViewBinding
 
 class PlayListRecyclerViewAdapter(private val context: Context,private val playList: ArrayList<PlayListData>):RecyclerView.Adapter<PlayListRecyclerViewAdapter.Holder>(){
 
+    private val playListDB:PlaylistsDB by lazy {
+        PlaylistsDB(context,null)
+    }
     class Holder(binding: FavoritesRecyclerViewBinding):RecyclerView.ViewHolder(binding.root) {
         val playListName = binding.favoritesSongName
         val playListImage = binding.favoritesAlbumArt
@@ -34,6 +37,14 @@ class PlayListRecyclerViewAdapter(private val context: Context,private val playL
 
         //Open Playlist
         openPlayList(holder, position)
+
+        //delete Playlist
+        holder.root.setOnLongClickListener{
+            playListDB.removePlaylist(holder.playListName.text as String)
+            PlaylistActivity.allPlaylist.remove(PlayListData(holder.playListName.text.toString(),null))
+            notifyItemRemoved(position)
+            true
+        }
     }
 
     private fun openPlayList(holder: Holder, position: Int) {

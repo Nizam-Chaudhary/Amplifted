@@ -13,8 +13,14 @@ class PlaylistActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPlaylistBinding
 
     private val playListDB:PlaylistsDB by lazy {
-       PlaylistsDB(this@PlaylistActivity,null)
-   }
+        PlaylistsDB(this@PlaylistActivity,null)
+    }
+
+    companion object{
+        lateinit var allPlaylist:ArrayList<PlayListData>
+
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +32,8 @@ class PlaylistActivity : AppCompatActivity() {
         //setting title and back button on ToolBar.
         supportActionBar?.setTitle(R.string.playlists)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+
 
         setRecyclerViewAdapter()
 
@@ -68,20 +76,21 @@ class PlaylistActivity : AppCompatActivity() {
     private fun setRecyclerViewAdapter() {
         binding.playListRecyclerView.setHasFixedSize(true)
         binding.playListRecyclerView.setItemViewCacheSize(10)
+        allPlaylist = ArrayList()
+        allPlaylist = getAllPlayList()
         binding.playListRecyclerView.layoutManager = GridLayoutManager(this@PlaylistActivity,2)
-
-        val playListRecyclerViewAdapter = PlayListRecyclerViewAdapter(this@PlaylistActivity,getAllPlayList())
+        val playListRecyclerViewAdapter = PlayListRecyclerViewAdapter(this@PlaylistActivity,
+            allPlaylist)
         binding.playListRecyclerView.adapter = playListRecyclerViewAdapter
     }
 
-    private fun getAllPlayList():ArrayList<PlayListData> {
+    fun getAllPlayList():ArrayList<PlayListData> {
         val list:ArrayList<PlayListData> = ArrayList()
         val tempList = playListDB.getPlayListNames()
 
         for(i in tempList) {
             list.add(PlayListData(i,playListDB.getPlayListArtUri(i)))
         }
-
         return list
     }
 }
