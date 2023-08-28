@@ -41,8 +41,9 @@ class PlayListRecyclerViewAdapter(private val context: Context,private val playL
         //delete Playlist
         holder.root.setOnLongClickListener{
             playListDB.removePlaylist(holder.playListName.text as String)
-            PlaylistActivity.allPlaylist.remove(PlayListData(holder.playListName.text.toString(),null))
-            notifyItemRemoved(position)
+            val songToBeRemoved = PlayListData(holder.playListName.text.toString(),playListDB.getPlayListArtUri(holder.playListName.text.toString()))
+            notifyItemRemoved(PlaylistActivity.allPlaylist.indexOf(songToBeRemoved))
+            PlaylistActivity.allPlaylist.remove(songToBeRemoved)
             true
         }
     }
