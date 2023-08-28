@@ -46,7 +46,7 @@ class PlayListSongRecyclerViewAdapter(private var context:Context,private var so
 
     private fun playSong(holder: Holder, position: Int) {
         holder.root.setOnClickListener {
-            sendIntent("Playlist",position)
+            sendIntent("PlayList",position)
         }
     }
 

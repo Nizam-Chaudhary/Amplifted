@@ -35,9 +35,12 @@ class PlayListSongsActivity : AppCompatActivity() {
     }
 
     private fun addSongsToPlaylist() {
-        val intent = Intent(this@PlayListSongsActivity,AddSongsActivity::class.java)
-        intent.putExtra("playListName",playListName)
-        startActivity(intent)
+        binding.addSongsToPlaylist.setOnClickListener {
+
+            val intent = Intent(this@PlayListSongsActivity,AddSongsActivity::class.java)
+            intent.putExtra("playListName",playListName)
+            startActivity(intent)
+        }
     }
 
     private fun getAllSongs() {
@@ -45,7 +48,7 @@ class PlayListSongsActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
+        startActivity(Intent(this@PlayListSongsActivity,PlaylistActivity::class.java))
         return super.onSupportNavigateUp()
     }
 

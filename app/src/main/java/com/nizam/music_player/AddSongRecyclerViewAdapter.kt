@@ -28,7 +28,7 @@ class AddSongRecyclerViewAdapter(private var context: Context, private var songs
         return songsList.size
     }
 
-    override fun onBindViewHolder(holder: AddSongRecyclerViewAdapter.Holder, position: Int) {
+    override fun onBindViewHolder(holder: Holder, position: Int) {
         //setting all values from arrayList into respective widgets
         holder.title.text = songsList[position].title
         holder.album.text = songsList[position].album
@@ -43,11 +43,13 @@ class AddSongRecyclerViewAdapter(private var context: Context, private var songs
         addSong(holder,position)
     }
 
-    private fun addSong(holder: AddSongRecyclerViewAdapter.Holder, position: Int) {
+    private fun addSong(holder: Holder, position: Int) {
         holder.root.setOnClickListener {
             val playListDB = PlaylistsDB(context,null)
             playListDB.addToPlaylist(songsList[position],playListName)
-            ContextCompat.startActivity(context, Intent(context,PlayListSongsActivity::class.java),null)
+            val intent=Intent(context,PlayListSongsActivity::class.java)
+            intent.putExtra("playListName",playListName)
+            ContextCompat.startActivity(context, intent,null)
         }
     }
 }

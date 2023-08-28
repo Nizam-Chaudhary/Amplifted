@@ -229,6 +229,18 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
                     songPosition = intent.getIntExtra("index",0)
                 }
             }
+
+            "PlayList" -> {
+                if(musicService != null && songPosition == intent.getIntExtra("index",0)){
+                    setLayout(baseContext)
+                    musicListPA.addAll(PlayListSongsActivity.musicListPL)
+                } else {
+                    startPlayerService()
+                    musicListPA = ArrayList()
+                    musicListPA.addAll(PlayListSongsActivity.musicListPL)
+                    songPosition = intent.getIntExtra("index",0)
+                }
+            }
         }
     }
 
