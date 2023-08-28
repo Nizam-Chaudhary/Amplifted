@@ -1,5 +1,6 @@
 package com.nizam.music_player
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,7 +35,9 @@ class PlayListSongsActivity : AppCompatActivity() {
     }
 
     private fun addSongsToPlaylist() {
-
+        val intent = Intent(this@PlayListSongsActivity,AddSongsActivity::class.java)
+        intent.putExtra("playListName",playListName)
+        startActivity(intent)
     }
 
     private fun getAllSongs() {
