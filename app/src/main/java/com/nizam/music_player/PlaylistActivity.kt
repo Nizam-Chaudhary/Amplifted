@@ -84,7 +84,7 @@ class PlaylistActivity : AppCompatActivity() {
         binding.playListRecyclerView.adapter = playListRecyclerViewAdapter
     }
 
-    fun getAllPlayList():ArrayList<PlayListData> {
+    private fun getAllPlayList():ArrayList<PlayListData> {
         val list:ArrayList<PlayListData> = ArrayList()
         val tempList = playListDB.getPlayListNames()
 

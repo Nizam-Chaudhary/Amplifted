@@ -1,9 +1,10 @@
 package com.nizam.music_player
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -50,7 +51,9 @@ class PlayListRecyclerViewAdapter(private val context: Context,private val playL
 
     private fun openPlayList(holder: Holder, position: Int) {
         holder.root.setOnClickListener {
-            Toast.makeText(context,playList[position].playListName,Toast.LENGTH_SHORT).show()
+            val intent = Intent(context,PlayListSongsActivity::class.java)
+            intent.putExtra("playListName",playList[position].playListName)
+            ContextCompat.startActivity(context,intent,null)
         }
     }
 

@@ -7,7 +7,8 @@
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
     <application
         android:name=".ApplicationClass"
         android:allowBackup="true"
@@ -20,13 +21,18 @@
         android:theme="@style/primary.Theme.MusicPlayer"
         tools:targetApi="33">
         <activity
+            android:name=".AddSongsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PlayListSongsActivity"
+            android:exported="false" />
+        <activity
             android:name=".RequestPermission"
             android:exported="false" />
         <activity
             android:name=".PlaylistActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".FavoriteActivity"
             android:exported="false"
@@ -46,11 +52,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".MusicService"
-            android:foregroundServiceType="mediaPlayback"
-            android:exported="false"/>
-        <receiver android:name=".NotificationReceiver"
-            android:enabled="true"/>
+
+        <service
+            android:name=".MusicService"
+            android:exported="false"
+            android:foregroundServiceType="mediaPlayback" />
+
+        <receiver
+            android:name=".NotificationReceiver"
+            android:enabled="true" />
     </application>
 
 </manifest>
