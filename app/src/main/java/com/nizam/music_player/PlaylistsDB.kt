@@ -5,6 +5,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import java.io.File
 
 class PlaylistsDB(context: Context, factory: SQLiteDatabase.CursorFactory?):
     SQLiteOpenHelper(context, DATABASE_NAME,factory, DATABASE_VERSION) {
@@ -107,6 +108,7 @@ class PlaylistsDB(context: Context, factory: SQLiteDatabase.CursorFactory?):
                 list.add(cursor.getString(cursor.getColumnIndex(PLAYLIST_NAME_COL)))
             }while (cursor.moveToNext())
         }
+        cursor.close()
         return list
     }
 
@@ -117,8 +119,36 @@ class PlaylistsDB(context: Context, factory: SQLiteDatabase.CursorFactory?):
         val query = "Select $ART_URI_COL from $PLAYLIST where $PLAYLIST_NAME_COL = '$playListName' Order by $TITLE_COL Limit 1"
         val cursor = db.rawQuery(query,null)
         if(cursor.moveToFirst()) {
-            artUri = cursor.getString(cursor.getColumnIndex(PLAYLIST_NAME_COL))
+            artUri = cursor.getString(cursor.getColumnIndex(ART_URI_COL))
         }
+        cursor.close()
         return artUri
+    }
+
+    @SuppressLint("Range")
+    fun getPlayListSongs(playListName: String):ArrayList<SongsData> {
+        val temp: ArrayList<SongsData> = ArrayList()
+        val db = this.readableDatabase
+        val query = "Select * from $PLAYLIST where $PLAYLIST_NAME_COL = '$playListName'"
+        val cursor = db.rawQuery(query,null)
+        if(cursor.moveToFirst()) {
+            do {
+                val idC = cursor.getString(cursor.getColumnIndex(ID_COL))
+                val titleC = cursor.getString(cursor.getColumnIndex(TITLE_COL))
+                val albumC = cursor.getString(cursor.getColumnIndex(ALBUM_COL))
+                val artistC = cursor.getString(cursor.getColumnIndex(ARTIST_COL))
+                val durationC = cursor.getLong(cursor.getColumnIndex(DURATION_COL))
+                val pathC = cursor.getString(cursor.getColumnIndex(PATH_COL))
+                val artUriC = cursor.getString(cursor.getColumnIndex(ART_URI_COL))
+
+                val music = SongsData(id = idC,title = titleC, album = albumC,duration = durationC, path = pathC, artist = artistC, artUri = artUriC)
+                val file = File(pathC)
+                if(file.exists()) {
+                    temp.add(music)
+                }
+            }while (cursor.moveToNext())
+        }
+        cursor.close()
+        return temp
     }
 }
