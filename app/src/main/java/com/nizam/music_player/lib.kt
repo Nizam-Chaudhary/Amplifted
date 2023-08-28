@@ -65,8 +65,6 @@ fun setLayout(context: Context) {
     PlayerActivity.binding.songName.text = PlayerActivity.musicListPA[PlayerActivity.songPosition].title
     PlayerActivity.binding.duration.text = formatDuration(PlayerActivity.musicService!!.mediaPlayer!!.duration.toLong())
     PlayerActivity.binding.seekBarPA.max = PlayerActivity.musicService!!.mediaPlayer!!.duration
-    PlayerActivity.binding.seekBarPA.progress = 0
-    PlayerActivity.musicService!!.syncSeekBar()
     if(!PlayerActivity.isSongPlaying) {
         PlayerActivity.binding.pausePlayButton.setIconResource(R.drawable.play_icon)
     }
