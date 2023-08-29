@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nizam.music_player.databinding.FavoritesRecyclerViewBinding
 
 class PlayListRecyclerViewAdapter(private val context: Context,private val playList: ArrayList<PlayListData>):RecyclerView.Adapter<PlayListRecyclerViewAdapter.Holder>(){
@@ -41,10 +42,20 @@ class PlayListRecyclerViewAdapter(private val context: Context,private val playL
 
         //delete Playlist
         holder.root.setOnLongClickListener{
-            playListDB.removePlaylist(holder.playListName.text as String)
-            val songToBeRemoved = PlayListData(holder.playListName.text.toString(),playListDB.getPlayListArtUri(holder.playListName.text.toString()))
-            notifyItemRemoved(PlaylistActivity.allPlaylist.indexOf(songToBeRemoved))
-            PlaylistActivity.allPlaylist.remove(songToBeRemoved)
+            val dialog = MaterialAlertDialogBuilder(context)
+                .setTitle("Delete Playlist!")
+                .setMessage("Do you want to delete this Playlist?")
+                .setPositiveButton("Yes") {dialog,_ ->
+                    val songToBeRemoved = PlayListData(holder.playListName.text.toString(),playListDB.getPlayListArtUri(holder.playListName.text.toString()))
+                    playListDB.removePlaylist(holder.playListName.text as String)
+                    notifyItemRemoved(PlaylistActivity.allPlaylist.indexOf(songToBeRemoved))
+                    PlaylistActivity.allPlaylist.remove(songToBeRemoved)
+                    dialog.dismiss()
+                }
+                .setNegativeButton("No") { dialog, _ ->
+                    dialog.dismiss()
+                }
+            dialog.show()
             true
         }
     }
