@@ -49,8 +49,6 @@ class MainActivity : AppCompatActivity() {
 
         setToggleButtonForNavigationDrawer()
 
-        setUserNameOnDrawerHeader()
-
         navMenuItemClick()
 
         shuffleSong()
@@ -161,13 +159,6 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
-    }
-
-    //this function is used to set the username on the DrawerHeader.
-    private fun setUserNameOnDrawerHeader() {
-        //setting useName
-        //val headerView = binding.navView.getHeaderView(0)
-        //val userNameHeader: TextView = headerView.findViewById(R.id.userNameHeader)
     }
 
     //this function set toggle button for DrawerLayout
