@@ -31,7 +31,7 @@ class PlaylistsDB(context: Context, factory: SQLiteDatabase.CursorFactory?):
     override fun onCreate(p0: SQLiteDatabase?) {
         var query = "Create Table If Not Exists $PLAYLIST_MASTER($PLAYLIST_NAME_COL TEXT Primary Key)"
         p0?.execSQL(query)
-        query = "CREATE TABLE IF NOT EXISTS $PLAYLIST($PLAYLIST_NAME_COL TEXT,$ID_COL TEXT PRIMARY KEY, $TITLE_COL TEXT, $ALBUM_COL TEXT, $ARTIST_COL TEXT, $DURATION_COL INTEGER, $PATH_COL TEXT, $ART_URI_COL TEXT)"
+        query = "CREATE TABLE IF NOT EXISTS $PLAYLIST($PLAYLIST_NAME_COL TEXT,$ID_COL TEXT, $TITLE_COL TEXT, $ALBUM_COL TEXT, $ARTIST_COL TEXT, $DURATION_COL INTEGER, $PATH_COL TEXT, $ART_URI_COL TEXT)"
         p0?.execSQL(query)
     }
 
@@ -51,21 +51,23 @@ class PlaylistsDB(context: Context, factory: SQLiteDatabase.CursorFactory?):
     //this function is used to add the song to the playlist
     fun addToPlaylist(songsData: SongsData,playListName:String) {
 
-        val values = ContentValues()
+        if(!songExists(songsData.title,playListName)) {
+            val values = ContentValues()
 
-        values.put(PLAYLIST_NAME_COL,playListName)
-        values.put(ID_COL,songsData.id)
-        values.put(TITLE_COL,songsData.title)
-        values.put(ALBUM_COL,songsData.album)
-        values.put(ARTIST_COL,songsData.artist)
-        values.put(DURATION_COL,songsData.duration)
-        values.put(PATH_COL,songsData.path)
-        values.put(ART_URI_COL,songsData.artUri)
+            values.put(PLAYLIST_NAME_COL,playListName)
+            values.put(ID_COL,songsData.id)
+            values.put(TITLE_COL,songsData.title)
+            values.put(ALBUM_COL,songsData.album)
+            values.put(ARTIST_COL,songsData.artist)
+            values.put(DURATION_COL,songsData.duration)
+            values.put(PATH_COL,songsData.path)
+            values.put(ART_URI_COL,songsData.artUri)
 
-        val db = this.writableDatabase
-        db.insert(PLAYLIST,null,values)
+            val db = this.writableDatabase
+            db.insert(PLAYLIST,null,values)
 
-        db.close()
+            db.close()
+        }
     }
 
     fun removeFromPlayList(playListName: String,songName:String) {
@@ -83,10 +85,10 @@ class PlaylistsDB(context: Context, factory: SQLiteDatabase.CursorFactory?):
     }
 
     @SuppressLint("Range")
-    fun songExists(name: String): Boolean {
+    fun songExists(name: String,playlistName: String): Boolean {
         val db = this.readableDatabase
 
-        val query = "SELECT $ID_COL FROM $PLAYLIST WHERE $TITLE_COL = '$name'"
+        val query = "SELECT $ID_COL FROM $PLAYLIST WHERE $TITLE_COL = '$name' and $PLAYLIST_NAME_COL='$playlistName'"
         val cursor = db.rawQuery(query,null)
         var value: String? = null
         if(cursor.moveToFirst())
@@ -129,7 +131,7 @@ class PlaylistsDB(context: Context, factory: SQLiteDatabase.CursorFactory?):
     fun getPlayListSongs(playListName: String):ArrayList<SongsData> {
         val temp: ArrayList<SongsData> = ArrayList()
         val db = this.readableDatabase
-        val query = "Select * from $PLAYLIST where $PLAYLIST_NAME_COL = '$playListName'"
+        val query = "Select * from $PLAYLIST where $PLAYLIST_NAME_COL = '$playListName' order by $TITLE_COL"
         val cursor = db.rawQuery(query,null)
         if(cursor.moveToFirst()) {
             do {
