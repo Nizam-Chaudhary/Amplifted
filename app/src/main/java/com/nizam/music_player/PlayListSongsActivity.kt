@@ -52,6 +52,12 @@ class PlayListSongsActivity : AppCompatActivity() {
         return super.onSupportNavigateUp()
     }
 
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        super.onBackPressed()
+        startActivity(Intent(this@PlayListSongsActivity,PlaylistActivity::class.java))
+    }
+
     private fun setRecyclerViewAdapter() {
         binding.playListSongsRecyclerView.setHasFixedSize(true)
         binding.playListSongsRecyclerView.setItemViewCacheSize(12)

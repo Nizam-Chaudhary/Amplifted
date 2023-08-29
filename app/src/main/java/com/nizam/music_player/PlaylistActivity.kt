@@ -1,5 +1,6 @@
 package com.nizam.music_player
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -69,8 +70,15 @@ class PlaylistActivity : AppCompatActivity() {
 
 
     override fun onSupportNavigateUp(): Boolean {
+        @Suppress("DEPRECATION")
         onBackPressed()
         return super.onSupportNavigateUp()
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        super.onBackPressed()
+        startActivity(Intent(this@PlaylistActivity,MainActivity::class.java))
     }
 
     private fun setRecyclerViewAdapter() {
