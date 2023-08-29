@@ -9,7 +9,6 @@ import com.nizam.music_player.databinding.ActivityPlayListSongsBinding
 class PlayListSongsActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityPlayListSongsBinding
-    private lateinit var playListName: String
 
     private val playListDB: PlaylistsDB by lazy {
         PlaylistsDB(this@PlayListSongsActivity,null)
@@ -17,6 +16,7 @@ class PlayListSongsActivity : AppCompatActivity() {
 
     companion object{
         var musicListPL:ArrayList<SongsData> = ArrayList()
+        var playListName = ""
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
