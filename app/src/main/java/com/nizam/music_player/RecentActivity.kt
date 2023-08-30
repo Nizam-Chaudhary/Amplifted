@@ -1,6 +1,7 @@
 package com.nizam.music_player
 
 import android.os.Bundle
+import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nizam.music_player.databinding.ActivityRecentBinding
@@ -33,6 +34,17 @@ class RecentActivity : AppCompatActivity() {
         musicListRP = recentDB.getAllSongs()
         val adapter = RecentRecyclerViewAdapter(this@RecentActivity, musicListRP)
         binding.recentRecyclerView.adapter = adapter
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.recent_clear_menu,menu)
+        menu?.findItem(R.id.clearRecent)?.setOnMenuItemClickListener {
+            musicListRP.clear()
+            recentDB.clearRecent()
+            setAdapter()
+            true
+        }
+        return super.onCreateOptionsMenu(menu)
     }
 
     override fun onSupportNavigateUp(): Boolean {
