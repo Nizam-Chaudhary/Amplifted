@@ -1,5 +1,6 @@
 package com.nizam.music_player
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
@@ -51,5 +52,17 @@ class RecentDB(context: Context, factory: CursorFactory?): SQLiteOpenHelper(cont
         val db = this.writableDatabase
         db.insert(TABLE_NAME,null,values)
         db.close()
+    }
+
+    @SuppressLint("Range")
+    fun songExist(songName: String): Boolean {
+
+        val db = this.readableDatabase
+        val query = "select $ID_COL from $TABLE_NAME where $TITLE_COL = '$songName'"
+        val cursor = db.rawQuery(query,null)
+        cursor.moveToFirst()
+        val exist = cursor.getString(cursor.getColumnIndex(ID_COL)) != null
+        cursor.close()
+        return exist
     }
 }
