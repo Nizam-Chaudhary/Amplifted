@@ -94,7 +94,9 @@ class RecentDB(context: Context, factory: CursorFactory?): SQLiteOpenHelper(cont
 
     @SuppressLint("Range")
     fun getAllSongs(): ArrayList<SongsData> {
-        val cursor = this.readableDatabase.rawQuery("select * from $TABLE_NAME",null)
+        val query = "select * from $TABLE_NAME order by $TIME_COL DESC"
+        val cursor = this.readableDatabase.rawQuery(query,null)
+        println("query : $query ")
         val songsList: ArrayList<SongsData> = ArrayList()
 
         if(cursor.moveToFirst()) {

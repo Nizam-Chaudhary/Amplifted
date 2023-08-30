@@ -140,7 +140,7 @@ fun getSongData(favoritesDB:FavoritesDB): ArrayList<SongsData> {
 
 private fun addToRecent(context: Context) {
     val time = Date()
-    val formatter = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT, Locale.getDefault())
+    val formatter = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, Locale.getDefault())
     val currentTime = formatter.format(time)
     val recentDB = RecentDB(context,null)
     recentDB.addToRecent(PlayerActivity.musicListPA[PlayerActivity.songPosition],currentTime)
