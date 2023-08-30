@@ -1,5 +1,6 @@
 package com.nizam.music_player
 
+import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteDatabase.CursorFactory
@@ -35,5 +36,20 @@ class RecentDB(context: Context, factory: CursorFactory?): SQLiteOpenHelper(cont
         onCreate(p0)
     }
 
+    fun addToRecent(songData: SongsData,time: String) {
+        val values = ContentValues()
 
+        values.put(ID_COL,songData.id)
+        values.put(TITLE_COL,songData.title)
+        values.put(ALBUM_COL,songData.album)
+        values.put(ARTIST_COL,songData.artist)
+        values.put(DURATION_COL,songData.duration)
+        values.put(PATH_COL,songData.path)
+        values.put(ART_URI_COL,songData.artUri)
+        values.put(TIME_COL,time)
+
+        val db = this.writableDatabase
+        db.insert(TABLE_NAME,null,values)
+        db.close()
+    }
 }
