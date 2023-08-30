@@ -2,6 +2,7 @@ package com.nizam.music_player
 
 import android.app.PendingIntent
 import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -94,6 +95,9 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
                 PlayerActivity.binding.pausePlayButton.setIconResource(R.drawable.pause_icon)
                 showNotification(R.drawable.pause_icon_notification)
                 syncSeekBar()
+                PlayerActivity.musicService!!.audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+                @Suppress("DEPRECATION")
+                PlayerActivity.musicService!!.audioManager.requestAudioFocus(PlayerActivity.musicService,AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN)
             }
         } catch(_:Exception) {}
     }
