@@ -25,6 +25,10 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
     private val favoritesDB by lazy {
         FavoritesDB(this@PlayerActivity,null)
     }
+
+    private val recentDB by lazy {
+        RecentDB(this@PlayerActivity,null)
+    }
     companion object {
         var isSongPlaying = false
         var musicListPA = ArrayList<SongsData>()
@@ -66,8 +70,6 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
         equalizer()
 
         showBottomDialogTimer()
-
-        //shareSong()
 
         binding.favoritesButton.setOnClickListener {
             if(favoritesDB.songExists(musicListPA[songPosition].title)) {
@@ -238,6 +240,18 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
                     startPlayerService()
                     musicListPA = ArrayList()
                     musicListPA.addAll(PlayListSongsActivity.musicListPL)
+                    songPosition = intent.getIntExtra("index",0)
+                }
+            }
+
+            "RecentlyPlayed" -> {
+                if(musicService != null && songPosition == intent.getIntExtra("index",0)) {
+                    setLayout(baseContext)
+                    musicListPA.addAll(RecentActivity.musicListRP)
+                } else {
+                    startPlayerService()
+                    musicListPA = ArrayList()
+                    musicListPA.addAll(RecentActivity.musicListRP)
                     songPosition = intent.getIntExtra("index",0)
                 }
             }
