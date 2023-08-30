@@ -67,18 +67,22 @@ class RecentDB(context: Context, factory: CursorFactory?): SQLiteOpenHelper(cont
         val db = this.readableDatabase
         val query = "select $ID_COL from $TABLE_NAME where $TITLE_COL = '$songName'"
         val cursor = db.rawQuery(query,null)
-        db.close()
-        cursor.moveToFirst()
-        val exist = cursor.getString(cursor.getColumnIndex(ID_COL)) != null
+        var value: String? = null
+
+        if(cursor.moveToFirst()) {
+            value = cursor.getString(cursor.getColumnIndex(ID_COL))
+        }
         cursor.close()
-        return exist
+        if(value != null) {
+            return true
+        }
+        return false
     }
 
     private fun updateTime(songName: String,time: String) {
         val db = this.writableDatabase
-        val values = ContentValues()
-        values.put(TIME_COL,time)
-        db.update(TABLE_NAME,values, TITLE_COL, arrayOf(songName))
+        val query = "update $TABLE_NAME set $TIME_COL='$time' where $TITLE_COL='$songName'"
+        db.execSQL(query)
         db.close()
     }
 

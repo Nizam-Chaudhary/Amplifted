@@ -26,9 +26,7 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
         FavoritesDB(this@PlayerActivity,null)
     }
 
-    private val recentDB by lazy {
-        RecentDB(this@PlayerActivity,null)
-    }
+
     companion object {
         var isSongPlaying = false
         var musicListPA = ArrayList<SongsData>()
@@ -332,6 +330,7 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
         }
         musicService!!.createMediaPlayer()
     }
+
 
 
     private fun showBottomDialogTimer() {

@@ -3,10 +3,12 @@ package com.nizam.music_player
 import android.annotation.SuppressLint
 import android.content.Context
 import android.media.MediaMetadataRetriever
-import android.util.Log
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import java.io.File
+import java.text.DateFormat
+import java.util.Date
+import java.util.Locale
 import java.util.concurrent.TimeUnit
 import kotlin.random.Random
 
@@ -44,7 +46,6 @@ fun playPreviousSong() {
 
 //this function is used to play the next song and it responds.
 fun playNextSong() {
-    Log.i("Tag",PlayerActivity.musicListPA.size.toString())
     if(PlayerActivity.shuffle){
         PlayerActivity.lastSong = PlayerActivity.songPosition
         PlayerActivity.songPosition = getRandomNumber()
@@ -68,6 +69,9 @@ fun setLayout(context: Context) {
     if(!PlayerActivity.isSongPlaying) {
         PlayerActivity.binding.pausePlayButton.setIconResource(R.drawable.play_icon)
     }
+
+    //adding song to recent
+    addToRecent(context)
 
     val favoritesDB = FavoritesDB(context,null)
     //setting favorites icon.
@@ -132,4 +136,12 @@ fun getSongData(favoritesDB:FavoritesDB): ArrayList<SongsData> {
         }
     }
     return songsList
+}
+
+private fun addToRecent(context: Context) {
+    val time = Date()
+    val formatter = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT, Locale.getDefault())
+    val currentTime = formatter.format(time)
+    val recentDB = RecentDB(context,null)
+    recentDB.addToRecent(PlayerActivity.musicListPA[PlayerActivity.songPosition],currentTime)
 }

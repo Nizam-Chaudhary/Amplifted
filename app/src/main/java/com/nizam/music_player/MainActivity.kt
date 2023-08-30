@@ -61,6 +61,10 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this@MainActivity,PlaylistActivity::class.java))
         }
 
+        binding.recentlyPlayed.setOnClickListener {
+            startActivity(Intent(this@MainActivity,RecentActivity::class.java))
+        }
+
         checkAndSetAdapter()
 
         refreshLayout()
