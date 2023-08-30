@@ -35,9 +35,7 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
 
     fun showNotification(playPauseButton: Int) {
 
-        val intent = Intent(baseContext, PlayerActivity::class.java)
-        intent.putExtra("index", PlayerActivity.songPosition)
-        intent.putExtra("class", "Now Playing")
+        val intent = Intent(baseContext, MainActivity::class.java)
         val contentIntent = PendingIntent.getActivity(baseContext,3, intent,PendingIntent.FLAG_IMMUTABLE)
 
         val previousIntent = Intent(baseContext,NotificationReceiver::class.java).setAction(ApplicationClass.PREVIOUS)
