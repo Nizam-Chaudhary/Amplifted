@@ -48,4 +48,5 @@
     <string name="share">Share</string>
     <string name="recently_played_songs">Recently Played Songs</string>
     <string name="recent">Recent</string>
+    <string name="clear_recent">Clear Recent</string>
 </resources>
