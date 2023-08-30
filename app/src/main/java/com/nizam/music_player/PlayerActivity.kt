@@ -256,7 +256,10 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
                 }
             }
         }
+
     }
+
+
 
     //this function generates an random index and shuffles the song.
     private fun shuffleSong() {
@@ -272,8 +275,6 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
     }
 
 
-
-    //this function is used to play the previous song and it responds to previousSongButton.
 
     //plays or Pauses the song..
     private fun playPauseSong() {

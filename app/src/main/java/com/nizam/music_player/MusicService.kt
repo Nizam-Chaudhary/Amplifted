@@ -12,12 +12,19 @@ import android.os.IBinder
 import android.os.Looper
 import android.support.v4.media.session.MediaSessionCompat
 import androidx.core.app.NotificationCompat
+import java.text.DateFormat
+import java.util.Date
+import java.util.Locale
 
 class MusicService : Service() {
     private var myBinder = MyBinder()
     var mediaPlayer: MediaPlayer? = null
     private lateinit var mediaSession: MediaSessionCompat
     private lateinit var runnable: Runnable
+
+    private val recentDB: RecentDB by lazy {
+        RecentDB(this@MusicService,null)
+    }
 
     override fun onBind(intent: Intent?): IBinder {
         mediaSession = MediaSessionCompat(baseContext, "Amplifted")
@@ -88,6 +95,7 @@ class MusicService : Service() {
                 PlayerActivity.binding.pausePlayButton.setIconResource(R.drawable.pause_icon)
                 showNotification(R.drawable.pause_icon_notification)
                 syncSeekBar()
+                addToRecent()
             }
         } catch(_:Exception) {}
     }
@@ -99,5 +107,11 @@ class MusicService : Service() {
             Handler(Looper.getMainLooper()).postDelayed(runnable,200)
         }
         Handler(Looper.getMainLooper()).postDelayed(runnable,200)
+    }
+    private fun addToRecent() {
+        val time = Date()
+        val formatter = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT, Locale.getDefault())
+        val currentTime = formatter.format(time)
+        recentDB.addToRecent(PlayerActivity.musicListPA[PlayerActivity.songPosition],currentTime)
     }
 }
