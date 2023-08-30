@@ -292,6 +292,8 @@ class MainActivity : AppCompatActivity() {
 
         super.onDestroy()
         if(PlayerActivity.musicService != null) {
+            @Suppress("DEPRECATION")
+            PlayerActivity.musicService!!.audioManager.abandonAudioFocus(PlayerActivity.musicService)
             if(PlayerActivity.isSongPlaying) {
                 PlayerActivity.musicService!!.mediaPlayer!!.stop()
             }
