@@ -54,7 +54,7 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:contentDescription="@string/favorites_btn"
-                            android:drawableTop="@drawable/favorites_icon"
+                            android:drawableTop="@drawable/favorite_filled_icon"
                             android:text="@string/favorites_btn"
                             android:textAllCaps="false"
                             android:textColor="@color/black"
