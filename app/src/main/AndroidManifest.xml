@@ -21,6 +21,9 @@
         android:theme="@style/primary.Theme.MusicPlayer"
         tools:targetApi="33">
         <activity
+            android:name=".RecentActivity"
+            android:exported="false" />
+        <activity
             android:name=".AddSongsActivity"
             android:exported="false" />
         <activity
