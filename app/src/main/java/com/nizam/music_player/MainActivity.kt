@@ -149,7 +149,8 @@ class MainActivity : AppCompatActivity() {
                         .setCancelable(false)
                         .setMessage("Do you want to Close the App?")
                         .setPositiveButton("Yes") { _, _ ->
-                            finish()
+                            onDestroy()
+                            this.finishAffinity()
                         }
                         .setNegativeButton("Cancel") { dialog, _ ->
                             dialog.dismiss()
