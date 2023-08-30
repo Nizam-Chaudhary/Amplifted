@@ -72,4 +72,10 @@ class RecentDB(context: Context, factory: CursorFactory?): SQLiteOpenHelper(cont
         db.delete(TABLE_NAME, TITLE_COL, arrayOf(songName))
         db.close()
     }
+
+    fun clearRecent() {
+        val db = this.writableDatabase
+        db.execSQL("delete from $TABLE_NAME")
+        db.close()
+    }
 }
