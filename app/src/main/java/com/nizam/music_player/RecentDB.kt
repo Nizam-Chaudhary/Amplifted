@@ -6,6 +6,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteDatabase.CursorFactory
 import android.database.sqlite.SQLiteOpenHelper
+import java.io.File
 
 class RecentDB(context: Context, factory: CursorFactory?): SQLiteOpenHelper(context, DATABASE_NAME, factory, DATABASE_VERSION) {
 
@@ -86,4 +87,39 @@ class RecentDB(context: Context, factory: CursorFactory?): SQLiteOpenHelper(cont
         db.execSQL("delete from $TABLE_NAME")
         db.close()
     }
+
+    @SuppressLint("Range")
+    fun getAllSongs(): ArrayList<SongsData> {
+        val cursor = this.readableDatabase.rawQuery("select * from $TABLE_NAME",null)
+        val songsList: ArrayList<SongsData> = ArrayList()
+
+        if(cursor.moveToFirst()) {
+            do {
+                val idC = cursor.getString(cursor.getColumnIndex(ID_COL))
+                val titleC = cursor.getString(cursor.getColumnIndex(TITLE_COL))
+                val albumC = cursor.getString(cursor.getColumnIndex(ALBUM_COL))
+                val artistC = cursor.getString(cursor.getColumnIndex(ARTIST_COL))
+                val durationC = cursor.getLong(cursor.getColumnIndex(DURATION_COL))
+                val pathC = cursor.getString(cursor.getColumnIndex(PATH_COL))
+                val artUriC = cursor.getString(cursor.getColumnIndex(ART_URI_COL))
+
+                val music = SongsData(
+                    id = idC,
+                    title = titleC,
+                    album = albumC,
+                    duration = durationC,
+                    path = pathC,
+                    artist = artistC,
+                    artUri = artUriC
+                )
+                val file = File(pathC)
+                if (file.exists()) {
+                    songsList.add(music)
+                }
+            } while(cursor.moveToNext())
+        }
+        cursor.close()
+        return songsList
+    }
+
 }
