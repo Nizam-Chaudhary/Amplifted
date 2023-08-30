@@ -60,9 +60,16 @@ class RecentDB(context: Context, factory: CursorFactory?): SQLiteOpenHelper(cont
         val db = this.readableDatabase
         val query = "select $ID_COL from $TABLE_NAME where $TITLE_COL = '$songName'"
         val cursor = db.rawQuery(query,null)
+        db.close()
         cursor.moveToFirst()
         val exist = cursor.getString(cursor.getColumnIndex(ID_COL)) != null
         cursor.close()
         return exist
+    }
+
+    fun removeSong(songName: String) {
+        val db = this.writableDatabase
+        db.delete(TABLE_NAME, TITLE_COL, arrayOf(songName))
+        db.close()
     }
 }
