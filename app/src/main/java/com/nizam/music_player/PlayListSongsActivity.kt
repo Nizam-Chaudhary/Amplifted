@@ -48,15 +48,10 @@ class PlayListSongsActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        startActivity(Intent(this@PlayListSongsActivity,PlaylistActivity::class.java))
+        onBackPressed()
         return super.onSupportNavigateUp()
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onBackPressed() {
-        super.onBackPressed()
-        startActivity(Intent(this@PlayListSongsActivity,PlaylistActivity::class.java))
-    }
 
     private fun setRecyclerViewAdapter() {
         binding.playListSongsRecyclerView.setHasFixedSize(true)

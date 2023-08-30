@@ -10,14 +10,26 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.nizam.music_player.databinding.MusicRecyclerViewBinding
 
-class AddSongRecyclerViewAdapter(private var context: Context, private var songsList: ArrayList<SongsData>,var playListName: String):
+class AddSongRecyclerViewAdapter(private var context: Context, private var songsList: ArrayList<SongsData>,
+                                 private var playListName: String):
     RecyclerView.Adapter<AddSongRecyclerViewAdapter.Holder>(){
+
+    private lateinit var clickListener: OnItemClickListener
+
+    fun setOnItemClickListener(listener: OnItemClickListener) {
+        this.clickListener = listener
+    }
+
     class Holder(binding: MusicRecyclerViewBinding): RecyclerView.ViewHolder(binding.root) {
         val title = binding.songName
         val album= binding.albumName
         val duration = binding.songPlayTime
         val image = binding.songImageView
         val root = binding.root
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(position: Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -50,6 +62,7 @@ class AddSongRecyclerViewAdapter(private var context: Context, private var songs
             val intent=Intent(context,PlayListSongsActivity::class.java)
             intent.putExtra("playListName",playListName)
             ContextCompat.startActivity(context, intent,null)
+            clickListener.onItemClick(position)
         }
     }
 }

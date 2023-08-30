@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nizam.music_player.databinding.ActivityAddSongsBinding
 
-class AddSongsActivity : AppCompatActivity() {
+class AddSongsActivity : AppCompatActivity() , AddSongRecyclerViewAdapter.OnItemClickListener{
 
     lateinit var binding:ActivityAddSongsBinding
     private lateinit var playListName:String
@@ -27,11 +27,16 @@ class AddSongsActivity : AppCompatActivity() {
         binding.pickSongRecyclerView.setItemViewCacheSize(13)
         binding.pickSongRecyclerView.layoutManager = LinearLayoutManager(this@AddSongsActivity)
         val adapter = AddSongRecyclerViewAdapter(this@AddSongsActivity,MainActivity.musicListMA,playListName)
+        adapter.setOnItemClickListener(this)
         binding.pickSongRecyclerView.adapter = adapter
     }
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return super.onSupportNavigateUp()
+    }
+
+    override fun onItemClick(position: Int) {
+        finish()
     }
 }
