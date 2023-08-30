@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nizam.music_player.databinding.ActivityRecentBinding
 
 class RecentActivity : AppCompatActivity() {
@@ -39,9 +40,18 @@ class RecentActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.recent_clear_menu,menu)
         menu?.findItem(R.id.clearRecent)?.setOnMenuItemClickListener {
-            musicListRP.clear()
-            recentDB.clearRecent()
-            setAdapter()
+
+            if (musicListRP.isNotEmpty())
+            MaterialAlertDialogBuilder(this@RecentActivity)
+                .setTitle("Clear Recently Played!")
+                .setMessage("Do you want to clear recently played?")
+                .setPositiveButton("Yes") { _, _ ->
+                    musicListRP.clear()
+                    recentDB.clearRecent()
+                    setAdapter()
+                }
+                .setNegativeButton("No") {_,_ ->}
+                .show()
             true
         }
         return super.onCreateOptionsMenu(menu)
