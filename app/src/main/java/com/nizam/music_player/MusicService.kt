@@ -9,10 +9,14 @@ import android.graphics.BitmapFactory
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.os.Binder
+import android.os.Build
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
+import android.os.SystemClock
+import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
+import android.support.v4.media.session.PlaybackStateCompat
 import androidx.core.app.NotificationCompat
 
 class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
@@ -34,19 +38,11 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
     }
 
 
-    fun showNotification(playPauseButton: Int) {
+
+    fun showNotification(playPauseButton: Int, currentState: Int) {
 
         val intent = Intent(baseContext, MainActivity::class.java)
         val contentIntent = PendingIntent.getActivity(baseContext,3, intent,PendingIntent.FLAG_IMMUTABLE)
-
-        val previousIntent = Intent(baseContext,NotificationReceiver::class.java).setAction(ApplicationClass.PREVIOUS)
-        val previousPendingIntent = PendingIntent.getBroadcast(baseContext,0,previousIntent,PendingIntent.FLAG_IMMUTABLE)
-
-        val nextIntent = Intent(baseContext,NotificationReceiver::class.java).setAction(ApplicationClass.NEXT)
-        val nextPendingIntent = PendingIntent.getBroadcast(baseContext,1,nextIntent,PendingIntent.FLAG_IMMUTABLE)
-
-        val playPauseIntent = Intent(baseContext,NotificationReceiver::class.java).setAction(ApplicationClass.PLAY_PAUSE)
-        val playPausePendingIntent = PendingIntent.getBroadcast(baseContext,2,playPauseIntent,PendingIntent.FLAG_IMMUTABLE)
 
         val imageArt = getImageArt(PlayerActivity.musicListPA[PlayerActivity.songPosition].path)
 
@@ -63,13 +59,7 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
 
         val notification = NotificationCompat.Builder(baseContext, ApplicationClass.CHANNEL_ID)
             .setContentIntent(contentIntent)
-            .setContentTitle(PlayerActivity.musicListPA[PlayerActivity.songPosition].title)
-            .setContentText(PlayerActivity.musicListPA[PlayerActivity.songPosition].artist)
             .setSmallIcon(R.drawable.music_icon_notification)
-            .setLargeIcon(image)
-            .addAction(R.drawable.previous_icon_notification, "Previous", previousPendingIntent)
-            .addAction(playPauseButton, "Play", playPausePendingIntent)
-            .addAction(R.drawable.next_icon_notification, "Next", nextPendingIntent)
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setOnlyAlertOnce(true)
@@ -78,8 +68,46 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
                     .setMediaSession(mediaSession.sessionToken)
             )
             .build()
+
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                mediaSession.setMetadata(MediaMetadataCompat.Builder()
+                    .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, mediaPlayer!!.duration.toLong())
+                    .putBitmap(
+                        MediaMetadataCompat.METADATA_KEY_ALBUM_ART, image
+                    )
+                    .putString(
+                        MediaMetadataCompat.METADATA_KEY_ARTIST, PlayerActivity.musicListPA[PlayerActivity.songPosition].artist
+                    )
+                    .putString(
+                        MediaMetadataCompat.METADATA_KEY_ALBUM, PlayerActivity.musicListPA[PlayerActivity.songPosition].album
+                    )
+                    .putString(
+                        MediaMetadataCompat.METADATA_KEY_TITLE, PlayerActivity.musicListPA[PlayerActivity.songPosition].title
+                    )
+                    .putLong(
+                        MediaMetadataCompat.METADATA_KEY_DURATION,mediaPlayer!!.duration.toLong()
+                    )
+                    .build()
+                )
+
+                mediaSession.setPlaybackState(PlaybackStateCompat.Builder()
+                    .setState(currentState, mediaPlayer!!.currentPosition.toLong(),1f,SystemClock.elapsedRealtime())
+                    .setActions(
+                        PlaybackStateCompat.ACTION_SEEK_TO or
+                        PlaybackStateCompat.ACTION_PLAY_PAUSE or
+                        PlaybackStateCompat.ACTION_SKIP_TO_NEXT or
+                        PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS
+
+                    )
+                    .build()
+                )
+                mediaSession.setCallback(PlayerMediaSessionCallback(mediaPlayer!!))
+            }
         startForeground(7, notification)
     }
+
+
+
     fun createMediaPlayer() {
         try{
             if(PlayerActivity.musicService!!.mediaPlayer == null) {
@@ -93,7 +121,7 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
                 PlayerActivity.musicService!!.mediaPlayer!!.start()
                 PlayerActivity.isSongPlaying = true
                 PlayerActivity.binding.pausePlayButton.setIconResource(R.drawable.pause_icon)
-                showNotification(R.drawable.pause_icon_notification)
+                showNotification(R.drawable.pause_icon_notification,PlaybackStateCompat.STATE_PLAYING)
                 syncSeekBar()
                 PlayerActivity.musicService!!.audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
                 @Suppress("DEPRECATION")
@@ -114,17 +142,19 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
     override fun onAudioFocusChange(p0: Int) {
         if(p0 <= 0) {
             PlayerActivity.binding.pausePlayButton.setIconResource(R.drawable.play_icon)
-            showNotification(R.drawable.play_icon_notification)
+            showNotification(R.drawable.play_icon_notification,PlaybackStateCompat.STATE_PAUSED)
             NowPlaying.binding.nowPlayingPlayPause.setImageResource(R.drawable.play_icon_notification)
             PlayerActivity.isSongPlaying = false
             mediaPlayer!!.pause()
         } else {
             PlayerActivity.binding.pausePlayButton.setIconResource(R.drawable.pause_icon)
-            showNotification(R.drawable.pause_icon_notification)
+            showNotification(R.drawable.pause_icon_notification,PlaybackStateCompat.STATE_PLAYING)
             NowPlaying.binding.nowPlayingPlayPause.setImageResource(R.drawable.pause_icon_notification)
             PlayerActivity.isSongPlaying = true
            mediaPlayer!!.start()
         }
+
     }
+
 
 }

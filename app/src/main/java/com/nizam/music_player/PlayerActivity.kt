@@ -9,6 +9,7 @@ import android.media.audiofx.AudioEffect
 import android.net.Uri
 import android.os.Bundle
 import android.os.IBinder
+import android.support.v4.media.session.PlaybackStateCompat
 import android.view.Menu
 import android.widget.LinearLayout
 import android.widget.SeekBar
@@ -296,7 +297,7 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
     //plays the songs if it is paused.
     private fun playMusic() {
         binding.pausePlayButton.setIconResource(R.drawable.pause_icon)
-        musicService!!.showNotification(R.drawable.pause_icon_notification)
+        musicService!!.showNotification(R.drawable.pause_icon_notification,PlaybackStateCompat.STATE_PLAYING)
         NowPlaying.binding.nowPlayingPlayPause.setImageResource(R.drawable.pause_icon_notification)
         isSongPlaying = true
         musicService!!.mediaPlayer!!.start()
@@ -305,7 +306,7 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
     //pauses the songs if it is playing.
     private fun pauseMusic() {
         binding.pausePlayButton.setIconResource(R.drawable.play_icon)
-        musicService!!.showNotification(R.drawable.play_icon_notification)
+        musicService!!.showNotification(R.drawable.play_icon_notification, PlaybackStateCompat.STATE_PAUSED)
         NowPlaying.binding.nowPlayingPlayPause.setImageResource(R.drawable.play_icon_notification)
         isSongPlaying = false
         musicService!!.mediaPlayer!!.pause()
