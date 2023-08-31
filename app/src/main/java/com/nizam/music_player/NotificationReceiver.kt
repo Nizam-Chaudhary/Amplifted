@@ -1,36 +1,28 @@
 package com.nizam.music_player
 
-import android.media.MediaPlayer
-import android.support.v4.media.session.MediaSessionCompat
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
 import android.support.v4.media.session.PlaybackStateCompat
 
-class PlayerMediaSessionCallback(private val mediaPlayer: MediaPlayer) :
-    MediaSessionCompat.Callback() {
-    override fun onSeekTo(pos: Long) {
-        super.onSeekTo(pos)
-        mediaPlayer.seekTo(pos.toInt())
+class NotificationReceiver:BroadcastReceiver() {
+    override fun onReceive(p0: Context?, p1: Intent?) {
+        when(p1?.action) {
+            ApplicationClass.PREVIOUS -> {
+                playPreviousSong()
+                PlayerActivity.musicService!!.createMediaPlayer()
+            }
+            ApplicationClass.NEXT -> {
+                playNextSong()
+                PlayerActivity.musicService!!.createMediaPlayer()
+
+            }
+            ApplicationClass.PLAY_PAUSE -> if(PlayerActivity.isSongPlaying) pauseMusic() else playMusic()
+        }
     }
 
-    override fun onPause() {
-        super.onPause()
-        pauseMusic()
-    }
 
-    override fun onPlay() {
-        super.onPlay()
-        playMusic()
-    }
-
-    override fun onSkipToNext() {
-        playNextSong()
-        PlayerActivity.musicService!!.createMediaPlayer()
-    }
-
-    override fun onSkipToPrevious() {
-        playPreviousSong()
-        PlayerActivity.musicService!!.createMediaPlayer()
-    }
-
+    //plays the music from notification
     private fun playMusic() {
         PlayerActivity.isSongPlaying = true
         PlayerActivity.musicService!!.mediaPlayer!!.start()
@@ -39,11 +31,13 @@ class PlayerMediaSessionCallback(private val mediaPlayer: MediaPlayer) :
         PlayerActivity.binding.pausePlayButton.setIconResource(R.drawable.pause_icon)
     }
 
+    //pauses the music from notification
     private fun pauseMusic() {
         PlayerActivity.isSongPlaying = false
         PlayerActivity.musicService!!.mediaPlayer!!.pause()
-        PlayerActivity.musicService!!.showNotification(R.drawable.play_icon_notification, PlaybackStateCompat.STATE_PAUSED)
+        PlayerActivity.musicService!!.showNotification(R.drawable.play_icon_notification,PlaybackStateCompat.STATE_PAUSED)
         NowPlaying.binding.nowPlayingPlayPause.setImageResource(R.drawable.play_icon_notification)
         PlayerActivity.binding.pausePlayButton.setIconResource(R.drawable.play_icon)
     }
+
 }

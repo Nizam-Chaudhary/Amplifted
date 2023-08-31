@@ -302,7 +302,7 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
     //plays the songs if it is paused.
     private fun playMusic() {
         binding.pausePlayButton.setIconResource(R.drawable.pause_icon)
-        musicService!!.showNotification(PlaybackStateCompat.STATE_PLAYING)
+        musicService!!.showNotification(R.drawable.play_icon_notification,PlaybackStateCompat.STATE_PLAYING)
         NowPlaying.binding.nowPlayingPlayPause.setImageResource(R.drawable.pause_icon_notification)
         isSongPlaying = true
         musicService!!.mediaPlayer!!.start()
@@ -311,7 +311,7 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
     //pauses the songs if it is playing.
     private fun pauseMusic() {
         binding.pausePlayButton.setIconResource(R.drawable.play_icon)
-        musicService!!.showNotification(PlaybackStateCompat.STATE_PAUSED)
+        musicService!!.showNotification(R.drawable.play_icon_notification, PlaybackStateCompat.STATE_PAUSED)
         NowPlaying.binding.nowPlayingPlayPause.setImageResource(R.drawable.play_icon_notification)
         isSongPlaying = false
         musicService!!.mediaPlayer!!.pause()
