@@ -16,7 +16,12 @@ class NowPlaying : Fragment() {
         @SuppressLint("StaticFieldLeak")
         lateinit var binding: FragmentNowPlayingBinding
     }
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val view = inflater.inflate(R.layout.fragment_now_playing, container, false)
         binding = FragmentNowPlayingBinding.bind(view)
         binding.root.visibility = View.INVISIBLE
@@ -25,11 +30,11 @@ class NowPlaying : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if(PlayerActivity.musicService != null) {
+        if (PlayerActivity.musicService != null) {
             binding.nowPlayingSongName.isSelected = true
             // on setting it visible
             binding.root.visibility = View.VISIBLE
-            if(PlayerActivity.isSongPlaying) {
+            if (PlayerActivity.isSongPlaying) {
                 binding.nowPlayingPlayPause.setImageResource(R.drawable.pause_icon_notification)
             } else {
                 binding.nowPlayingPlayPause.setImageResource(R.drawable.play_icon_notification)
@@ -37,7 +42,7 @@ class NowPlaying : Fragment() {
 
             //onClick Listener for playPause Button on Now Playing
             binding.nowPlayingPlayPause.setOnClickListener {
-                if(PlayerActivity.isSongPlaying) {
+                if (PlayerActivity.isSongPlaying) {
                     pauseMusic()
                 } else {
                     playMusic()
@@ -62,8 +67,7 @@ class NowPlaying : Fragment() {
     private fun playMusic() {
         PlayerActivity.musicService!!.mediaPlayer!!.start()
         binding.nowPlayingPlayPause.setImageResource(R.drawable.pause_icon_notification)
-        PlayerActivity.musicService!!.showNotification(R.drawable.pause_icon_notification,
-            PlaybackStateCompat.STATE_PLAYING)
+        PlayerActivity.musicService!!.showNotification(PlaybackStateCompat.STATE_PLAYING)
         PlayerActivity.binding.pausePlayButton.setIconResource(R.drawable.pause_icon)
         PlayerActivity.isSongPlaying = true
     }
@@ -72,7 +76,7 @@ class NowPlaying : Fragment() {
     private fun pauseMusic() {
         PlayerActivity.musicService!!.mediaPlayer!!.pause()
         binding.nowPlayingPlayPause.setImageResource(R.drawable.play_icon_notification)
-        PlayerActivity.musicService!!.showNotification(R.drawable.play_icon_notification,PlaybackStateCompat.STATE_PAUSED)
+        PlayerActivity.musicService!!.showNotification(PlaybackStateCompat.STATE_PAUSED)
         PlayerActivity.binding.pausePlayButton.setIconResource(R.drawable.play_icon)
         PlayerActivity.isSongPlaying = false
     }

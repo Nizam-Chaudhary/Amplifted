@@ -21,10 +21,10 @@ import com.nizam.music_player.databinding.ActivityPlayerBinding
 
 
 @Suppress("DEPRECATION")
-class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompletionListener{
+class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCompletionListener {
 
     private val favoritesDB by lazy {
-        FavoritesDB(this@PlayerActivity,null)
+        FavoritesDB(this@PlayerActivity, null)
     }
 
 
@@ -32,7 +32,8 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
         var isSongPlaying = false
         var musicListPA = ArrayList<SongsData>()
         var songPosition = 0
-        var musicService:MusicService? = null
+        var musicService: MusicService? = null
+
         @SuppressLint("StaticFieldLeak")
         lateinit var binding: ActivityPlayerBinding
         var repeat = false
@@ -43,6 +44,7 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
         var lastSong = -1
 
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -71,10 +73,10 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
         showBottomDialogTimer()
 
         binding.favoritesButton.setOnClickListener {
-            if(favoritesDB.songExists(musicListPA[songPosition].title)) {
+            if (favoritesDB.songExists(musicListPA[songPosition].title)) {
                 favoritesDB.removeFromFavorites(musicListPA[songPosition].title)
                 binding.favoritesButton.setImageResource(R.drawable.favorite_empty_icon)
-                if(intent.getStringExtra("class") == "FavoritesAdapter") {
+                if (intent.getStringExtra("class") == "FavoritesAdapter") {
                     musicListPA = getSongData(favoritesDB)
                 }
             } else {
@@ -86,21 +88,24 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
 
     private fun startPlayerService() {
         //for starting service
-        val intent = Intent(this@PlayerActivity,MusicService::class.java)
-        bindService(intent,this@PlayerActivity, BIND_AUTO_CREATE)
+        val intent = Intent(this@PlayerActivity, MusicService::class.java)
+        bindService(intent, this@PlayerActivity, BIND_AUTO_CREATE)
         startService(intent)
     }
 
     private fun equalizer() {
-        binding.equalizer.setOnClickListener{
-            try{
+        binding.equalizer.setOnClickListener {
+            try {
                 val eqIntent = Intent(AudioEffect.ACTION_DISPLAY_AUDIO_EFFECT_CONTROL_PANEL)
-                eqIntent.putExtra(AudioEffect.EXTRA_AUDIO_SESSION, musicService!!.mediaPlayer!!.audioSessionId)
-                eqIntent.putExtra(AudioEffect.EXTRA_PACKAGE_NAME,baseContext.packageName)
-                eqIntent.putExtra(AudioEffect.EXTRA_CONTENT_TYPE,AudioEffect.CONTENT_TYPE_MUSIC)
-                startActivityForResult(eqIntent,69)
-            } catch (e:Exception) {
-                Toast.makeText(this,"Equalizer not supported",Toast.LENGTH_SHORT).show()
+                eqIntent.putExtra(
+                    AudioEffect.EXTRA_AUDIO_SESSION,
+                    musicService!!.mediaPlayer!!.audioSessionId
+                )
+                eqIntent.putExtra(AudioEffect.EXTRA_PACKAGE_NAME, baseContext.packageName)
+                eqIntent.putExtra(AudioEffect.EXTRA_CONTENT_TYPE, AudioEffect.CONTENT_TYPE_MUSIC)
+                startActivityForResult(eqIntent, 69)
+            } catch (e: Exception) {
+                Toast.makeText(this, "Equalizer not supported", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -108,13 +113,13 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == 69 || resultCode == RESULT_OK)
+        if (requestCode == 69 || resultCode == RESULT_OK)
             return
     }
 
     private fun repeatSong() {
-        binding.repeatSong.setOnClickListener{
-            if(repeat) {
+        binding.repeatSong.setOnClickListener {
+            if (repeat) {
                 repeat = false
                 binding.repeatSong.setImageResource(R.drawable.repeat_icon)
             } else {
@@ -125,9 +130,9 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
     }
 
     private fun onSeekBarChange() {
-        binding.seekBarPA.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
+        binding.seekBarPA.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-                if(p2) musicService!!.mediaPlayer!!.seekTo(p1)
+                if (p2) musicService!!.mediaPlayer!!.seekTo(p1)
             }
 
             override fun onStartTrackingTouch(p0: SeekBar?) = Unit
@@ -138,8 +143,8 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
     }
 
     private fun previousSong() {
-        if(musicListPA.size != 1) {
-            binding.previousSong.setOnClickListener{
+        if (musicListPA.size != 1) {
+            binding.previousSong.setOnClickListener {
                 playPreviousSong()
                 musicService!!.createMediaPlayer()
             }
@@ -148,21 +153,21 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
 
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.share_icon_menu,menu)
+        menuInflater.inflate(R.menu.share_icon_menu, menu)
         menu?.findItem(R.id.shareMenu)?.setOnMenuItemClickListener {
             val shareIntent = Intent()
             shareIntent.action = Intent.ACTION_SEND
             shareIntent.type = "audio/*"
             shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(musicListPA[songPosition].path))
-            startActivity(Intent.createChooser(shareIntent,"Share Music File!"))
+            startActivity(Intent.createChooser(shareIntent, "Share Music File!"))
             true
         }
         return true
     }
 
     private fun nextSong() {
-        if(musicListPA.size != 1){
-            binding.nextSong.setOnClickListener{
+        if (musicListPA.size != 1) {
+            binding.nextSong.setOnClickListener {
                 playNextSong()
                 musicService!!.createMediaPlayer()
             }
@@ -171,47 +176,49 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
 
     //Initializes layout and all variable and retrieves the value from intent.
     private fun initializeLayout() {
-        if(shuffle) binding.shuffleButton.setImageResource(R.drawable.shuffle_icon_true)
+        if (shuffle) binding.shuffleButton.setImageResource(R.drawable.shuffle_icon_true)
 
-        when(intent.getStringExtra("class")) {
+        when (intent.getStringExtra("class")) {
             "MusicAdapter" -> {
-                if(musicService != null && songPosition == intent.getIntExtra("index",0)){
+                if (musicService != null && songPosition == intent.getIntExtra("index", 0)) {
                     setLayout(baseContext)
                     musicListPA.addAll(MainActivity.musicListMA)
                 } else {
                     startPlayerService()
                     musicListPA = ArrayList()
                     musicListPA.addAll(MainActivity.musicListMA)
-                    songPosition = intent.getIntExtra("index",0)
+                    songPosition = intent.getIntExtra("index", 0)
                 }
             }
+
             "SearchedList" -> {
                 startPlayerService()
                 musicListPA = ArrayList()
                 musicListPA.addAll(MainActivity.musicListSearched)
-                songPosition = intent.getIntExtra("index",0)
+                songPosition = intent.getIntExtra("index", 0)
             }
+
             "MainActivity" -> {
-                if(musicService != null && songPosition == intent.getIntExtra("index",0)){
+                if (musicService != null && songPosition == intent.getIntExtra("index", 0)) {
                     setLayout(baseContext)
                     musicListPA.addAll(MainActivity.musicListMA)
                 } else {
                     startPlayerService()
                     musicListPA = ArrayList()
                     musicListPA.addAll(MainActivity.musicListMA)
-                    songPosition = intent.getIntExtra("index",0)
+                    songPosition = intent.getIntExtra("index", 0)
                 }
             }
 
             "FavoriteActivity" -> {
-                if(musicService != null && songPosition == intent.getIntExtra("index",0)) {
+                if (musicService != null && songPosition == intent.getIntExtra("index", 0)) {
                     setLayout(baseContext)
                     musicListPA.addAll(FavoriteActivity.favoritesList)
                 } else {
                     startPlayerService()
                     musicListPA = ArrayList()
                     musicListPA.addAll(FavoriteActivity.favoritesList)
-                    songPosition = intent.getIntExtra("index",0)
+                    songPosition = intent.getIntExtra("index", 0)
                 }
             }
 
@@ -220,38 +227,38 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
             }
 
             "FavoritesAdapter" -> {
-                if(musicService != null && songPosition == intent.getIntExtra("index",0)){
+                if (musicService != null && songPosition == intent.getIntExtra("index", 0)) {
                     setLayout(baseContext)
                     musicListPA.addAll(FavoriteActivity.favoritesList)
                 } else {
                     startPlayerService()
                     musicListPA = ArrayList()
                     musicListPA.addAll(FavoriteActivity.favoritesList)
-                    songPosition = intent.getIntExtra("index",0)
+                    songPosition = intent.getIntExtra("index", 0)
                 }
             }
 
             "PlayList" -> {
-                if(musicService != null && songPosition == intent.getIntExtra("index",0)){
+                if (musicService != null && songPosition == intent.getIntExtra("index", 0)) {
                     setLayout(baseContext)
                     musicListPA.addAll(PlayListSongsActivity.musicListPL)
                 } else {
                     startPlayerService()
                     musicListPA = ArrayList()
                     musicListPA.addAll(PlayListSongsActivity.musicListPL)
-                    songPosition = intent.getIntExtra("index",0)
+                    songPosition = intent.getIntExtra("index", 0)
                 }
             }
 
             "RecentlyPlayed" -> {
-                if(musicService != null && songPosition == intent.getIntExtra("index",0)) {
+                if (musicService != null && songPosition == intent.getIntExtra("index", 0)) {
                     setLayout(baseContext)
                     musicListPA.addAll(RecentActivity.musicListRP)
                 } else {
                     startPlayerService()
                     musicListPA = ArrayList()
                     musicListPA.addAll(RecentActivity.musicListRP)
-                    songPosition = intent.getIntExtra("index",0)
+                    songPosition = intent.getIntExtra("index", 0)
                 }
             }
         }
@@ -259,11 +266,10 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
     }
 
 
-
     //this function generates an random index and shuffles the song.
     private fun shuffleSong() {
-        binding.shuffleButton.setOnClickListener{
-            shuffle = if(shuffle) {
+        binding.shuffleButton.setOnClickListener {
+            shuffle = if (shuffle) {
                 binding.shuffleButton.setImageResource(R.drawable.shuffle_icon)
                 false
             } else {
@@ -274,12 +280,11 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
     }
 
 
-
     //plays or Pauses the song..
     private fun playPauseSong() {
         //Pause Or Play Button OnClickListener
-        binding.pausePlayButton.setOnClickListener{
-            if(isSongPlaying) {
+        binding.pausePlayButton.setOnClickListener {
+            if (isSongPlaying) {
                 pauseMusic()
             } else {
                 playMusic()
@@ -297,7 +302,7 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
     //plays the songs if it is paused.
     private fun playMusic() {
         binding.pausePlayButton.setIconResource(R.drawable.pause_icon)
-        musicService!!.showNotification(R.drawable.pause_icon_notification,PlaybackStateCompat.STATE_PLAYING)
+        musicService!!.showNotification(PlaybackStateCompat.STATE_PLAYING)
         NowPlaying.binding.nowPlayingPlayPause.setImageResource(R.drawable.pause_icon_notification)
         isSongPlaying = true
         musicService!!.mediaPlayer!!.start()
@@ -306,7 +311,7 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
     //pauses the songs if it is playing.
     private fun pauseMusic() {
         binding.pausePlayButton.setIconResource(R.drawable.play_icon)
-        musicService!!.showNotification(R.drawable.play_icon_notification, PlaybackStateCompat.STATE_PAUSED)
+        musicService!!.showNotification(PlaybackStateCompat.STATE_PAUSED)
         NowPlaying.binding.nowPlayingPlayPause.setImageResource(R.drawable.play_icon_notification)
         isSongPlaying = false
         musicService!!.mediaPlayer!!.pause()
@@ -324,29 +329,28 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
     }
 
     override fun onCompletion(p0: MediaPlayer?) {
-        if(!repeat)
+        if (!repeat)
             playNextSong()
-        if(!repeat && shuffle) {
+        if (!repeat && shuffle) {
             songPosition = getRandomNumber()
         }
         musicService!!.createMediaPlayer()
     }
 
 
-
     private fun showBottomDialogTimer() {
-        if(fifteenMinutes || thirtyMinutes || sixtyMinutes)
+        if (fifteenMinutes || thirtyMinutes || sixtyMinutes)
             binding.timer.setImageResource(R.drawable.timer_icon_true)
-        binding.timer.setOnClickListener{
-            if(!(fifteenMinutes || thirtyMinutes || sixtyMinutes)) {
+        binding.timer.setOnClickListener {
+            if (!(fifteenMinutes || thirtyMinutes || sixtyMinutes)) {
                 val dialog = BottomSheetDialog(this@PlayerActivity)
                 dialog.setContentView(R.layout.bottom_sheet_layout)
                 dialog.show()
                 dialog.findViewById<LinearLayout>(R.id.fifteenMinutes)?.setOnClickListener {
                     fifteenMinutes = true
-                    Thread{
+                    Thread {
                         Thread.sleep(15 * 60000)
-                        if(fifteenMinutes) {
+                        if (fifteenMinutes) {
                             exitApplication()
                             fifteenMinutes = false
                         }
@@ -356,9 +360,9 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
                 }
                 dialog.findViewById<LinearLayout>(R.id.thirtyMinutes)?.setOnClickListener {
                     thirtyMinutes = true
-                    Thread{
+                    Thread {
                         Thread.sleep(30 * 60000)
-                        if(thirtyMinutes) {
+                        if (thirtyMinutes) {
                             exitApplication()
                             thirtyMinutes = false
                         }
@@ -368,9 +372,9 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
                 }
                 dialog.findViewById<LinearLayout>(R.id.sixtyMinutes)?.setOnClickListener {
                     sixtyMinutes = true
-                    Thread{
+                    Thread {
                         Thread.sleep(60 * 60000)
-                        if(sixtyMinutes) {
+                        if (sixtyMinutes) {
                             exitApplication()
                             sixtyMinutes = false
                         }
@@ -382,14 +386,14 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
                 val dialog = MaterialAlertDialogBuilder(this@PlayerActivity)
                     .setTitle("Cancel Timer")
                     .setMessage("Do you want to cancel the timer?")
-                    .setPositiveButton("Yes"){dialog,_ ->
+                    .setPositiveButton("Yes") { dialog, _ ->
                         fifteenMinutes = false
                         thirtyMinutes = false
                         sixtyMinutes = false
                         dialog.dismiss()
                         binding.timer.setImageResource(R.drawable.timer_icon)
                     }
-                    .setNegativeButton("No"){dialog,_ ->
+                    .setNegativeButton("No") { dialog, _ ->
                         dialog.dismiss()
                     }
                 dialog.show()
@@ -398,9 +402,9 @@ class PlayerActivity : AppCompatActivity(),ServiceConnection,MediaPlayer.OnCompl
     }
 
     private fun exitApplication() {
-        val intent = Intent(this@PlayerActivity,MainActivity::class.java)
+        val intent = Intent(this@PlayerActivity, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        intent.putExtra("EXIT",true)
+        intent.putExtra("EXIT", true)
         startActivity(intent)
     }
 }

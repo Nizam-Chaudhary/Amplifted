@@ -24,7 +24,7 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
     var mediaPlayer: MediaPlayer? = null
     private lateinit var mediaSession: MediaSessionCompat
     private lateinit var runnable: Runnable
-    lateinit var audioManager:AudioManager
+    lateinit var audioManager: AudioManager
 
     override fun onBind(intent: Intent?): IBinder {
         mediaSession = MediaSessionCompat(baseContext, "Amplifted")
@@ -38,11 +38,11 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
     }
 
 
-
-    fun showNotification(playPauseButton: Int, currentState: Int) {
+    fun showNotification(currentState: Int) {
 
         val intent = Intent(baseContext, MainActivity::class.java)
-        val contentIntent = PendingIntent.getActivity(baseContext,3, intent,PendingIntent.FLAG_IMMUTABLE)
+        val contentIntent =
+            PendingIntent.getActivity(baseContext, 3, intent, PendingIntent.FLAG_IMMUTABLE)
 
         val imageArt = getImageArt(PlayerActivity.musicListPA[PlayerActivity.songPosition].path)
 
@@ -50,10 +50,13 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
         options.inPreferredConfig = Bitmap.Config.ARGB_8888
         options.inSampleSize = 1
         //creating Bitmap from ByteArray
-       val image = if ( imageArt != null) {
-            BitmapFactory.decodeByteArray(imageArt,0,imageArt.size,options)
+        val image = if (imageArt != null) {
+            BitmapFactory.decodeByteArray(imageArt, 0, imageArt.size, options)
         } else {
-            BitmapFactory.decodeResource(this@MusicService.resources,R.drawable.music_icon_notification)
+            BitmapFactory.decodeResource(
+                this@MusicService.resources,
+                R.drawable.music_icon_notification
+            )
         }
 
 
@@ -64,53 +67,66 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setOnlyAlertOnce(true)
             .setGroup(ApplicationClass.CHANNEL_ID)
-            .setStyle(androidx.media.app.NotificationCompat.MediaStyle().setShowActionsInCompactView(0)
+            .setStyle(
+                androidx.media.app.NotificationCompat.MediaStyle().setShowActionsInCompactView(0)
                     .setMediaSession(mediaSession.sessionToken)
             )
             .build()
 
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                mediaSession.setMetadata(MediaMetadataCompat.Builder()
-                    .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, mediaPlayer!!.duration.toLong())
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            mediaSession.setMetadata(
+                MediaMetadataCompat.Builder()
+                    .putLong(
+                        MediaMetadataCompat.METADATA_KEY_DURATION,
+                        mediaPlayer!!.duration.toLong()
+                    )
                     .putBitmap(
                         MediaMetadataCompat.METADATA_KEY_ALBUM_ART, image
                     )
                     .putString(
-                        MediaMetadataCompat.METADATA_KEY_ARTIST, PlayerActivity.musicListPA[PlayerActivity.songPosition].artist
+                        MediaMetadataCompat.METADATA_KEY_ARTIST,
+                        PlayerActivity.musicListPA[PlayerActivity.songPosition].artist
                     )
                     .putString(
-                        MediaMetadataCompat.METADATA_KEY_ALBUM, PlayerActivity.musicListPA[PlayerActivity.songPosition].album
+                        MediaMetadataCompat.METADATA_KEY_ALBUM,
+                        PlayerActivity.musicListPA[PlayerActivity.songPosition].album
                     )
                     .putString(
-                        MediaMetadataCompat.METADATA_KEY_TITLE, PlayerActivity.musicListPA[PlayerActivity.songPosition].title
+                        MediaMetadataCompat.METADATA_KEY_TITLE,
+                        PlayerActivity.musicListPA[PlayerActivity.songPosition].title
                     )
                     .putLong(
-                        MediaMetadataCompat.METADATA_KEY_DURATION,mediaPlayer!!.duration.toLong()
+                        MediaMetadataCompat.METADATA_KEY_DURATION, mediaPlayer!!.duration.toLong()
                     )
                     .build()
-                )
+            )
 
-                mediaSession.setPlaybackState(PlaybackStateCompat.Builder()
-                    .setState(currentState, mediaPlayer!!.currentPosition.toLong(),1f,SystemClock.elapsedRealtime())
+            mediaSession.setPlaybackState(
+                PlaybackStateCompat.Builder()
+                    .setState(
+                        currentState,
+                        mediaPlayer!!.currentPosition.toLong(),
+                        1f,
+                        SystemClock.elapsedRealtime()
+                    )
                     .setActions(
                         PlaybackStateCompat.ACTION_SEEK_TO or
-                        PlaybackStateCompat.ACTION_PLAY_PAUSE or
-                        PlaybackStateCompat.ACTION_SKIP_TO_NEXT or
-                        PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS
+                                PlaybackStateCompat.ACTION_PLAY_PAUSE or
+                                PlaybackStateCompat.ACTION_SKIP_TO_NEXT or
+                                PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS
 
                     )
                     .build()
-                )
-                mediaSession.setCallback(PlayerMediaSessionCallback(mediaPlayer!!))
-            }
+            )
+            mediaSession.setCallback(PlayerMediaSessionCallback(mediaPlayer!!))
+        }
         startForeground(7, notification)
     }
 
 
-
     fun createMediaPlayer() {
-        try{
-            if(PlayerActivity.musicService!!.mediaPlayer == null) {
+        try {
+            if (PlayerActivity.musicService!!.mediaPlayer == null) {
                 PlayerActivity.musicService!!.mediaPlayer = MediaPlayer()
                 createMediaPlayer()
             } else {
@@ -121,37 +137,44 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
                 PlayerActivity.musicService!!.mediaPlayer!!.start()
                 PlayerActivity.isSongPlaying = true
                 PlayerActivity.binding.pausePlayButton.setIconResource(R.drawable.pause_icon)
-                showNotification(R.drawable.pause_icon_notification,PlaybackStateCompat.STATE_PLAYING)
+                showNotification(PlaybackStateCompat.STATE_PLAYING)
                 syncSeekBar()
-                PlayerActivity.musicService!!.audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+                PlayerActivity.musicService!!.audioManager =
+                    getSystemService(Context.AUDIO_SERVICE) as AudioManager
                 @Suppress("DEPRECATION")
-                PlayerActivity.musicService!!.audioManager.requestAudioFocus(PlayerActivity.musicService,AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN)
+                PlayerActivity.musicService!!.audioManager.requestAudioFocus(
+                    PlayerActivity.musicService,
+                    AudioManager.STREAM_MUSIC,
+                    AudioManager.AUDIOFOCUS_GAIN
+                )
             }
-        } catch(_:Exception) {}
+        } catch (_: Exception) {
+        }
     }
 
     private fun syncSeekBar() {
         runnable = Runnable {
-            PlayerActivity.binding.progressDuration.text = formatDuration(mediaPlayer!!.currentPosition.toLong())
+            PlayerActivity.binding.progressDuration.text =
+                formatDuration(mediaPlayer!!.currentPosition.toLong())
             PlayerActivity.binding.seekBarPA.progress = mediaPlayer!!.currentPosition
-            Handler(Looper.getMainLooper()).postDelayed(runnable,200)
+            Handler(Looper.getMainLooper()).postDelayed(runnable, 200)
         }
-        Handler(Looper.getMainLooper()).postDelayed(runnable,200)
+        Handler(Looper.getMainLooper()).postDelayed(runnable, 200)
     }
 
     override fun onAudioFocusChange(p0: Int) {
-        if(p0 <= 0) {
+        if (p0 <= 0) {
             PlayerActivity.binding.pausePlayButton.setIconResource(R.drawable.play_icon)
-            showNotification(R.drawable.play_icon_notification,PlaybackStateCompat.STATE_PAUSED)
+            showNotification(PlaybackStateCompat.STATE_PAUSED)
             NowPlaying.binding.nowPlayingPlayPause.setImageResource(R.drawable.play_icon_notification)
             PlayerActivity.isSongPlaying = false
             mediaPlayer!!.pause()
         } else {
             PlayerActivity.binding.pausePlayButton.setIconResource(R.drawable.pause_icon)
-            showNotification(R.drawable.pause_icon_notification,PlaybackStateCompat.STATE_PLAYING)
+            showNotification(PlaybackStateCompat.STATE_PLAYING)
             NowPlaying.binding.nowPlayingPlayPause.setImageResource(R.drawable.pause_icon_notification)
             PlayerActivity.isSongPlaying = true
-           mediaPlayer!!.start()
+            mediaPlayer!!.start()
         }
 
     }
