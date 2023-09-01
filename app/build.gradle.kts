@@ -62,8 +62,11 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    //Glide for loading images
     implementation("com.github.bumptech.glide:glide:4.16.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
+    //for refresh layout
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    //for mediaPlayer
     implementation("androidx.media:media:1.6.0")
 }
