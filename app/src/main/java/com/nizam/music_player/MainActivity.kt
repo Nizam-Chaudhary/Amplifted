@@ -141,8 +141,9 @@ class MainActivity : AppCompatActivity() {
         //On Click for menu drawer menu Item
         binding.navView.setNavigationItemSelectedListener {
             when(it.itemId) {
-                R.id.navSettings -> Toast.makeText(this@MainActivity,"Settings",Toast.LENGTH_SHORT).show()
-                R.id.navAbout -> Toast.makeText(this@MainActivity,"About",Toast.LENGTH_SHORT).show()
+                R.id.navSettings -> startActivity(Intent(this@MainActivity,SettingsActivity::class.java))
+                R.id.navAbout ->  startActivity(Intent(this@MainActivity,AboutActivity::class.java))
+                R.id.navFeedback ->  startActivity(Intent(this@MainActivity,FeedbackActivity::class.java))
                 R.id.navExit -> {
                     val dialog = MaterialAlertDialogBuilder(this@MainActivity)
                         .setTitle("Exit!")
