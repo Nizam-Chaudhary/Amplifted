@@ -9,6 +9,9 @@
     <item android:id="@+id/navSettings"
         android:icon="@drawable/settings_icon"
         android:title="@string/settings"/>
+    <item android:id="@+id/navFeedback"
+        android:icon="@drawable/feedback_icon"
+        android:title="@string/feedback"/>
     <item android:id="@+id/navAbout"
         android:icon="@drawable/about_icon"
         android:title="@string/about"/>
