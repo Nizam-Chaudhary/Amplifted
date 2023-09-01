@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import java.io.File
 
-class PlaylistsDB(context: Context, factory: SQLiteDatabase.CursorFactory?) :
+class PlaylistsDB(val context: Context, factory: SQLiteDatabase.CursorFactory?) :
     SQLiteOpenHelper(context, DATABASE_NAME, factory, DATABASE_VERSION) {
 
     companion object {
@@ -134,10 +134,17 @@ class PlaylistsDB(context: Context, factory: SQLiteDatabase.CursorFactory?) :
 
     @SuppressLint("Range")
     fun getPlayListSongs(playListName: String): ArrayList<SongsData> {
+
+        val sharedPreferencesAmplifted = SharedPreferencesAmplifted(context)
+        val sort = when (sharedPreferencesAmplifted.getSortBy())  {
+            2 -> "$TITLE_COL Desc"
+            else -> TITLE_COL
+        }
+
         val temp: ArrayList<SongsData> = ArrayList()
         val db = this.readableDatabase
         val query =
-            "Select * from $PLAYLIST where $PLAYLIST_NAME_COL = '$playListName' order by $TITLE_COL"
+            "Select * from $PLAYLIST where $PLAYLIST_NAME_COL = '$playListName' order by $sort"
         val cursor = db.rawQuery(query, null)
         if (cursor.moveToFirst()) {
             do {

@@ -7,7 +7,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
-class FavoritesDB(context: Context, factory: SQLiteDatabase.CursorFactory?): SQLiteOpenHelper(context,
+class FavoritesDB(val context: Context, factory: SQLiteDatabase.CursorFactory?): SQLiteOpenHelper(context,
     DATABASE_NAME,factory, DATABASE_VERSION) {
 
     companion object{
@@ -67,8 +67,13 @@ class FavoritesDB(context: Context, factory: SQLiteDatabase.CursorFactory?): SQL
     }
 
     fun getFavorites(): Cursor? {
+        val sharedPreferencesAmplifted = SharedPreferencesAmplifted(context)
+        val sort = when (sharedPreferencesAmplifted.getSortBy())  {
+            2 -> "$TITLE_COL Desc"
+            else -> TITLE_COL
+        }
         val db = this.readableDatabase
-        val query = "SELECT * FROM Favorites ORDER BY $TITLE_COL"
+        val query = "SELECT * FROM Favorites ORDER BY $sort"
         return db.rawQuery(query,null)
     }
 

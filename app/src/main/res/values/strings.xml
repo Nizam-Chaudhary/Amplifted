@@ -55,4 +55,11 @@
     <string name="email_id_optional">Email ID (optional)</string>
     <string name="feedback_topic_i_e_suggestions_errors_etc">Feedback Topic i.e. Suggestions, Errors, etc.</string>
     <string name="subject">Subject</string>
+    <string name="appearance">Appearance</string>
+    <string name="app_version">App Version :</string>
+    <string name="sort_by">Sort By</string>
+    <string name="name_asc">By Name in Ascending</string>
+    <string name="name_desc">By Name in Descending</string>
+    <string name="date_desc">Date Modified (Latest)</string>
+    <string name="date_asc">Date Modified (Oldest)</string>
 </resources>

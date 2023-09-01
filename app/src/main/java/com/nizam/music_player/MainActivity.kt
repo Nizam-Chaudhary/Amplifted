@@ -234,6 +234,15 @@ class MainActivity : AppCompatActivity() {
     //this function is used to load all files into ArrayList from the Storage
     @SuppressLint("Recycle", "Range")
     private fun getAllAudioFiles():ArrayList<SongsData> {
+
+        val sharedPreferencesAmplifted = SharedPreferencesAmplifted(this@MainActivity)
+        val sort = when (sharedPreferencesAmplifted.getSortBy())  {
+            2 -> MediaStore.Audio.Media.TITLE+" DESC"
+            3 -> MediaStore.Audio.Media.DATE_ADDED
+            4 -> MediaStore.Audio.Media.DATE_ADDED+" DESC"
+            else -> MediaStore.Audio.Media.TITLE
+        }
+
         val tempList = ArrayList<SongsData>()
         //selection refers to the type of file to fetch
         val selection = MediaStore.Audio.Media.IS_MUSIC + " != 0"
@@ -248,7 +257,7 @@ class MainActivity : AppCompatActivity() {
             MediaStore.Audio.Media.ALBUM_ID
         )
         //loading all data into cursor.
-        val cursor = this.contentResolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,projection,selection,null,MediaStore.Audio.Media.TITLE,null)
+        val cursor = this.contentResolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,projection,selection,null,sort,null)
         //if cursor is not null then adding all values to tempList.
         if(cursor != null) {
             if(cursor.moveToFirst()) {
