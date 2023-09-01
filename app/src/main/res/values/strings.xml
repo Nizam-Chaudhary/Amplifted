@@ -51,4 +51,8 @@
     <string name="clear_recent">Clear Recent</string>
     <string name="feedback">Feedback</string>
     <string name="github_page_link">Github Page Link</string>
+    <string name="send">SEND</string>
+    <string name="email_id_optional">Email ID (optional)</string>
+    <string name="feedback_topic_i_e_suggestions_errors_etc">Feedback Topic i.e. Suggestions, Errors, etc.</string>
+    <string name="subject">Subject</string>
 </resources>

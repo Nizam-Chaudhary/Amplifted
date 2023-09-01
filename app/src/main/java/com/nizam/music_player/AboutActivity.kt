@@ -17,11 +17,7 @@ class AboutActivity : AppCompatActivity() {
 
         binding.aboutTv.text = setAbout()
 
-        binding.githubLink.setOnClickListener {
-            val openGithub = Intent(Intent.ACTION_VIEW)
-            openGithub.data = Uri.parse("https://github.com/iMxNizam/Amplifted/")
-            startActivity(openGithub)
-        }
+        openGithub()
     }
 
     private fun setAbout(): String {
@@ -33,5 +29,13 @@ class AboutActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return super.onSupportNavigateUp()
+    }
+
+    fun openGithub() {
+        binding.githubLink.setOnClickListener {
+            val openGithub = Intent(Intent.ACTION_VIEW)
+            openGithub.data = Uri.parse("https://github.com/iMxNizam/Amplifted/")
+            startActivity(openGithub)
+        }
     }
 }
