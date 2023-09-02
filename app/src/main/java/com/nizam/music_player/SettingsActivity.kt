@@ -30,23 +30,23 @@ class SettingsActivity : AppCompatActivity() {
 
             val byNameAsc = RadioButton(this@SettingsActivity)
             val byNameDesc = RadioButton(this@SettingsActivity)
-            val byDateModifiedDesc = RadioButton(this@SettingsActivity)
-            val byDateModifiedAsc = RadioButton(this@SettingsActivity)
+            val byDateAddedDesc = RadioButton(this@SettingsActivity)
+            val byDateAddedAsc = RadioButton(this@SettingsActivity)
 
             byNameAsc.setText(R.string.name_asc)
             byNameAsc.id = 1
             byNameDesc.setText(R.string.name_desc)
             byNameDesc.id = 2
-            byDateModifiedDesc.setText(R.string.date_desc)
-            byDateModifiedDesc.id = 3
-            byDateModifiedAsc.setText(R.string.date_asc)
-            byDateModifiedAsc.id = 4
+            byDateAddedDesc.setText(R.string.date_desc)
+            byDateAddedDesc.id = 3
+            byDateAddedAsc.setText(R.string.date_asc)
+            byDateAddedAsc.id = 4
 
             when(sharedPreferencesAmplifted.getSortBy()) {
                 1 -> byNameAsc.isChecked=true
                 2 -> byNameDesc.isChecked=true
-                3 -> byDateModifiedDesc.isChecked=true
-                4 -> byDateModifiedAsc.isChecked=true
+                3 -> byDateAddedDesc.isChecked=true
+                4 -> byDateAddedAsc.isChecked=true
             }
 
             val radioGroup = RadioGroup(this@SettingsActivity)
@@ -55,8 +55,8 @@ class SettingsActivity : AppCompatActivity() {
 
             radioGroup.addView(byNameAsc)
             radioGroup.addView(byNameDesc)
-            radioGroup.addView(byDateModifiedDesc)
-            radioGroup.addView(byDateModifiedAsc)
+            radioGroup.addView(byDateAddedDesc)
+            radioGroup.addView(byDateAddedAsc)
 
             val linearLayout = LinearLayout(this@SettingsActivity)
             linearLayout.addView(radioGroup)
@@ -74,9 +74,7 @@ class SettingsActivity : AppCompatActivity() {
                         4 -> sharedPreferencesAmplifted.setSortBy(4)
                     }
                 }
-                .setNegativeButton("Cancel") { _, _ ->
-
-                }
+                .setNegativeButton("Cancel"){_,_->}
                 .show()
 
 

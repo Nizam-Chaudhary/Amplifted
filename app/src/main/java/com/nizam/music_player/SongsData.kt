@@ -7,5 +7,6 @@ data class SongsData(
     val artist: String,
     val duration: Long = 0,
     val path: String,
-    val artUri: String
+    val artUri: String,
+    val dateAdded: String
 )

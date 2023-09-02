@@ -24,6 +24,7 @@ class PlaylistsDB(val context: Context, factory: SQLiteDatabase.CursorFactory?) 
         const val DURATION_COL = "duration"
         const val PATH_COL = "path"
         const val ART_URI_COL = "artUri"
+        const val DATE_ADDED_COL = "dateAdded"
     }
 
 
@@ -33,7 +34,7 @@ class PlaylistsDB(val context: Context, factory: SQLiteDatabase.CursorFactory?) 
             "Create Table If Not Exists $PLAYLIST_MASTER($PLAYLIST_NAME_COL TEXT Primary Key)"
         p0?.execSQL(query)
         query =
-            "CREATE TABLE IF NOT EXISTS $PLAYLIST($PLAYLIST_NAME_COL TEXT,$ID_COL TEXT, $TITLE_COL TEXT, $ALBUM_COL TEXT, $ARTIST_COL TEXT, $DURATION_COL INTEGER, $PATH_COL TEXT, $ART_URI_COL TEXT)"
+            "CREATE TABLE IF NOT EXISTS $PLAYLIST($PLAYLIST_NAME_COL TEXT,$ID_COL TEXT, $TITLE_COL TEXT, $ALBUM_COL TEXT, $ARTIST_COL TEXT, $DURATION_COL INTEGER, $PATH_COL TEXT, $ART_URI_COL TEXT, $DATE_ADDED_COL Text)"
         p0?.execSQL(query)
     }
 
@@ -64,6 +65,7 @@ class PlaylistsDB(val context: Context, factory: SQLiteDatabase.CursorFactory?) 
             values.put(DURATION_COL, songsData.duration)
             values.put(PATH_COL, songsData.path)
             values.put(ART_URI_COL, songsData.artUri)
+            values.put(DATE_ADDED_COL, songsData.dateAdded)
 
             val db = this.writableDatabase
             db.insert(PLAYLIST, null, values)
@@ -138,6 +140,8 @@ class PlaylistsDB(val context: Context, factory: SQLiteDatabase.CursorFactory?) 
         val sharedPreferencesAmplifted = SharedPreferencesAmplifted(context)
         val sort = when (sharedPreferencesAmplifted.getSortBy())  {
             2 -> "$TITLE_COL Desc"
+            3 -> "$DATE_ADDED_COL Desc"
+            4 -> DATE_ADDED_COL
             else -> TITLE_COL
         }
 
@@ -155,6 +159,7 @@ class PlaylistsDB(val context: Context, factory: SQLiteDatabase.CursorFactory?) 
                 val durationC = cursor.getLong(cursor.getColumnIndex(DURATION_COL))
                 val pathC = cursor.getString(cursor.getColumnIndex(PATH_COL))
                 val artUriC = cursor.getString(cursor.getColumnIndex(ART_URI_COL))
+                val dateAddedC = cursor.getString(cursor.getColumnIndex(DATE_ADDED_COL))
 
                 val music = SongsData(
                     id = idC,
@@ -163,7 +168,8 @@ class PlaylistsDB(val context: Context, factory: SQLiteDatabase.CursorFactory?) 
                     duration = durationC,
                     path = pathC,
                     artist = artistC,
-                    artUri = artUriC
+                    artUri = artUriC,
+                    dateAdded = dateAddedC
                 )
                 val file = File(pathC)
                 if (file.exists()) {
@@ -189,6 +195,8 @@ class PlaylistsDB(val context: Context, factory: SQLiteDatabase.CursorFactory?) 
         val durationC = cursor.getLong(cursor.getColumnIndex(DURATION_COL))
         val pathC = cursor.getString(cursor.getColumnIndex(PATH_COL))
         val artUriC = cursor.getString(cursor.getColumnIndex(ART_URI_COL))
+        val dateAddedC = cursor.getString(cursor.getColumnIndex(DATE_ADDED_COL))
+
         cursor.close()
         return SongsData(
             id = idC,
@@ -197,7 +205,8 @@ class PlaylistsDB(val context: Context, factory: SQLiteDatabase.CursorFactory?) 
             artist = artistC,
             duration = durationC,
             path = pathC,
-            artUri = artUriC
+            artUri = artUriC,
+            dateAdded = dateAddedC
         )
     }
 }

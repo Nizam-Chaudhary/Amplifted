@@ -21,11 +21,12 @@ class FavoritesDB(val context: Context, factory: SQLiteDatabase.CursorFactory?):
         const val DURATION_COL = "duration"
         const val PATH_COL = "path"
         const val ART_URI_COL = "artUri"
+        const val DATE_ADDED_COL = "dateAdded"
     }
 
 
     override fun onCreate(p0: SQLiteDatabase?) {
-        val query = "CREATE TABLE IF NOT EXISTS Favorites($ID_COL TEXT PRIMARY KEY, $TITLE_COL TEXT, $ALBUM_COL TEXT, $ARTIST_COL TEXT, $DURATION_COL INTEGER, $PATH_COL TEXT, $ART_URI_COL TEXT)"
+        val query = "CREATE TABLE IF NOT EXISTS Favorites($ID_COL TEXT PRIMARY KEY, $TITLE_COL TEXT, $ALBUM_COL TEXT, $ARTIST_COL TEXT, $DURATION_COL INTEGER, $PATH_COL TEXT, $ART_URI_COL TEXT, $DATE_ADDED_COL Text)"
         p0?.execSQL(query)
     }
 
@@ -44,6 +45,7 @@ class FavoritesDB(val context: Context, factory: SQLiteDatabase.CursorFactory?):
         values.put(DURATION_COL,songsData.duration)
         values.put(PATH_COL,songsData.path)
         values.put(ART_URI_COL,songsData.artUri)
+        values.put(DATE_ADDED_COL, songsData.dateAdded)
 
         val db = this.writableDatabase
         db.insert("Favorites",null,values)
@@ -70,6 +72,8 @@ class FavoritesDB(val context: Context, factory: SQLiteDatabase.CursorFactory?):
         val sharedPreferencesAmplifted = SharedPreferencesAmplifted(context)
         val sort = when (sharedPreferencesAmplifted.getSortBy())  {
             2 -> "$TITLE_COL Desc"
+            3 -> "$PlaylistsDB.DATE_ADDED_COL Desc"
+            4 -> DATE_ADDED_COL
             else -> TITLE_COL
         }
         val db = this.readableDatabase
