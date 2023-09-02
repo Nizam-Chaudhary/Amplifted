@@ -62,4 +62,7 @@
     <string name="name_desc">By Name in Descending</string>
     <string name="date_desc">Date Added (Latest)</string>
     <string name="date_asc">Date Added (Oldest)</string>
+    <string name="to_amplifted">to Amplifted</string>
+    <string name="music_note_icon">Music Note Icon</string>
+    <string name="enjoy_listening">Enjoy Listening</string>
 </resources>
