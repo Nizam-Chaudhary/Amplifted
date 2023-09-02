@@ -8,17 +8,19 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.nizam.music_player.databinding.FavoritesRecyclerViewBinding
+import com.nizam.music_player.databinding.MusicRecyclerViewBinding
 
 class FavoritesRecyclerViewAdapter(private var context:Context, private val songsList: ArrayList<SongsData>) : RecyclerView.Adapter<FavoritesRecyclerViewAdapter.Holder>() {
-    class Holder(binding: FavoritesRecyclerViewBinding):RecyclerView.ViewHolder(binding.root) {
-        val title = binding.favoritesSongName
-        val albumArt = binding.favoritesAlbumArt
+    class Holder(binding: MusicRecyclerViewBinding):RecyclerView.ViewHolder(binding.root) {
+        val title = binding.songName
+        val album= binding.albumName
+        val duration = binding.songPlayTime
+        val image = binding.songImageView
         val root = binding.root
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        return Holder(FavoritesRecyclerViewBinding.inflate(LayoutInflater.from(context),parent,false))
+        return Holder(MusicRecyclerViewBinding.inflate(LayoutInflater.from(context),parent,false))
     }
 
     override fun getItemCount(): Int {
@@ -28,13 +30,14 @@ class FavoritesRecyclerViewAdapter(private var context:Context, private val song
     override fun onBindViewHolder(holder: Holder, position: Int) {
         //setting all values from arrayList into respective widgets
         holder.title.text = songsList[position].title
-        holder.title.isSelected = true
+        holder.album.text = songsList[position].album
+        holder.duration.text =formatDuration(songsList[position].duration)
 
         //setting image of album.
         Glide.with(context)
             .load(songsList[position].artUri)
             .apply(RequestOptions().placeholder(R.drawable.icon).centerCrop())
-            .into(holder.albumArt)
+            .into(holder.image)
 
         //playing Song on PlayerActivity
         playSong(holder, position)

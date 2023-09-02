@@ -9,14 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.nizam.music_player.databinding.FavoritesRecyclerViewBinding
+import com.nizam.music_player.databinding.PlaylistsRecyclerViewBinding
 
 class PlayListRecyclerViewAdapter(private val context: Context,private val playList: ArrayList<PlayListData>):RecyclerView.Adapter<PlayListRecyclerViewAdapter.Holder>(){
 
     private val playListDB:PlaylistsDB by lazy {
         PlaylistsDB(context,null)
     }
-    class Holder(binding: FavoritesRecyclerViewBinding):RecyclerView.ViewHolder(binding.root) {
+    class Holder(binding: PlaylistsRecyclerViewBinding):RecyclerView.ViewHolder(binding.root) {
         val playListName = binding.favoritesSongName
         val playListImage = binding.favoritesAlbumArt
         val root = binding.root
@@ -26,7 +26,7 @@ class PlayListRecyclerViewAdapter(private val context: Context,private val playL
         parent: ViewGroup,
         viewType: Int
     ): Holder {
-        return Holder(FavoritesRecyclerViewBinding.inflate(LayoutInflater.from(context),parent,false))
+        return Holder(PlaylistsRecyclerViewBinding.inflate(LayoutInflater.from(context),parent,false))
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {

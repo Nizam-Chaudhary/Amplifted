@@ -3,7 +3,7 @@ package com.nizam.music_player
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.nizam.music_player.databinding.ActivityFavoriteBinding
 import kotlin.random.Random
 
@@ -53,8 +53,7 @@ class FavoriteActivity : AppCompatActivity() {
 
     private fun setRecyclerViewAdapter() {
         binding.favoritesRecyclerView.setHasFixedSize(true)
-        binding.favoritesRecyclerView.setItemViewCacheSize(10)
-        binding.favoritesRecyclerView.layoutManager = GridLayoutManager(this@FavoriteActivity,2)
+        binding.favoritesRecyclerView.layoutManager = LinearLayoutManager(this@FavoriteActivity)
 
         favoritesList = getSongData(favoritesDB)
         val favoritesRecyclerViewAdapter = FavoritesRecyclerViewAdapter(this@FavoriteActivity,favoritesList)
