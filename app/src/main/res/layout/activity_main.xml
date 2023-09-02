@@ -44,7 +44,7 @@
                             android:drawableTop="@drawable/shuffle_icon"
                             android:text="@string/shuffle_btn"
                             android:textAllCaps="false"
-                            android:textColor="@color/black"
+                            android:textColor="@color/text"
                             tools:ignore="VisualLintButtonSize" />
 
                         <Button
@@ -57,7 +57,7 @@
                             android:drawableTop="@drawable/favorite_filled_icon"
                             android:text="@string/favorites_btn"
                             android:textAllCaps="false"
-                            android:textColor="@color/black"
+                            android:textColor="@color/text"
                             tools:ignore="VisualLintButtonSize" />
 
                         <Button
@@ -70,7 +70,7 @@
                             android:drawableTop="@drawable/playlist_icon"
                             android:text="@string/playlist_btn"
                             android:textAllCaps="false"
-                            android:textColor="@color/black"
+                            android:textColor="@color/text"
                             tools:ignore="VisualLintButtonSize" />
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>

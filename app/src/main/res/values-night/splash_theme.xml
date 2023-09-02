@@ -5,6 +5,6 @@
 
         <item name="windowSplashScreenBackground">#404040</item>
 
-        <item name="postSplashScreenTheme">@style/primary.Theme.MusicPlayer</item>
+        <item name="postSplashScreenTheme">@style/Base.Theme.MusicPlayer</item>
     </style>
 </resources>

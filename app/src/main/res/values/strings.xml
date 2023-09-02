@@ -65,4 +65,7 @@
     <string name="to_amplifted">to Amplifted</string>
     <string name="music_note_icon">Music Note Icon</string>
     <string name="enjoy_listening">Enjoy Listening</string>
+    <string name="notice">Notice!</string>
+    <string name="permission_request">This App Requires Permission to Read Audio Files From Storage Please Grant Permission For Proper working of The Application</string>
+    <string name="give_permission">Give Permission</string>
 </resources>

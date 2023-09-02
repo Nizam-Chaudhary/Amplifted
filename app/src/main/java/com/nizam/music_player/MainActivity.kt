@@ -30,7 +30,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var splashScreen: androidx.core.splashscreen.SplashScreen
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         //applying splash Screen
         splashScreen = installSplashScreen()
 
