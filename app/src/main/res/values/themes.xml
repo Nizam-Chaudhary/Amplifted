@@ -2,6 +2,7 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.MusicPlayer" parent="Theme.Material3.DayNight">
             <item name="colorPrimary">#4CAF50</item>
+            <item name="android:colorBackground">#FFFFFF</item>
             <item name="colorPrimaryVariant">@color/black</item>
             <item name="colorOnPrimary">@color/black</item>
             <item name="colorSecondary">#80CBC4</item>
