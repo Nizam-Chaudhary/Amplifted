@@ -68,4 +68,7 @@
     <string name="notice">Notice!</string>
     <string name="permission_request">This App Requires Permission to Read Audio Files From Storage Please Grant Permission For Proper working of The Application</string>
     <string name="give_permission">Give Permission</string>
+    <string name="light_theme">Light Mode</string>
+    <string name="dark_theme">Dark Mode</string>
+    <string name="system_theme">System Default</string>
 </resources>

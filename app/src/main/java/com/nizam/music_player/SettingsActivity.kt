@@ -1,11 +1,15 @@
 package com.nizam.music_player
 
 import android.annotation.SuppressLint
+import android.app.UiModeManager
+import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.setPadding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nizam.music_player.databinding.ActivitySettingsBinding
@@ -20,6 +24,99 @@ class SettingsActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         sortBy()
+
+        appearance()
+    }
+
+    @SuppressLint("ResourceType")
+    private fun appearance() {
+
+        binding.appearance.setOnClickListener {
+            val sharedPreferencesAmplifted = SharedPreferencesAmplifted(this@SettingsActivity)
+            val light = RadioButton(this@SettingsActivity)
+            val dark = RadioButton(this@SettingsActivity)
+            val system = RadioButton(this@SettingsActivity)
+
+            light.setText(R.string.light_theme)
+            light.id = 1
+            dark.setText(R.string.dark_theme)
+            dark.id = 2
+            system.setText(R.string.system_theme)
+            system.id = 3
+
+            when (sharedPreferencesAmplifted.getUiMode()) {
+                "light" -> light.isChecked = true
+                "dark" -> dark.isChecked = true
+                "system" -> system.isChecked = true
+            }
+
+            val radioGroup = RadioGroup(this@SettingsActivity)
+            radioGroup.setPadding(10)
+            //byNameAsc.isChecked = true
+
+            radioGroup.addView(light)
+            radioGroup.addView(dark)
+            radioGroup.addView(system)
+
+            val linearLayout = LinearLayout(this@SettingsActivity)
+            linearLayout.addView(radioGroup)
+            linearLayout.setPadding(20)
+
+            MaterialAlertDialogBuilder(this)
+                .setTitle("Theme")
+                .setView(linearLayout)
+                .setPositiveButton("Apply") { _, _ ->
+                    println(radioGroup.checkedRadioButtonId.toString())
+                    when (radioGroup.checkedRadioButtonId) {
+                        1 -> {
+                            sharedPreferencesAmplifted.setUiMode("light")
+                            setTheme()
+                        }
+                        2 -> {
+                            sharedPreferencesAmplifted.setUiMode("dark")
+                            setTheme()
+                        }
+                        3 -> {
+                            sharedPreferencesAmplifted.setUiMode("system")
+                            setTheme()
+                        }
+
+                    }
+                }
+                .setNegativeButton("Cancel") { _, _ -> }
+                .show()
+        }
+    }
+
+    private fun setTheme() {
+        when (SharedPreferencesAmplifted(this).getUiMode()) {
+            "light" -> {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    val uiModeManager = getSystemService(Context.UI_MODE_SERVICE) as UiModeManager
+                    uiModeManager.setApplicationNightMode(UiModeManager.MODE_NIGHT_NO)
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                }
+            }
+
+            "dark" -> {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    val uiModeManager = getSystemService(Context.UI_MODE_SERVICE) as UiModeManager
+                    uiModeManager.setApplicationNightMode(UiModeManager.MODE_NIGHT_YES)
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                }
+            }
+
+            "system" -> {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    val uiModeManager = getSystemService(Context.UI_MODE_SERVICE) as UiModeManager
+                    uiModeManager.setApplicationNightMode(UiModeManager.MODE_NIGHT_AUTO)
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+                }
+            }
+        }
     }
 
     @SuppressLint("ResourceType")
