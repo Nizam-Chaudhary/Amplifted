@@ -26,6 +26,7 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
     private lateinit var runnable: Runnable
     lateinit var audioManager: AudioManager
 
+
     override fun onBind(intent: Intent?): IBinder {
         mediaSession = MediaSessionCompat(baseContext, "Amplifted")
         return myBinder
@@ -178,18 +179,24 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
     }
 
     override fun onAudioFocusChange(p0: Int) {
-        if (p0 <= 0) {
+        if (p0 <= 0 && PlayerActivity.isSongPlaying) {
             PlayerActivity.binding.pausePlayButton.setIconResource(R.drawable.play_icon)
             showNotification(R.drawable.play_icon_notification, PlaybackStateCompat.STATE_PAUSED)
             NowPlaying.binding.nowPlayingPlayPause.setImageResource(R.drawable.play_icon_notification)
             PlayerActivity.isSongPlaying = false
+            stopped = true
             mediaPlayer!!.pause()
         } else {
-            PlayerActivity.binding.pausePlayButton.setIconResource(R.drawable.pause_icon)
-            showNotification(R.drawable.pause_icon_notification, PlaybackStateCompat.STATE_PLAYING)
-            NowPlaying.binding.nowPlayingPlayPause.setImageResource(R.drawable.pause_icon_notification)
-            PlayerActivity.isSongPlaying = true
-            mediaPlayer!!.start()
+            if(stopped) {
+                PlayerActivity.binding.pausePlayButton.setIconResource(R.drawable.pause_icon)
+                showNotification(
+                    R.drawable.pause_icon_notification,
+                    PlaybackStateCompat.STATE_PLAYING
+                )
+                NowPlaying.binding.nowPlayingPlayPause.setImageResource(R.drawable.pause_icon_notification)
+                PlayerActivity.isSongPlaying = true
+                mediaPlayer!!.start()
+            }
         }
 
     }

@@ -315,6 +315,7 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
         NowPlaying.binding.nowPlayingPlayPause.setImageResource(R.drawable.play_icon_notification)
         isSongPlaying = false
         musicService!!.mediaPlayer!!.pause()
+        stopped = false
     }
 
     override fun onServiceConnected(name: ComponentName?, service: IBinder?) {

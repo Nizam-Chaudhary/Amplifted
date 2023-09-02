@@ -76,6 +76,7 @@ class NowPlaying : Fragment() {
 
     //to play the music from the Now Playing
     private fun pauseMusic() {
+        stopped = false
         PlayerActivity.musicService!!.mediaPlayer!!.pause()
         binding.nowPlayingPlayPause.setImageResource(R.drawable.play_icon_notification)
         PlayerActivity.musicService!!.showNotification(R.drawable.play_icon_notification, PlaybackStateCompat.STATE_PAUSED)

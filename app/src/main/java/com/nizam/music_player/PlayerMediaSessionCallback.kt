@@ -45,5 +45,6 @@ class PlayerMediaSessionCallback(private val mediaPlayer: MediaPlayer) :
         PlayerActivity.musicService!!.showNotification(R.drawable.play_icon_notification, PlaybackStateCompat.STATE_PAUSED)
         NowPlaying.binding.nowPlayingPlayPause.setImageResource(R.drawable.play_icon_notification)
         PlayerActivity.binding.pausePlayButton.setIconResource(R.drawable.play_icon)
+        stopped = false
     }
 }
