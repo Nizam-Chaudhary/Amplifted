@@ -51,7 +51,10 @@
         android:src="@drawable/ic_round_sort"
         app:layout_constraintBottom_toBottomOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="@+id/appearance"
-        app:layout_constraintTop_toTopOf="@+id/textView" />
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintTop_toTopOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.533" />
 
     <com.google.android.material.divider.MaterialDivider
         android:id="@+id/materialDivider2"
