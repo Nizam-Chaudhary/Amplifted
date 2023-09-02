@@ -82,6 +82,7 @@ fun setLayout(context: Context) {
     }
 
     //now setting layout for Now Playing Fragment
+    setNowPlaying(context)
     Glide.with(context)
         .load(PlayerActivity.musicListPA[PlayerActivity.songPosition].artUri)
         .apply(RequestOptions().placeholder(R.drawable.icon).centerCrop())
@@ -93,6 +94,16 @@ fun setLayout(context: Context) {
     } else {
         PlayerActivity.binding.repeatSong.setImageResource(R.drawable.repeat_icon)
     }
+}
+
+fun setNowPlaying(context: Context) {
+    //now setting layout for Now Playing Fragment
+    Glide.with(context)
+        .load(PlayerActivity.musicListPA[PlayerActivity.songPosition].artUri)
+        .apply(RequestOptions().placeholder(R.drawable.icon).centerCrop())
+        .into(NowPlaying.binding.nowPlayingAlbumArt)
+    NowPlaying.binding.nowPlayingSongName.text = PlayerActivity.musicListPA[PlayerActivity.songPosition].title
+    NowPlaying.binding.nowPlayingArtistName.text = PlayerActivity.musicListPA[PlayerActivity.songPosition].artist
 }
 
 //generates Random number other than current song playing.

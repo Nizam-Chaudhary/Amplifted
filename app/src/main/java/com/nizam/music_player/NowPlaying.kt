@@ -40,6 +40,8 @@ class NowPlaying : Fragment() {
                 binding.nowPlayingPlayPause.setImageResource(R.drawable.play_icon_notification)
             }
 
+            setNowPlaying(requireContext())
+
             //onClick Listener for playPause Button on Now Playing
             binding.nowPlayingPlayPause.setOnClickListener {
                 if (PlayerActivity.isSongPlaying) {
