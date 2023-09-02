@@ -25,11 +25,10 @@ class RecentDB(context: Context, factory: CursorFactory?): SQLiteOpenHelper(cont
         const val PATH_COL = "path"
         const val ART_URI_COL = "artUri"
         const val TIME_COL = "time"
-        const val DATE_ADDED_COL = "dateAdded"
     }
 
     override fun onCreate(p0: SQLiteDatabase?) {
-        val query = "create table if not exists $TABLE_NAME ($ID_COL text, $TITLE_COL text, $ALBUM_COL text, $ARTIST_COL text, $DURATION_COL Integer, $PATH_COL text, $ART_URI_COL text, $TIME_COL text )"
+        val query = "create table if not exists $TABLE_NAME ($ID_COL text, $TITLE_COL text, $ALBUM_COL text, $ARTIST_COL text, $DURATION_COL Integer, $PATH_COL text, $ART_URI_COL text, $TIME_COL text)"
         p0?.execSQL(query)
     }
 
@@ -108,7 +107,6 @@ class RecentDB(context: Context, factory: CursorFactory?): SQLiteOpenHelper(cont
                 val durationC = cursor.getLong(cursor.getColumnIndex(DURATION_COL))
                 val pathC = cursor.getString(cursor.getColumnIndex(PATH_COL))
                 val artUriC = cursor.getString(cursor.getColumnIndex(ART_URI_COL))
-                val dateAddedC = cursor.getString(cursor.getColumnIndex(DATE_ADDED_COL))
 
                 val music = SongsData(
                     id = idC,
@@ -118,7 +116,7 @@ class RecentDB(context: Context, factory: CursorFactory?): SQLiteOpenHelper(cont
                     path = pathC,
                     artist = artistC,
                     artUri = artUriC,
-                    dateAdded = dateAddedC
+                    dateAdded = null
                 )
                 val file = File(pathC)
                 if (file.exists()) {
