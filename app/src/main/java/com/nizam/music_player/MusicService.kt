@@ -54,7 +54,7 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
         if (PlayerActivity.external) {
             val intent = Intent(baseContext, PlayerActivity::class.java)
             intent.putExtra("class","External")
-            mainContentIntent = PendingIntent.getActivity(baseContext, 3, intent, PendingIntent.FLAG_IMMUTABLE)
+            externalContentIntent = PendingIntent.getActivity(baseContext, 3, intent, PendingIntent.FLAG_IMMUTABLE)
         }
 
 
@@ -97,7 +97,7 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
         }
 
         val contentIntent =
-            if (PlayerActivity.external) mainContentIntent else externalContentIntent
+            if (!PlayerActivity.external) mainContentIntent else externalContentIntent
 
         val notification = NotificationCompat.Builder(baseContext, ApplicationClass.CHANNEL_ID)
             .setContentIntent(contentIntent)
