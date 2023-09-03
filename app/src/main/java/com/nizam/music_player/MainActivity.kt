@@ -32,7 +32,20 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         //applying splash Screen
         splashScreen = installSplashScreen()
-
+        splashScreen.setKeepOnScreenCondition{
+            if (intent.data?.scheme.contentEquals("content")) {
+                val intentExe = Intent(this@MainActivity,PlayerActivity::class.java)
+                intentExe.putExtra("contentUri", intent.data!!.toString())
+                intentExe.putExtra("class","External")
+                intentExe.putExtra("index",0)
+                println(intent.data!!)
+                startActivity(intentExe)
+                PlayerActivity.external = true
+                finish()
+                true
+            }
+            false
+        }
         super.onCreate(savedInstanceState)
 
         //initializing binding variable
@@ -301,7 +314,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        if(isFinishing) {
+        if(isFinishing && !PlayerActivity.external) {
             if(PlayerActivity.musicService != null) {
                 @Suppress("DEPRECATION")
                 PlayerActivity.musicService!!.audioManager.abandonAudioFocus(PlayerActivity.musicService)

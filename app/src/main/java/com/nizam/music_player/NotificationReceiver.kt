@@ -10,11 +10,11 @@ class NotificationReceiver:BroadcastReceiver() {
         when(p1?.action) {
             ApplicationClass.PREVIOUS -> {
                 playPreviousSong()
-                PlayerActivity.musicService!!.createMediaPlayer()
+                PlayerActivity.musicService!!.createMediaPlayer(false)
             }
             ApplicationClass.NEXT -> {
                 playNextSong()
-                PlayerActivity.musicService!!.createMediaPlayer()
+                PlayerActivity.musicService!!.createMediaPlayer(false)
 
             }
             ApplicationClass.PLAY_PAUSE -> if(PlayerActivity.isSongPlaying) pauseMusic() else playMusic()

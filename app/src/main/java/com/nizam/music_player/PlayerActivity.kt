@@ -1,14 +1,18 @@
 package com.nizam.music_player
 
 import android.annotation.SuppressLint
+import android.app.Service
 import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
+import android.database.Cursor
 import android.media.MediaPlayer
 import android.media.audiofx.AudioEffect
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
+import android.provider.MediaStore
 import android.support.v4.media.session.PlaybackStateCompat
 import android.view.Menu
 import android.widget.LinearLayout
@@ -27,12 +31,15 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
         FavoritesDB(this@PlayerActivity, null)
     }
 
+    private var keepPlaying = false
+
 
     companion object {
         var isSongPlaying = false
         var musicListPA = ArrayList<SongsData>()
         var songPosition = 0
         var musicService: MusicService? = null
+        var external = false
 
         @SuppressLint("StaticFieldLeak")
         lateinit var binding: ActivityPlayerBinding
@@ -55,6 +62,7 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         initializeLayout()
+
 
         playPauseSong()
 
@@ -88,9 +96,9 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
 
     private fun startPlayerService() {
         //for starting service
-        val intent = Intent(this@PlayerActivity, MusicService::class.java)
-        bindService(intent, this@PlayerActivity, BIND_AUTO_CREATE)
-        startService(intent)
+        val intentService = Intent(this@PlayerActivity, MusicService::class.java)
+        bindService(intentService, this@PlayerActivity, BIND_AUTO_CREATE)
+        startService(intentService)
     }
 
     private fun equalizer() {
@@ -146,7 +154,7 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
         if (musicListPA.size != 1) {
             binding.previousSong.setOnClickListener {
                 playPreviousSong()
-                musicService!!.createMediaPlayer()
+                musicService!!.createMediaPlayer(false)
             }
         }
     }
@@ -169,7 +177,7 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
         if (musicListPA.size != 1) {
             binding.nextSong.setOnClickListener {
                 playNextSong()
-                musicService!!.createMediaPlayer()
+                musicService!!.createMediaPlayer(false)
             }
         }
     }
@@ -181,7 +189,7 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
         when (intent.getStringExtra("class")) {
             "MusicAdapter" -> {
                 if (musicService != null && songPosition == intent.getIntExtra("index", 0)) {
-                    setLayout(baseContext)
+                    setLayout(baseContext,false)
                     musicListPA.addAll(MainActivity.musicListMA)
                 } else {
                     startPlayerService()
@@ -200,7 +208,7 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
 
             "MainActivity" -> {
                 if (musicService != null && songPosition == intent.getIntExtra("index", 0)) {
-                    setLayout(baseContext)
+                    setLayout(baseContext,false)
                     musicListPA.addAll(MainActivity.musicListMA)
                 } else {
                     startPlayerService()
@@ -212,7 +220,7 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
 
             "FavoriteActivity" -> {
                 if (musicService != null && songPosition == intent.getIntExtra("index", 0)) {
-                    setLayout(baseContext)
+                    setLayout(baseContext,false)
                     musicListPA.addAll(FavoriteActivity.favoritesList)
                 } else {
                     startPlayerService()
@@ -223,12 +231,12 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
             }
 
             "Now Playing" -> {
-                setLayout(baseContext)
+                setLayout(baseContext,false)
             }
 
             "FavoritesAdapter" -> {
                 if (musicService != null && songPosition == intent.getIntExtra("index", 0)) {
-                    setLayout(baseContext)
+                    setLayout(baseContext,false)
                     musicListPA.addAll(FavoriteActivity.favoritesList)
                 } else {
                     startPlayerService()
@@ -240,7 +248,7 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
 
             "PlayList" -> {
                 if (musicService != null && songPosition == intent.getIntExtra("index", 0)) {
-                    setLayout(baseContext)
+                    setLayout(baseContext,false)
                     musicListPA.addAll(PlayListSongsActivity.musicListPL)
                 } else {
                     startPlayerService()
@@ -252,7 +260,7 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
 
             "RecentlyPlayed" -> {
                 if (musicService != null && songPosition == intent.getIntExtra("index", 0)) {
-                    setLayout(baseContext)
+                    setLayout(baseContext,false)
                     musicListPA.addAll(RecentActivity.musicListRP)
                 } else {
                     startPlayerService()
@@ -261,10 +269,41 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
                     songPosition = intent.getIntExtra("index", 0)
                 }
             }
+
+            "External" -> {
+                if(musicListPA.isNotEmpty() && keepPlaying) {
+                    setLayout(baseContext,true)
+                } else {
+                    startPlayerService()
+                    musicListPA = ArrayList()
+                    external = true
+                    println(Uri.parse(intent.getStringExtra("contentUri")))
+                    musicListPA.add(getSongDetails(Uri.parse(intent.getStringExtra("contentUri"))))
+                    songPosition = intent.getIntExtra("index", 0)
+                    binding.favoritesButton.isEnabled = false
+                }
+            }
         }
 
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        if(external && !keepPlaying) {
+                if(musicService != null) {
+                    @Suppress("DEPRECATION")
+                    musicService!!.audioManager.abandonAudioFocus(musicService)
+                    if(isSongPlaying) {
+                        musicService!!.mediaPlayer!!.stop()
+                    }
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        musicService!!.stopForeground(Service.STOP_FOREGROUND_REMOVE)
+                    }
+                }
+                musicService = null
+
+        }
+    }
 
     //this function generates an random index and shuffles the song.
     private fun shuffleSong() {
@@ -298,12 +337,31 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
         return super.onSupportNavigateUp()
     }
 
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        if(external) {
+            MaterialAlertDialogBuilder(this@PlayerActivity)
+                .setTitle("Keep Playing!")
+                .setMessage("Do you want to keep the music playing?")
+                .setCancelable(false)
+                .setPositiveButton("Yes") {_,_ ->
+                    keepPlaying = true
+                    super.onBackPressed()
+                }
+                .setNegativeButton("No") {_,_ ->
+                    keepPlaying = false
+                    super.onBackPressed()
+                }
+                .show()
+        }
+        super.onBackPressed()
+    }
+
 
     //plays the songs if it is paused.
     private fun playMusic() {
         binding.pausePlayButton.setIconResource(R.drawable.pause_icon)
         musicService!!.showNotification(R.drawable.play_icon_notification,PlaybackStateCompat.STATE_PLAYING)
-        NowPlaying.binding.nowPlayingPlayPause.setImageResource(R.drawable.pause_icon_notification)
         isSongPlaying = true
         musicService!!.mediaPlayer!!.start()
     }
@@ -312,7 +370,6 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
     private fun pauseMusic() {
         binding.pausePlayButton.setIconResource(R.drawable.play_icon)
         musicService!!.showNotification(R.drawable.play_icon_notification, PlaybackStateCompat.STATE_PAUSED)
-        NowPlaying.binding.nowPlayingPlayPause.setImageResource(R.drawable.play_icon_notification)
         isSongPlaying = false
         musicService!!.mediaPlayer!!.pause()
         stopped = false
@@ -321,7 +378,7 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
     override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
         val binder = service as MusicService.MyBinder
         musicService = binder.currentService()
-        musicService!!.createMediaPlayer()
+        musicService!!.createMediaPlayer(external)
         musicService!!.mediaPlayer!!.setOnCompletionListener(this)
     }
 
@@ -335,7 +392,7 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
         if (!repeat && shuffle) {
             songPosition = getRandomNumber()
         }
-        musicService!!.createMediaPlayer()
+        musicService!!.createMediaPlayer(false)
     }
 
 
@@ -407,5 +464,35 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         intent.putExtra("EXIT", true)
         startActivity(intent)
+    }
+
+    private fun getSongDetails(contentUri: Uri): SongsData {
+        var cursor: Cursor? = null
+
+        try {
+            val projection = arrayOf(
+                MediaStore.Audio.Media.DATA,
+                MediaStore.Audio.Media.DURATION
+            )
+            cursor = this.contentResolver.query(contentUri, projection, null, null, null)
+            val dataColumn = cursor!!.getColumnIndex(MediaStore.Audio.Media.DATA)
+            val durationColumn = cursor.getColumnIndex(MediaStore.Audio.Media.DURATION)
+            cursor.moveToFirst()
+            val path = dataColumn.let { cursor.getString(it) }
+            val duration = durationColumn.let { cursor.getLong(it) }
+            cursor.close()
+            return SongsData(
+                id = "Unknown",
+                title = path!!,
+                album = "Unknown",
+                artist = "Unknown",
+                duration = duration,
+                path = path,
+                artUri = "Unknown",
+                dateModified = null
+            )
+        } finally {
+            cursor?.close()
+        }
     }
 }

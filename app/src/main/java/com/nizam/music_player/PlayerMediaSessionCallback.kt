@@ -23,12 +23,12 @@ class PlayerMediaSessionCallback(private val mediaPlayer: MediaPlayer) :
 
     override fun onSkipToNext() {
         playNextSong()
-        PlayerActivity.musicService!!.createMediaPlayer()
+        PlayerActivity.musicService!!.createMediaPlayer(false)
     }
 
     override fun onSkipToPrevious() {
         playPreviousSong()
-        PlayerActivity.musicService!!.createMediaPlayer()
+        PlayerActivity.musicService!!.createMediaPlayer(false)
     }
 
     private fun playMusic() {

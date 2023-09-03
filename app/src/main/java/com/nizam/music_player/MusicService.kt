@@ -140,16 +140,16 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
     }
 
 
-    fun createMediaPlayer() {
+    fun createMediaPlayer(external: Boolean) {
         try {
             if (PlayerActivity.musicService!!.mediaPlayer == null) {
                 PlayerActivity.musicService!!.mediaPlayer = MediaPlayer()
-                createMediaPlayer()
+                createMediaPlayer(external)
             } else {
                 PlayerActivity.musicService!!.mediaPlayer!!.reset()
                 PlayerActivity.musicService!!.mediaPlayer!!.setDataSource(PlayerActivity.musicListPA[PlayerActivity.songPosition].path)
                 PlayerActivity.musicService!!.mediaPlayer!!.prepare()
-                setLayout(baseContext)
+                setLayout(baseContext,external)
                 PlayerActivity.musicService!!.mediaPlayer!!.start()
                 PlayerActivity.isSongPlaying = true
                 PlayerActivity.binding.pausePlayButton.setIconResource(R.drawable.pause_icon)

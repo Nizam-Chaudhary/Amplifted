@@ -53,7 +53,7 @@ class NowPlaying : Fragment() {
 
             binding.nowPlayingNext.setOnClickListener {
                 playNextSong()
-                PlayerActivity.musicService!!.createMediaPlayer()
+                PlayerActivity.musicService!!.createMediaPlayer(false)
             }
 
             binding.root.setOnClickListener {
