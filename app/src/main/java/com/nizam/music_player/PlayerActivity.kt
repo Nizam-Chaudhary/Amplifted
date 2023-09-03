@@ -310,7 +310,8 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
                     }
                 }
                 musicService = null
-
+            external = false
+            keepPlaying = false
         }
     }
 
@@ -348,7 +349,7 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
 
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
-        if(external && musicService!!.mediaPlayer!!.isPlaying) {
+        if(external && musicService!!.mediaPlayer!!.isPlaying && !MainActivity.main) {
             MaterialAlertDialogBuilder(this@PlayerActivity)
                 .setTitle("Keep Playing!")
                 .setMessage("Do you want to keep the music playing?")
@@ -363,7 +364,7 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
                     onDestroy()
                 }
                 .show()
-        } else if(external && !musicService!!.mediaPlayer!!.isPlaying) {
+        } else if(external && !musicService!!.mediaPlayer!!.isPlaying && !MainActivity.main) {
             keepPlaying = false
             super.onBackPressed()
             onDestroy()

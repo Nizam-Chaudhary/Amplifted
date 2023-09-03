@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.nizam.music_player.MainActivity.Companion.main
 import com.nizam.music_player.databinding.ActivityFavoriteBinding
 import kotlin.random.Random
 
@@ -37,6 +38,8 @@ class FavoriteActivity : AppCompatActivity() {
     private fun shuffleSong() {
         binding.favoritesShuffle.setOnClickListener{
             if(favoritesList.size != 0) {
+                main = true
+                PlayerActivity.external = false
                 val intent = Intent(this@FavoriteActivity,PlayerActivity::class.java)
                 intent.putExtra("class","FavoriteActivity")
                 intent.putExtra("index", Random.nextInt(0, favoritesList.size))

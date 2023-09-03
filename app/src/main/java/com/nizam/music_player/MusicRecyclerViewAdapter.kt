@@ -54,6 +54,8 @@ class MusicRecyclerViewAdapter(private var context: Context, private var songsLi
                 MainActivity.search -> sendIntent("SearchedList",position)
                 else -> sendIntent("MusicAdapter",position)
             }
+            MainActivity.main = true
+            PlayerActivity.external = false
         }
     }
 

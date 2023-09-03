@@ -38,6 +38,7 @@ class MainActivity : AppCompatActivity() {
                 contentUri = intent.data!!
                 intentExe.putExtra("class","External")
                 intentExe.putExtra("index",0)
+                main = false
                 startActivity(intentExe)
                 finish()
                 @Suppress("UNUSED_EXPRESSION")
@@ -135,6 +136,8 @@ class MainActivity : AppCompatActivity() {
     private fun shuffleSong() {
         //Checking for user logged in Status and If user Is logged Then he does not need to enter details and directly jump back to home Screen.
         binding.shuffleButton.setOnClickListener {
+            main = true
+            PlayerActivity.external = false
             if(musicListMA.size != 0) {
                 val intent = Intent(this@MainActivity,PlayerActivity::class.java)
                 intent.putExtra("index", Random.nextInt(0, musicListMA.size))
@@ -310,6 +313,7 @@ class MainActivity : AppCompatActivity() {
         lateinit var musicListSearched: ArrayList<SongsData>
         var search = false
         lateinit var contentUri:Uri
+        var main = true
     }
 
     override fun onDestroy() {

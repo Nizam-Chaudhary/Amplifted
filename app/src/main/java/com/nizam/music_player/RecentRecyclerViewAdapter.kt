@@ -48,6 +48,8 @@ class RecentRecyclerViewAdapter(val context: Context,private val songsList: Arra
         position: Int
     ) {
         holder.root.setOnClickListener {
+            MainActivity.main = true
+            PlayerActivity.external = false
             sendIntent(position)
         }
     }

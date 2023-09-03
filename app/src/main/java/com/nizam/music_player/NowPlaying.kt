@@ -58,8 +58,12 @@ class NowPlaying : Fragment() {
 
             binding.root.setOnClickListener {
                 val intent = Intent(requireContext(), PlayerActivity::class.java)
+                if(PlayerActivity.external) {
+                    intent.putExtra("class", "External")
+                } else {
+                    intent.putExtra("class", "Now Playing")
+                }
                 intent.putExtra("index", PlayerActivity.songPosition)
-                intent.putExtra("class", "Now Playing")
                 ContextCompat.startActivity(requireContext(), intent, null)
             }
         }

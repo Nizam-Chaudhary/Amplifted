@@ -72,6 +72,8 @@ class PlayListSongRecyclerViewAdapter(private var context:Context,private var so
 
     private fun playSong(holder: Holder, position: Int) {
         holder.root.setOnClickListener {
+            MainActivity.main = true
+            PlayerActivity.external = false
             sendIntent(position)
         }
     }

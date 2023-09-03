@@ -119,6 +119,7 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
             .build()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val title = if(!PlayerActivity.external) PlayerActivity.musicListPA[PlayerActivity.songPosition].title else formatName().toString()
             mediaSession.setMetadata(
                 MediaMetadataCompat.Builder()
                     .putLong(
@@ -138,10 +139,7 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
                     )
                     .putString(
                         MediaMetadataCompat.METADATA_KEY_TITLE,
-                        PlayerActivity.musicListPA[PlayerActivity.songPosition].title
-                    )
-                    .putLong(
-                        MediaMetadataCompat.METADATA_KEY_DURATION, mediaPlayer!!.duration.toLong()
+                        title
                     )
                     .build()
             )
