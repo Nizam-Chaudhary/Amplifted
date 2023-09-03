@@ -19,6 +19,7 @@
         android:contentDescription="@string/add_playlist"
         app:icon="@drawable/add_icon"
         app:iconSize="40dp"
+        android:backgroundTint="?colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.9"
