@@ -235,9 +235,9 @@ class MainActivity : AppCompatActivity() {
 
         val sharedPreferencesAmplifted = SharedPreferencesAmplifted(this@MainActivity)
         val sort = when (sharedPreferencesAmplifted.getSortBy())  {
-            2 -> MediaStore.Audio.Media.TITLE+" DESC"
-            3 -> MediaStore.Audio.Media.DATE_ADDED
-            4 -> MediaStore.Audio.Media.DATE_ADDED+" DESC"
+            2 -> MediaStore.Audio.Media.TITLE + " DESC"
+            3 -> MediaStore.Audio.Media.DATE_MODIFIED + " DESC"
+            4 -> MediaStore.Audio.Media.DATE_MODIFIED
             else -> MediaStore.Audio.Media.TITLE
         }
 
@@ -253,7 +253,7 @@ class MainActivity : AppCompatActivity() {
             MediaStore.Audio.Media.DURATION,
             MediaStore.Audio.Media.DATA,
             MediaStore.Audio.Media.ALBUM_ID,
-            MediaStore.Audio.Media.DATE_ADDED
+            MediaStore.Audio.Media.DATE_MODIFIED
         )
         //loading all data into cursor.
         val cursor = this.contentResolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,projection,selection,null,sort,null)
@@ -270,9 +270,9 @@ class MainActivity : AppCompatActivity() {
                     val albumIdC = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID)).toString()
                     val uri = Uri.parse("content://media/external/audio/albumart")
                     val artUriC = Uri.withAppendedPath(uri,albumIdC).toString()
-                    val dateAddedC = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATE_ADDED))
+                    val dateModifiedC = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATE_MODIFIED))
 
-                    val music = SongsData(id = idC,title = titleC, album = albumC,duration = durationC, path = pathC, artist = artistC, artUri = artUriC, dateAdded = dateAddedC)
+                    val music = SongsData(id = idC,title = titleC, album = albumC,duration = durationC, path = pathC, artist = artistC, artUri = artUriC, dateModified = dateModifiedC)
                     val file = File(music.path)
                     if(file.exists()) {
                         tempList.add(music)

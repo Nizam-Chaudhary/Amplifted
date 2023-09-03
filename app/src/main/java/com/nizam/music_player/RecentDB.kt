@@ -116,7 +116,7 @@ class RecentDB(context: Context, factory: CursorFactory?): SQLiteOpenHelper(cont
                     path = pathC,
                     artist = artistC,
                     artUri = artUriC,
-                    dateAdded = null
+                    dateModified = null
                 )
                 val file = File(pathC)
                 if (file.exists()) {

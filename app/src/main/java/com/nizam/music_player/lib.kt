@@ -135,9 +135,9 @@ fun getSongData(favoritesDB:FavoritesDB): ArrayList<SongsData> {
                 val durationC = cursor.getLong(cursor.getColumnIndex(FavoritesDB.DURATION_COL))
                 val pathC = cursor.getString(cursor.getColumnIndex(FavoritesDB.PATH_COL))
                 val artUriC = cursor.getString(cursor.getColumnIndex(FavoritesDB.ART_URI_COL))
-                val dateAddedC = cursor.getString(cursor.getColumnIndex(FavoritesDB.DATE_ADDED_COL))
+                val dateAddedC = cursor.getString(cursor.getColumnIndex(FavoritesDB.DATE_MODIFIED_COL))
 
-                val music = SongsData(id = idC,title = titleC,album = albumC,artist = artistC,duration = durationC,path = pathC,artUri = artUriC, dateAdded = dateAddedC)
+                val music = SongsData(id = idC,title = titleC,album = albumC,artist = artistC,duration = durationC,path = pathC,artUri = artUriC, dateModified = dateAddedC)
 
                 val file = File(music.path)
                 if(file.exists()) {
