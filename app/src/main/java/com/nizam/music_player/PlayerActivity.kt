@@ -298,7 +298,7 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
 
     override fun onDestroy() {
         super.onDestroy()
-        if(external && !keepPlaying) {
+        if((external && !keepPlaying) || (external && isFinishing)) {
                 if(musicService != null) {
                     @Suppress("DEPRECATION")
                     musicService!!.audioManager.abandonAudioFocus(musicService)
