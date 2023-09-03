@@ -300,19 +300,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-
         super.onDestroy()
-        if(PlayerActivity.musicService != null) {
-            @Suppress("DEPRECATION")
-            PlayerActivity.musicService!!.audioManager.abandonAudioFocus(PlayerActivity.musicService)
-            if(PlayerActivity.isSongPlaying) {
-                PlayerActivity.musicService!!.mediaPlayer!!.stop()
+        if(isFinishing) {
+            if(PlayerActivity.musicService != null) {
+                @Suppress("DEPRECATION")
+                PlayerActivity.musicService!!.audioManager.abandonAudioFocus(PlayerActivity.musicService)
+                if(PlayerActivity.isSongPlaying) {
+                    PlayerActivity.musicService!!.mediaPlayer!!.stop()
+                }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    PlayerActivity.musicService!!.stopForeground(Service.STOP_FOREGROUND_REMOVE)
+                }
             }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                PlayerActivity.musicService!!.stopForeground(Service.STOP_FOREGROUND_REMOVE)
-            }
+            PlayerActivity.musicService = null
         }
-        PlayerActivity.musicService = null
     }
 
 }
