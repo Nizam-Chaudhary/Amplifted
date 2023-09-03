@@ -15,6 +15,7 @@ import com.nizam.music_player.databinding.ActivitySettingsBinding
 
 class SettingsActivity : AppCompatActivity() {
     lateinit var binding: ActivitySettingsBinding
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySettingsBinding.inflate(layoutInflater)
@@ -25,6 +26,9 @@ class SettingsActivity : AppCompatActivity() {
         sortBy()
 
         appearance()
+
+        @Suppress("DEPRECATION")
+        binding.versionInfo.text = "App Version : ${applicationContext.packageManager.getPackageInfo(packageName,0).versionName}"
     }
 
     @SuppressLint("ResourceType")
