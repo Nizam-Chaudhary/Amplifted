@@ -30,7 +30,6 @@ class RecentActivity : AppCompatActivity() {
 
     private fun setAdapter() {
         binding.recentRecyclerView.setHasFixedSize(true)
-        binding.recentRecyclerView.setItemViewCacheSize(13)
         binding.recentRecyclerView.layoutManager = LinearLayoutManager(this@RecentActivity)
         musicListRP = recentDB.getAllSongs()
         val adapter = RecentRecyclerViewAdapter(this@RecentActivity, musicListRP)

@@ -114,7 +114,6 @@ class MainActivity : AppCompatActivity() {
     //this function sets the adapter.
     private fun setRecyclerViewAdapter() {
         binding.songsRecyclerView.setHasFixedSize(true)
-        binding.songsRecyclerView.setItemViewCacheSize(20)
         binding.songsRecyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
         musicRecyclerViewAdapter = MusicRecyclerViewAdapter(this@MainActivity, musicListMA)
         binding.songsRecyclerView.adapter = musicRecyclerViewAdapter

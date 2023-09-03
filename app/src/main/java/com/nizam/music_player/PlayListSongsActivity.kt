@@ -55,7 +55,6 @@ class PlayListSongsActivity : AppCompatActivity() {
 
     private fun setRecyclerViewAdapter() {
         binding.playListSongsRecyclerView.setHasFixedSize(true)
-        binding.playListSongsRecyclerView.setItemViewCacheSize(12)
         binding.playListSongsRecyclerView.layoutManager = LinearLayoutManager(this@PlayListSongsActivity)
         val adapter = PlayListSongRecyclerViewAdapter(this@PlayListSongsActivity, musicListPL)
         binding.playListSongsRecyclerView.adapter = adapter

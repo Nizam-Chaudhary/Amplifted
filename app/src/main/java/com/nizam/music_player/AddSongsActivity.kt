@@ -24,7 +24,6 @@ class AddSongsActivity : AppCompatActivity() , AddSongRecyclerViewAdapter.OnItem
 
     private fun setRecyclerViewAdapter() {
         binding.pickSongRecyclerView.setHasFixedSize(true)
-        binding.pickSongRecyclerView.setItemViewCacheSize(13)
         binding.pickSongRecyclerView.layoutManager = LinearLayoutManager(this@AddSongsActivity)
         val adapter = AddSongRecyclerViewAdapter(this@AddSongsActivity,MainActivity.musicListMA,playListName)
         adapter.setOnItemClickListener(this)

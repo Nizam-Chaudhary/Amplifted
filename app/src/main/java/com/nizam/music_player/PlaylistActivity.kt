@@ -75,7 +75,6 @@ class PlaylistActivity : AppCompatActivity() {
 
     private fun setRecyclerViewAdapter() {
         binding.playListRecyclerView.setHasFixedSize(true)
-        binding.playListRecyclerView.setItemViewCacheSize(10)
         allPlaylist = ArrayList()
         allPlaylist = getAllPlayList()
         binding.playListRecyclerView.layoutManager = GridLayoutManager(this@PlaylistActivity,2)
