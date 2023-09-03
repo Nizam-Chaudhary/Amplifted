@@ -14,7 +14,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:background="@drawable/gradient_now_playing"
         >
 
         <com.google.android.material.imageview.ShapeableImageView
@@ -22,7 +22,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginHorizontal="10dp"
-            android:layout_marginVertical="5dp"
+            android:layout_marginVertical="10dp"
             android:src="@drawable/icon"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -93,8 +93,5 @@
             app:tint="?colorPrimary"
             tools:ignore="ImageContrastCheck" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
 
 </androidx.cardview.widget.CardView>

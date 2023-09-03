@@ -77,7 +77,7 @@ class PlaylistActivity : AppCompatActivity() {
         binding.playListRecyclerView.setHasFixedSize(true)
         allPlaylist = ArrayList()
         allPlaylist = getAllPlayList()
-        binding.playListRecyclerView.layoutManager = GridLayoutManager(this@PlaylistActivity,2)
+        binding.playListRecyclerView.layoutManager = GridLayoutManager(this@PlaylistActivity,3)
         val playListRecyclerViewAdapter = PlayListRecyclerViewAdapter(this@PlaylistActivity,
             allPlaylist)
         binding.playListRecyclerView.adapter = playListRecyclerViewAdapter

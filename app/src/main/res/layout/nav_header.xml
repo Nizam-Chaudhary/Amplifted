@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?colorPrimary"
+    android:background="@drawable/gradient_nav_header"
     android:orientation="vertical">
 
     <TextView
@@ -48,5 +48,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.5"
         android:contentDescription="@string/music_note_icon"
-        app:tint="#FFFFFF" />
+        app:tint="@color/white"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,35 +2,41 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
-    android:layout_marginTop="15dp"
     app:cardCornerRadius="10dp"
     tools:ignore="TextSizeCheck">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@drawable/gradient_now_playing">
 
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/favoritesAlbumArt"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_margin="5dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="10dp"
             android:contentDescription="@string/album_art"
             android:src="@drawable/icon"
-            app:shapeAppearanceOverlay="@style/curved"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.30"
+            app:shapeAppearanceOverlay="@style/curved"
+            tools:ignore="ImageContrastCheck" />
 
         <TextView
             android:id="@+id/favoritesSongName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:text="@string/song_name"
             android:textColor="@color/text"
             android:textSize="18sp"
