@@ -10,7 +10,6 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.view.setPadding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nizam.music_player.databinding.ActivitySettingsBinding
 
@@ -37,6 +36,7 @@ class SettingsActivity : AppCompatActivity() {
             val dark = RadioButton(this@SettingsActivity)
             val system = RadioButton(this@SettingsActivity)
 
+
             light.setText(R.string.light_theme)
             light.id = 1
             dark.setText(R.string.dark_theme)
@@ -51,7 +51,6 @@ class SettingsActivity : AppCompatActivity() {
             }
 
             val radioGroup = RadioGroup(this@SettingsActivity)
-            radioGroup.setPadding(10)
             //byNameAsc.isChecked = true
 
             radioGroup.addView(light)
@@ -60,11 +59,12 @@ class SettingsActivity : AppCompatActivity() {
 
             val linearLayout = LinearLayout(this@SettingsActivity)
             linearLayout.addView(radioGroup)
-            linearLayout.setPadding(20)
+            linearLayout.setPadding(40,10,40,10)
 
             MaterialAlertDialogBuilder(this)
                 .setTitle("Theme")
                 .setView(linearLayout)
+                .setMessage("Select Theme Mode.")
                 .setPositiveButton("Apply") { _, _ ->
                     println(radioGroup.checkedRadioButtonId.toString())
                     when (radioGroup.checkedRadioButtonId) {
@@ -147,9 +147,6 @@ class SettingsActivity : AppCompatActivity() {
             }
 
             val radioGroup = RadioGroup(this@SettingsActivity)
-            radioGroup.setPadding(10)
-            //byNameAsc.isChecked = true
-
             radioGroup.addView(byNameAsc)
             radioGroup.addView(byNameDesc)
             radioGroup.addView(byDateAddedDesc)
@@ -157,11 +154,12 @@ class SettingsActivity : AppCompatActivity() {
 
             val linearLayout = LinearLayout(this@SettingsActivity)
             linearLayout.addView(radioGroup)
-            linearLayout.setPadding(20)
+            linearLayout.setPadding(40,10,40,10)
 
             MaterialAlertDialogBuilder(this)
                 .setTitle("Sort By")
                 .setView(linearLayout)
+                .setMessage("Select order of songs displayed.")
                 .setPositiveButton("Apply") { _, _ ->
                     println(radioGroup.checkedRadioButtonId.toString())
                     when (radioGroup.checkedRadioButtonId) {
