@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intentExe)
                 PlayerActivity.external = true
                 finish()
+                @Suppress("UNUSED_EXPRESSION")
                 true
             }
             false
