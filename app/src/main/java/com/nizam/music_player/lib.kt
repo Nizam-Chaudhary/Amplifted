@@ -121,11 +121,22 @@ fun formatName(): CharSequence {
 
 fun setNowPlaying(context: Context) {
     //now setting layout for Now Playing Fragment
-    Glide.with(context).load(musicListPA[PlayerActivity.songPosition].artUri)
-        .apply(RequestOptions().placeholder(R.drawable.icon).centerCrop())
-        .into(NowPlaying.binding.nowPlayingAlbumArt)
-    NowPlaying.binding.nowPlayingSongName.text = musicListPA[PlayerActivity.songPosition].title
-    NowPlaying.binding.nowPlayingArtistName.text = musicListPA[PlayerActivity.songPosition].artist
+    if(PlayerActivity.external) {
+        Glide.with(context)
+            .load(getImageArt(musicListPA[PlayerActivity.songPosition].path))
+            .apply(RequestOptions().placeholder(R.drawable.icon).centerCrop())
+            .into(NowPlaying.binding.nowPlayingAlbumArt)
+        NowPlaying.binding.nowPlayingSongName.text = formatName()
+        NowPlaying.binding.nowPlayingArtistName.text = musicListPA[PlayerActivity.songPosition].artist
+        NowPlaying.binding.nowPlayingNext.isEnabled = false
+    } else {
+        NowPlaying.binding.nowPlayingNext.isEnabled = true
+        Glide.with(context).load(musicListPA[PlayerActivity.songPosition].artUri)
+            .apply(RequestOptions().placeholder(R.drawable.icon).centerCrop())
+            .into(NowPlaying.binding.nowPlayingAlbumArt)
+        NowPlaying.binding.nowPlayingSongName.text = musicListPA[PlayerActivity.songPosition].title
+        NowPlaying.binding.nowPlayingArtistName.text = musicListPA[PlayerActivity.songPosition].artist
+    }
 }
 
 //generates Random number other than current song playing.
