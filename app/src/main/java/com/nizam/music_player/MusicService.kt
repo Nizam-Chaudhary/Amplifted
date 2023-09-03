@@ -41,18 +41,45 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
 
     fun showNotification(playPauseButton: Int, currentState: Int) {
 
-        val intent = Intent(baseContext, MainActivity::class.java)
-        val contentIntent =
-            PendingIntent.getActivity(baseContext, 3, intent, PendingIntent.FLAG_IMMUTABLE)
+        lateinit var mainContentIntent: PendingIntent
 
-        val previousIntent = Intent(baseContext,NotificationReceiver::class.java).setAction(ApplicationClass.PREVIOUS)
-        val previousPendingIntent = PendingIntent.getBroadcast(baseContext,0,previousIntent,PendingIntent.FLAG_IMMUTABLE)
+        if (!PlayerActivity.external) {
+            val intent = Intent(baseContext, MainActivity::class.java)
+            mainContentIntent =
+                PendingIntent.getActivity(baseContext, 3, intent, PendingIntent.FLAG_IMMUTABLE)
+        }
 
-        val nextIntent = Intent(baseContext,NotificationReceiver::class.java).setAction(ApplicationClass.NEXT)
-        val nextPendingIntent = PendingIntent.getBroadcast(baseContext,1,nextIntent,PendingIntent.FLAG_IMMUTABLE)
+        lateinit var externalContentIntent: PendingIntent
 
-        val playPauseIntent = Intent(baseContext,NotificationReceiver::class.java).setAction(ApplicationClass.PLAY_PAUSE)
-        val playPausePendingIntent = PendingIntent.getBroadcast(baseContext,2,playPauseIntent,PendingIntent.FLAG_IMMUTABLE)
+        if (PlayerActivity.external) {
+            val intent = Intent(baseContext, PlayerActivity::class.java)
+            intent.putExtra("class","External")
+            mainContentIntent = PendingIntent.getActivity(baseContext, 3, intent, PendingIntent.FLAG_IMMUTABLE)
+        }
+
+
+        val previousIntent = Intent(
+            baseContext,
+            NotificationReceiver::class.java
+        ).setAction(ApplicationClass.PREVIOUS)
+        val previousPendingIntent =
+            PendingIntent.getBroadcast(baseContext, 0, previousIntent, PendingIntent.FLAG_IMMUTABLE)
+
+        val nextIntent =
+            Intent(baseContext, NotificationReceiver::class.java).setAction(ApplicationClass.NEXT)
+        val nextPendingIntent =
+            PendingIntent.getBroadcast(baseContext, 1, nextIntent, PendingIntent.FLAG_IMMUTABLE)
+
+        val playPauseIntent = Intent(
+            baseContext,
+            NotificationReceiver::class.java
+        ).setAction(ApplicationClass.PLAY_PAUSE)
+        val playPausePendingIntent = PendingIntent.getBroadcast(
+            baseContext,
+            2,
+            playPauseIntent,
+            PendingIntent.FLAG_IMMUTABLE
+        )
 
         val imageArt = getImageArt(PlayerActivity.musicListPA[PlayerActivity.songPosition].path)
 
@@ -69,6 +96,8 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
             )
         }
 
+        val contentIntent =
+            if (PlayerActivity.external) mainContentIntent else externalContentIntent
 
         val notification = NotificationCompat.Builder(baseContext, ApplicationClass.CHANNEL_ID)
             .setContentIntent(contentIntent)
@@ -149,11 +178,14 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
                 PlayerActivity.musicService!!.mediaPlayer!!.reset()
                 PlayerActivity.musicService!!.mediaPlayer!!.setDataSource(PlayerActivity.musicListPA[PlayerActivity.songPosition].path)
                 PlayerActivity.musicService!!.mediaPlayer!!.prepare()
-                setLayout(baseContext,external)
+                setLayout(baseContext, external)
                 PlayerActivity.musicService!!.mediaPlayer!!.start()
                 PlayerActivity.isSongPlaying = true
                 PlayerActivity.binding.pausePlayButton.setIconResource(R.drawable.pause_icon)
-                showNotification(R.drawable.pause_icon_notification,PlaybackStateCompat.STATE_PLAYING)
+                showNotification(
+                    R.drawable.pause_icon_notification,
+                    PlaybackStateCompat.STATE_PLAYING
+                )
                 syncSeekBar()
                 PlayerActivity.musicService!!.audioManager =
                     getSystemService(Context.AUDIO_SERVICE) as AudioManager
@@ -187,7 +219,7 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
             stopped = true
             mediaPlayer!!.pause()
         } else {
-            if(stopped) {
+            if (stopped) {
                 PlayerActivity.binding.pausePlayButton.setIconResource(R.drawable.pause_icon)
                 showNotification(
                     R.drawable.pause_icon_notification,

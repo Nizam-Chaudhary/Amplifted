@@ -31,8 +31,12 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
         FavoritesDB(this@PlayerActivity, null)
     }
 
-    private var keepPlaying = false
-
+    override fun onPause() {
+        super.onPause()
+        if(external) {
+            keepPlaying = true
+        }
+    }
 
     companion object {
         var isSongPlaying = false
@@ -40,6 +44,7 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
         var songPosition = 0
         var musicService: MusicService? = null
         var external = false
+        var keepPlaying = false
 
         @SuppressLint("StaticFieldLeak")
         lateinit var binding: ActivityPlayerBinding
@@ -274,7 +279,7 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
                 if(keepPlaying) {
                     println("not")
                     external = true
-                    keepPlaying = true
+                    keepPlaying = false
                     setLayout(baseContext,true)
                 } else {
                     startPlayerService()
