@@ -35,12 +35,10 @@ class MainActivity : AppCompatActivity() {
         splashScreen.setKeepOnScreenCondition{
             if (intent.data?.scheme.contentEquals("content")) {
                 val intentExe = Intent(this@MainActivity,PlayerActivity::class.java)
-                intentExe.putExtra("contentUri", intent.data!!.toString())
+                contentUri = intent.data!!
                 intentExe.putExtra("class","External")
                 intentExe.putExtra("index",0)
-                println(intent.data!!)
                 startActivity(intentExe)
-                PlayerActivity.external = true
                 finish()
                 @Suppress("UNUSED_EXPRESSION")
                 true
@@ -311,6 +309,7 @@ class MainActivity : AppCompatActivity() {
         var hasPermission = false
         lateinit var musicListSearched: ArrayList<SongsData>
         var search = false
+        lateinit var contentUri:Uri
     }
 
     override fun onDestroy() {

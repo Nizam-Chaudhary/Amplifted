@@ -168,7 +168,7 @@ class MusicService : Service(), AudioManager.OnAudioFocusChangeListener {
         }
     }
 
-    private fun syncSeekBar() {
+    fun syncSeekBar() {
         runnable = Runnable {
             PlayerActivity.binding.progressDuration.text =
                 formatDuration(mediaPlayer!!.currentPosition.toLong())

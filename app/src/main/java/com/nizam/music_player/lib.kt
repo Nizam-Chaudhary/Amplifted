@@ -74,17 +74,11 @@ fun setLayout(context: Context, external: Boolean) {
             PlayerActivity.binding.pausePlayButton.setIconResource(R.drawable.play_icon)
         }
         PlayerActivity.binding.songName.text = formatName()
-        PlayerActivity.binding.duration.text =
-            formatDuration(PlayerActivity.musicService!!.mediaPlayer!!.duration.toLong())
-        PlayerActivity.binding.seekBarPA.max = PlayerActivity.musicService!!.mediaPlayer!!.duration
     } else {
         Glide.with(context).load(musicListPA[PlayerActivity.songPosition].artUri)
             .apply(RequestOptions().placeholder(R.drawable.icon).centerCrop())
             .into(PlayerActivity.binding.albumImage)
         PlayerActivity.binding.songName.text = musicListPA[PlayerActivity.songPosition].title
-        PlayerActivity.binding.duration.text =
-            formatDuration(PlayerActivity.musicService!!.mediaPlayer!!.duration.toLong())
-        PlayerActivity.binding.seekBarPA.max = PlayerActivity.musicService!!.mediaPlayer!!.duration
         if (!PlayerActivity.isSongPlaying) {
             PlayerActivity.binding.pausePlayButton.setIconResource(R.drawable.play_icon)
         }
@@ -114,6 +108,10 @@ fun setLayout(context: Context, external: Boolean) {
             PlayerActivity.binding.repeatSong.setImageResource(R.drawable.repeat_icon)
         }
     }
+    PlayerActivity.binding.duration.text =
+        formatDuration(PlayerActivity.musicService!!.mediaPlayer!!.duration.toLong())
+    PlayerActivity.binding.seekBarPA.max = PlayerActivity.musicService!!.mediaPlayer!!.duration
+    PlayerActivity.musicService!!.syncSeekBar()
 }
 
 fun formatName(): CharSequence {

@@ -271,16 +271,20 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
             }
 
             "External" -> {
-                if(musicListPA.isNotEmpty() && keepPlaying) {
+                if(keepPlaying) {
+                    println("not")
+                    external = true
+                    keepPlaying = true
                     setLayout(baseContext,true)
                 } else {
                     startPlayerService()
                     musicListPA = ArrayList()
                     external = true
-                    println(Uri.parse(intent.getStringExtra("contentUri")))
-                    musicListPA.add(getSongDetails(Uri.parse(intent.getStringExtra("contentUri"))))
+                    keepPlaying = true
+                    musicListPA.add(getSongDetails(MainActivity.contentUri))
                     songPosition = intent.getIntExtra("index", 0)
                     binding.favoritesButton.isEnabled = false
+                    println("yes")
                 }
             }
         }
@@ -339,22 +343,28 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
 
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
-        if(external) {
+        if(external && musicService!!.mediaPlayer!!.isPlaying) {
             MaterialAlertDialogBuilder(this@PlayerActivity)
                 .setTitle("Keep Playing!")
                 .setMessage("Do you want to keep the music playing?")
-                .setCancelable(false)
-                .setPositiveButton("Yes") {_,_ ->
+                .setPositiveButton("Yes") {dialog,_ ->
                     keepPlaying = true
-                    super.onBackPressed()
+                    this.moveTaskToBack(true)
+                    dialog.dismiss()
                 }
                 .setNegativeButton("No") {_,_ ->
                     keepPlaying = false
                     super.onBackPressed()
+                    onDestroy()
                 }
                 .show()
+        } else if(external && !musicService!!.mediaPlayer!!.isPlaying) {
+            keepPlaying = false
+            super.onBackPressed()
+            onDestroy()
+        } else {
+            super.onBackPressed()
         }
-        super.onBackPressed()
     }
 
 
