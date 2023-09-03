@@ -104,10 +104,13 @@ class MainActivity : AppCompatActivity() {
 
     //this function checks if app has permission call function setRecyclerViewAdapter()  to set the adapter.
     private fun checkAndSetAdapter() {
-        if(hasPermission) {
-            musicListMA = getAllAudioFiles()
-            setRecyclerViewAdapter()
-        }
+        Thread{
+            if(hasPermission) {
+                musicListMA = getAllAudioFiles()
+                setRecyclerViewAdapter()
+            }
+        }.start()
+
     }
 
 
