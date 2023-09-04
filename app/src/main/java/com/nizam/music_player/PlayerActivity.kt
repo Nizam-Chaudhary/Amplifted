@@ -145,7 +145,10 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
     private fun onSeekBarChange() {
         binding.seekBarPA.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-                if (p2) musicService!!.mediaPlayer!!.seekTo(p1)
+                if (p2){
+                    musicService!!.mediaPlayer!!.seekTo(p1)
+                    musicService!!.showNotification(R.drawable.pause_icon,PlaybackStateCompat.STATE_PLAYING)
+                }
             }
 
             override fun onStartTrackingTouch(p0: SeekBar?) = Unit
