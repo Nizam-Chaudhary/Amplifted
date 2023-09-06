@@ -147,7 +147,11 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
                 if (p2){
                     musicService!!.mediaPlayer!!.seekTo(p1)
-                    musicService!!.showNotification(R.drawable.pause_icon,PlaybackStateCompat.STATE_PLAYING)
+                    if(musicService!!.mediaPlayer!!.isPlaying) {
+                        musicService!!.showNotification(R.drawable.pause_icon,PlaybackStateCompat.STATE_PLAYING)
+                    } else {
+                        musicService!!.showNotification(R.drawable.play_icon,PlaybackStateCompat.STATE_PLAYING)
+                    }
                 }
             }
 
