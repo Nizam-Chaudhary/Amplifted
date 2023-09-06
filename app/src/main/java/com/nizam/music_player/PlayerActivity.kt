@@ -150,7 +150,7 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
                     if(musicService!!.mediaPlayer!!.isPlaying) {
                         musicService!!.showNotification(R.drawable.pause_icon,PlaybackStateCompat.STATE_PLAYING)
                     } else {
-                        musicService!!.showNotification(R.drawable.play_icon,PlaybackStateCompat.STATE_PLAYING)
+                        musicService!!.showNotification(R.drawable.play_icon,PlaybackStateCompat.STATE_PAUSED)
                     }
                 }
             }
