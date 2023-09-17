@@ -13,13 +13,13 @@ android {
         }
     }
     namespace = "com.nizam.music_player"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.nizam.music_player"
         minSdk = 21
         //noinspection OldTargetApi
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.1.0"
 
