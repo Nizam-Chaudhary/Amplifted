@@ -92,4 +92,12 @@ class PlaylistActivity : AppCompatActivity() {
         }
         return list
     }
+
+    override fun onResume() {
+        super.onResume()
+        allPlaylist = getAllPlayList()
+        val playListRecyclerViewAdapter = PlayListRecyclerViewAdapter(this@PlaylistActivity,
+            allPlaylist)
+        binding.playListRecyclerView.adapter = playListRecyclerViewAdapter
+    }
 }
