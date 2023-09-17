@@ -89,11 +89,16 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
             if (favoritesDB.songExists(musicListPA[songPosition].title)) {
                 favoritesDB.removeFromFavorites(musicListPA[songPosition].title)
                 binding.favoritesButton.setImageResource(R.drawable.favorite_empty_icon)
-                if (intent.getStringExtra("class") == "FavoritesAdapter") {
+                if ((intent.getStringExtra("class") == "FavoritesAdapter" || intent.getStringExtra("class") == "FavoriteActivity") && musicListPA.size > 1) {
                     musicListPA = getSongData(favoritesDB)
                 }
             } else {
-                favoritesDB.addToFavorites(musicListPA[songPosition])
+                if ((intent.getStringExtra("class") == "FavoritesAdapter" || intent.getStringExtra("class") == "FavoriteActivity") && musicListPA.size > 1) {
+                    favoritesDB.addToFavorites(FavoriteActivity.favoritesList[songPosition])
+                    musicListPA = getSongData(favoritesDB)
+                    } else {
+                    favoritesDB.addToFavorites(musicListPA[songPosition])
+                }
                 binding.favoritesButton.setImageResource(R.drawable.favorite_filled_icon)
             }
         }
@@ -372,8 +377,8 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
                 }
                 .show()
         } else if(external && !musicService!!.mediaPlayer!!.isPlaying && !MainActivity.main) {
-            keepPlaying = false
             super.onBackPressed()
+            keepPlaying = false
             onDestroy()
         } else {
             super.onBackPressed()

@@ -51,7 +51,6 @@ class FavoritesRecyclerViewAdapter(private var context:Context, private val song
         holder.root.setOnClickListener {
             MainActivity.main = true
             PlayerActivity.external = false
-            PlayerActivity.external = true
             sendIntent(position)
         }
     }
