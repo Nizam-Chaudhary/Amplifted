@@ -39,6 +39,7 @@ class PlayListSongsActivity : AppCompatActivity() {
 
             val intent = Intent(this@PlayListSongsActivity,AddSongsActivity::class.java)
             intent.putExtra("playListName",playListName)
+            finish()
             startActivity(intent)
         }
     }
