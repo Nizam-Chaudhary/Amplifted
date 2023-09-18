@@ -297,7 +297,10 @@ class MainActivity : AppCompatActivity() {
                     val dateModifiedC = cursor.getString(dateModifiedColumn)
                     val contentUri: Uri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,idC)
 
-                    val music = SongsData(id = idC,title = titleC, album = albumC,duration = durationC, path = pathC, artist = artistC, artUri = artUriC, dateModified = dateModifiedC)
+                    val music = SongsData(
+                        id = contentUri,
+                        title = titleC, album = albumC,
+                        duration = durationC, path = pathC, artist = artistC, artUri = artUriC, dateModified = dateModifiedC)
                     val file = File(music.path)
                     if(file.exists()) {
                         tempList.add(music)

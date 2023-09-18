@@ -6,6 +6,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteDatabase.CursorFactory
 import android.database.sqlite.SQLiteOpenHelper
+import android.net.Uri
 import java.io.File
 
 class RecentDB(context: Context, factory: CursorFactory?): SQLiteOpenHelper(context, DATABASE_NAME, factory, DATABASE_VERSION) {
@@ -45,7 +46,7 @@ class RecentDB(context: Context, factory: CursorFactory?): SQLiteOpenHelper(cont
 
             val values = ContentValues()
 
-            values.put(ID_COL,songData.id)
+            values.put(ID_COL,songData.id.toString())
             values.put(TITLE_COL,songData.title)
             values.put(ALBUM_COL,songData.album)
             values.put(ARTIST_COL,songData.artist)
@@ -109,7 +110,7 @@ class RecentDB(context: Context, factory: CursorFactory?): SQLiteOpenHelper(cont
                 val artUriC = cursor.getString(cursor.getColumnIndex(ART_URI_COL))
 
                 val music = SongsData(
-                    id = idC,
+                    id = Uri.parse(idC),
                     title = titleC,
                     album = albumC,
                     duration = durationC,

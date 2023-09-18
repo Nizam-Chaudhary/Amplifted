@@ -510,7 +510,7 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
             val duration = durationColumn.let { cursor.getLong(it) }
             cursor.close()
             return SongsData(
-                id = "Unknown",
+                id = Uri.parse("Unknown"),
                 title = path!!,
                 album = "Unknown",
                 artist = "Unknown",

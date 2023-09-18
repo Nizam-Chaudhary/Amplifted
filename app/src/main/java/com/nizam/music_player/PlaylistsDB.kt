@@ -5,6 +5,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.net.Uri
 import java.io.File
 
 class PlaylistsDB(val context: Context, factory: SQLiteDatabase.CursorFactory?) :
@@ -58,7 +59,7 @@ class PlaylistsDB(val context: Context, factory: SQLiteDatabase.CursorFactory?) 
             val values = ContentValues()
 
             values.put(PLAYLIST_NAME_COL, playListName)
-            values.put(ID_COL, songsData.id)
+            values.put(ID_COL, songsData.id.toString())
             values.put(TITLE_COL, songsData.title)
             values.put(ALBUM_COL, songsData.album)
             values.put(ARTIST_COL, songsData.artist)
@@ -162,7 +163,7 @@ class PlaylistsDB(val context: Context, factory: SQLiteDatabase.CursorFactory?) 
                 val dateAddedC = cursor.getString(cursor.getColumnIndex(DATE_MODIFIED_COL))
 
                 val music = SongsData(
-                    id = idC,
+                    id = Uri.parse(idC),
                     title = titleC,
                     album = albumC,
                     duration = durationC,
@@ -199,7 +200,7 @@ class PlaylistsDB(val context: Context, factory: SQLiteDatabase.CursorFactory?) 
 
         cursor.close()
         return SongsData(
-            id = idC,
+            id = Uri.parse(idC),
             title = titleC,
             album = albumC,
             artist = artistC,

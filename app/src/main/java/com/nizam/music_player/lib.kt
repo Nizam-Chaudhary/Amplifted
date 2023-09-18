@@ -3,6 +3,7 @@ package com.nizam.music_player
 import android.annotation.SuppressLint
 import android.content.Context
 import android.media.MediaMetadataRetriever
+import android.net.Uri
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.nizam.music_player.PlayerActivity.Companion.musicListPA
@@ -171,7 +172,7 @@ fun getSongData(favoritesDB: FavoritesDB): ArrayList<SongsData> {
                     cursor.getString(cursor.getColumnIndex(FavoritesDB.DATE_MODIFIED_COL))
 
                 val music = SongsData(
-                    id = idC,
+                    id = Uri.parse(idC),
                     title = titleC,
                     album = albumC,
                     artist = artistC,

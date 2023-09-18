@@ -38,7 +38,7 @@ class FavoritesDB(val context: Context, factory: SQLiteDatabase.CursorFactory?):
     fun addToFavorites(songsData: SongsData) {
         val values = ContentValues()
 
-        values.put(ID_COL,songsData.id)
+        values.put(ID_COL,songsData.id.toString())
         values.put(TITLE_COL,songsData.title)
         values.put(ALBUM_COL,songsData.album)
         values.put(ARTIST_COL,songsData.artist)
@@ -61,7 +61,7 @@ class FavoritesDB(val context: Context, factory: SQLiteDatabase.CursorFactory?):
         val cursor = db.rawQuery(query,null)
         var value: String? = null
         if(cursor.moveToFirst())
-            value = cursor.getString(cursor.getColumnIndex(ID_COL))
+            value = cursor.getString(cursor.getColumnIndexOrThrow(ID_COL))
         cursor.close()
         if(value != null)
             return true

@@ -1,7 +1,9 @@
 package com.nizam.music_player
 
+import android.net.Uri
+
 data class SongsData(
-    val id: Long,
+    val id: Uri,
     val title: String,
     val album: String,
     val artist: String,
