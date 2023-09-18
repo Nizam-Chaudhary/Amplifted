@@ -3,6 +3,7 @@ package com.nizam.music_player
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Service
+import android.content.ContentUris
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -275,17 +276,26 @@ class MainActivity : AppCompatActivity() {
         //if cursor is not null then adding all values to tempList.
         if(cursor != null) {
             if(cursor.moveToFirst()) {
+                val titleColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)
+                val idColumn = cursor.getColumnIndex(MediaStore.Audio.Media._ID)
+                val albumColumn = cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM)
+                val artistColumn = cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST)
+                val pathColumn = cursor.getColumnIndex(MediaStore.Audio.Media.DATA)
+                val durationColumn = cursor.getColumnIndex(MediaStore.Audio.Media.DURATION)
+                val albumIdColumn = cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID)
+                val uri = Uri.parse("content://media/external/audio/albumart")
+                val dateModifiedColumn = cursor.getColumnIndex(MediaStore.Audio.Media.DATE_MODIFIED)
                 do {
-                    val titleC = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE))
-                    val idC = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media._ID))
-                    val albumC = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM))
-                    val artistC = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST))
-                    val pathC = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA))
-                    val durationC = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION))
-                    val albumIdC = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID)).toString()
-                    val uri = Uri.parse("content://media/external/audio/albumart")
+                    val titleC = cursor.getString(titleColumn)
+                    val idC = cursor.getLong(idColumn)
+                    val albumC = cursor.getString(albumColumn)
+                    val artistC = cursor.getString(artistColumn)
+                    val pathC = cursor.getString(pathColumn)
+                    val durationC = cursor.getLong(durationColumn)
+                    val albumIdC = cursor.getLong(albumIdColumn).toString()
                     val artUriC = Uri.withAppendedPath(uri,albumIdC).toString()
-                    val dateModifiedC = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATE_MODIFIED))
+                    val dateModifiedC = cursor.getString(dateModifiedColumn)
+                    val contentUri: Uri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,idC)
 
                     val music = SongsData(id = idC,title = titleC, album = albumC,duration = durationC, path = pathC, artist = artistC, artUri = artUriC, dateModified = dateModifiedC)
                     val file = File(music.path)

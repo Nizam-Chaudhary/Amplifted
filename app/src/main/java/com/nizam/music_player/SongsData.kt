@@ -1,7 +1,7 @@
 package com.nizam.music_player
 
 data class SongsData(
-    val id: String,
+    val id: Long,
     val title: String,
     val album: String,
     val artist: String,
