@@ -503,8 +503,8 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
                 MediaStore.Audio.Media.DURATION
             )
             cursor = this.contentResolver.query(contentUri, projection, null, null, null)
-            val dataColumn = cursor!!.getColumnIndex(MediaStore.Audio.Media.DATA)
-            val durationColumn = cursor.getColumnIndex(MediaStore.Audio.Media.DURATION)
+            val dataColumn = cursor!!.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)
+            val durationColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)
             cursor.moveToFirst()
             val path = dataColumn.let { cursor.getString(it) }
             val duration = durationColumn.let { cursor.getLong(it) }

@@ -1,6 +1,5 @@
 package com.nizam.music_player
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.media.MediaMetadataRetriever
 import android.net.Uri
@@ -122,13 +121,14 @@ fun formatName(): CharSequence {
 
 fun setNowPlaying(context: Context) {
     //now setting layout for Now Playing Fragment
-    if(PlayerActivity.external) {
+    if (PlayerActivity.external) {
         Glide.with(context)
             .load(getImageArt(musicListPA[PlayerActivity.songPosition].path))
             .apply(RequestOptions().placeholder(R.drawable.icon).centerCrop())
             .into(NowPlaying.binding.nowPlayingAlbumArt)
         NowPlaying.binding.nowPlayingSongName.text = formatName()
-        NowPlaying.binding.nowPlayingArtistName.text = musicListPA[PlayerActivity.songPosition].artist
+        NowPlaying.binding.nowPlayingArtistName.text =
+            musicListPA[PlayerActivity.songPosition].artist
         NowPlaying.binding.nowPlayingNext.isEnabled = false
     } else {
         NowPlaying.binding.nowPlayingNext.isEnabled = true
@@ -136,7 +136,8 @@ fun setNowPlaying(context: Context) {
             .apply(RequestOptions().placeholder(R.drawable.icon).centerCrop())
             .into(NowPlaying.binding.nowPlayingAlbumArt)
         NowPlaying.binding.nowPlayingSongName.text = musicListPA[PlayerActivity.songPosition].title
-        NowPlaying.binding.nowPlayingArtistName.text = musicListPA[PlayerActivity.songPosition].artist
+        NowPlaying.binding.nowPlayingArtistName.text =
+            musicListPA[PlayerActivity.songPosition].artist
     }
 }
 
@@ -154,22 +155,28 @@ fun getRandomNumber(): Int {
     return temp
 }
 
-@SuppressLint("Range")
 fun getSongData(favoritesDB: FavoritesDB): ArrayList<SongsData> {
     val songsList: ArrayList<SongsData> = ArrayList()
     val cursor = favoritesDB.getFavorites()
     if (cursor != null) {
         if (cursor.moveToFirst()) {
+            val idColumn = cursor.getColumnIndexOrThrow(FavoritesDB.ID_COL)
+            val titleColumn = cursor.getColumnIndexOrThrow(FavoritesDB.TITLE_COL)
+            val albumColumn = cursor.getColumnIndexOrThrow(FavoritesDB.ALBUM_COL)
+            val artistColumn = cursor.getColumnIndexOrThrow(FavoritesDB.ARTIST_COL)
+            val durationColumn = cursor.getColumnIndexOrThrow(FavoritesDB.DURATION_COL)
+            val pathColumn = cursor.getColumnIndexOrThrow(FavoritesDB.PATH_COL)
+            val artUriColumn = cursor.getColumnIndexOrThrow(FavoritesDB.ART_URI_COL)
+            val dateAddedColumn = cursor.getColumnIndexOrThrow(FavoritesDB.DATE_MODIFIED_COL)
             do {
-                val idC = cursor.getString(cursor.getColumnIndex(FavoritesDB.ID_COL))
-                val titleC = cursor.getString(cursor.getColumnIndex(FavoritesDB.TITLE_COL))
-                val albumC = cursor.getString(cursor.getColumnIndex(FavoritesDB.ALBUM_COL))
-                val artistC = cursor.getString(cursor.getColumnIndex(FavoritesDB.ARTIST_COL))
-                val durationC = cursor.getLong(cursor.getColumnIndex(FavoritesDB.DURATION_COL))
-                val pathC = cursor.getString(cursor.getColumnIndex(FavoritesDB.PATH_COL))
-                val artUriC = cursor.getString(cursor.getColumnIndex(FavoritesDB.ART_URI_COL))
-                val dateAddedC =
-                    cursor.getString(cursor.getColumnIndex(FavoritesDB.DATE_MODIFIED_COL))
+                val idC = cursor.getString(idColumn)
+                val titleC = cursor.getString(titleColumn)
+                val albumC = cursor.getString(albumColumn)
+                val artistC = cursor.getString(artistColumn)
+                val durationC = cursor.getLong(durationColumn)
+                val pathC = cursor.getString(pathColumn)
+                val artUriC = cursor.getString(artUriColumn)
+                val dateAddedC = cursor.getString(dateAddedColumn)
 
                 val music = SongsData(
                     id = Uri.parse(idC),

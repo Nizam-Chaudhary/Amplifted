@@ -1,7 +1,6 @@
 package com.nizam.music_player
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Service
 import android.content.ContentUris
 import android.content.Intent
@@ -246,7 +245,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     //this function is used to load all files into ArrayList from the Storage
-    @SuppressLint("Recycle", "Range")
     private fun getAllAudioFiles():ArrayList<SongsData> {
 
         val sharedPreferencesAmplifted = SharedPreferencesAmplifted(this@MainActivity)
@@ -277,14 +275,15 @@ class MainActivity : AppCompatActivity() {
         if(cursor != null) {
             if(cursor.moveToFirst()) {
                 val titleColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE)
-                val idColumn = cursor.getColumnIndex(MediaStore.Audio.Media._ID)
-                val albumColumn = cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM)
-                val artistColumn = cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST)
-                val pathColumn = cursor.getColumnIndex(MediaStore.Audio.Media.DATA)
-                val durationColumn = cursor.getColumnIndex(MediaStore.Audio.Media.DURATION)
-                val albumIdColumn = cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID)
+                val idColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)
+                val albumColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM)
+                val artistColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST)
+                val pathColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)
+                val durationColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)
+                val albumIdColumn = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID)
                 val uri = Uri.parse("content://media/external/audio/albumart")
-                val dateModifiedColumn = cursor.getColumnIndex(MediaStore.Audio.Media.DATE_MODIFIED)
+                val dateModifiedColumn =
+                    cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_MODIFIED)
                 do {
                     val titleC = cursor.getString(titleColumn)
                     val idC = cursor.getLong(idColumn)

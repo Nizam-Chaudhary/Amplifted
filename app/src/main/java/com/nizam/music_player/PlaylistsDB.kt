@@ -1,6 +1,5 @@
 package com.nizam.music_player
 
-import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
@@ -90,8 +89,7 @@ class PlaylistsDB(val context: Context, factory: SQLiteDatabase.CursorFactory?) 
         db.execSQL(query)
     }
 
-    @SuppressLint("Range")
-    fun songExists(name: String, playlistName: String): Boolean {
+    private fun songExists(name: String, playlistName: String): Boolean {
         val db = this.readableDatabase
 
         val query =
@@ -99,43 +97,42 @@ class PlaylistsDB(val context: Context, factory: SQLiteDatabase.CursorFactory?) 
         val cursor = db.rawQuery(query, null)
         var value: String? = null
         if (cursor.moveToFirst())
-            value = cursor.getString(cursor.getColumnIndex(FavoritesDB.ID_COL))
+            value = cursor.getString(cursor.getColumnIndexOrThrow(FavoritesDB.ID_COL))
         cursor.close()
         if (value != null)
             return true
         return false
     }
 
-    @SuppressLint("Range")
     fun getPlayListNames(): ArrayList<String> {
         val list: ArrayList<String> = ArrayList()
         val db = this.readableDatabase
         val query = "SELECT $PLAYLIST_NAME_COL FROM $PLAYLIST_MASTER"
         val cursor = db.rawQuery(query, null)
         if (cursor.moveToFirst()) {
+            val playlistNameCol = cursor.getColumnIndexOrThrow(PLAYLIST_NAME_COL)
             do {
-                list.add(cursor.getString(cursor.getColumnIndex(PLAYLIST_NAME_COL)))
+                list.add(cursor.getString(playlistNameCol))
             } while (cursor.moveToNext())
         }
         cursor.close()
         return list
     }
 
-    @SuppressLint("Range")
     fun getPlayListArtUri(playListName: String): String? {
         var artUri: String? = null
         val db = this.readableDatabase
         val query =
             "Select $ART_URI_COL from $PLAYLIST where $PLAYLIST_NAME_COL = '$playListName' Order by $TITLE_COL Limit 1"
         val cursor = db.rawQuery(query, null)
+        val artUriColumn = cursor.getColumnIndexOrThrow(ART_URI_COL)
         if (cursor.moveToFirst()) {
-            artUri = cursor.getString(cursor.getColumnIndex(ART_URI_COL))
+            artUri = cursor.getString(artUriColumn)
         }
         cursor.close()
         return artUri
     }
 
-    @SuppressLint("Range")
     fun getPlayListSongs(playListName: String): ArrayList<SongsData> {
 
         val sharedPreferencesAmplifted = SharedPreferencesAmplifted(context)
@@ -152,15 +149,23 @@ class PlaylistsDB(val context: Context, factory: SQLiteDatabase.CursorFactory?) 
             "Select * from $PLAYLIST where $PLAYLIST_NAME_COL = '$playListName' order by $sort"
         val cursor = db.rawQuery(query, null)
         if (cursor.moveToFirst()) {
+            val idColumn = cursor.getColumnIndexOrThrow(ID_COL)
+            val titleColumn = cursor.getColumnIndexOrThrow(TITLE_COL)
+            val albumColumn = cursor.getColumnIndexOrThrow(ALBUM_COL)
+            val artistColumn = cursor.getColumnIndexOrThrow(ARTIST_COL)
+            val durationColumn = cursor.getColumnIndexOrThrow(DURATION_COL)
+            val pathColumn = cursor.getColumnIndexOrThrow(PATH_COL)
+            val artUriColumn = cursor.getColumnIndexOrThrow(ART_URI_COL)
+            val dateAddedColumn = cursor.getColumnIndexOrThrow(DATE_MODIFIED_COL)
             do {
-                val idC = cursor.getString(cursor.getColumnIndex(ID_COL))
-                val titleC = cursor.getString(cursor.getColumnIndex(TITLE_COL))
-                val albumC = cursor.getString(cursor.getColumnIndex(ALBUM_COL))
-                val artistC = cursor.getString(cursor.getColumnIndex(ARTIST_COL))
-                val durationC = cursor.getLong(cursor.getColumnIndex(DURATION_COL))
-                val pathC = cursor.getString(cursor.getColumnIndex(PATH_COL))
-                val artUriC = cursor.getString(cursor.getColumnIndex(ART_URI_COL))
-                val dateAddedC = cursor.getString(cursor.getColumnIndex(DATE_MODIFIED_COL))
+                val idC = cursor.getString(idColumn)
+                val titleC = cursor.getString(titleColumn)
+                val albumC = cursor.getString(albumColumn)
+                val artistC = cursor.getString(artistColumn)
+                val durationC = cursor.getLong(durationColumn)
+                val pathC = cursor.getString(pathColumn)
+                val artUriC = cursor.getString(artUriColumn)
+                val dateAddedC = cursor.getString(dateAddedColumn)
 
                 val music = SongsData(
                     id = Uri.parse(idC),
@@ -182,21 +187,20 @@ class PlaylistsDB(val context: Context, factory: SQLiteDatabase.CursorFactory?) 
         return temp
     }
 
-    @SuppressLint("Range")
     fun getPlaylistSongData(songName: String, playlistName: String): SongsData {
         val db = this.readableDatabase
         val query =
             "select * from $PLAYLIST where $TITLE_COL='$songName' and $PLAYLIST_NAME_COL='$playlistName'"
         val cursor = db.rawQuery(query, null)
         cursor.moveToFirst()
-        val idC = cursor.getString(cursor.getColumnIndex(ID_COL))
-        val titleC = cursor.getString(cursor.getColumnIndex(TITLE_COL))
-        val albumC = cursor.getString(cursor.getColumnIndex(ALBUM_COL))
-        val artistC = cursor.getString(cursor.getColumnIndex(ARTIST_COL))
-        val durationC = cursor.getLong(cursor.getColumnIndex(DURATION_COL))
-        val pathC = cursor.getString(cursor.getColumnIndex(PATH_COL))
-        val artUriC = cursor.getString(cursor.getColumnIndex(ART_URI_COL))
-        val dateAddedC = cursor.getString(cursor.getColumnIndex(DATE_MODIFIED_COL))
+        val idC = cursor.getString(cursor.getColumnIndexOrThrow(ID_COL))
+        val titleC = cursor.getString(cursor.getColumnIndexOrThrow(TITLE_COL))
+        val albumC = cursor.getString(cursor.getColumnIndexOrThrow(ALBUM_COL))
+        val artistC = cursor.getString(cursor.getColumnIndexOrThrow(ARTIST_COL))
+        val durationC = cursor.getLong(cursor.getColumnIndexOrThrow(DURATION_COL))
+        val pathC = cursor.getString(cursor.getColumnIndexOrThrow(PATH_COL))
+        val artUriC = cursor.getString(cursor.getColumnIndexOrThrow(ART_URI_COL))
+        val dateAddedC = cursor.getString(cursor.getColumnIndexOrThrow(DATE_MODIFIED_COL))
 
         cursor.close()
         return SongsData(

@@ -1,6 +1,5 @@
 package com.nizam.music_player
 
-import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
@@ -61,16 +60,15 @@ class RecentDB(context: Context, factory: CursorFactory?): SQLiteOpenHelper(cont
         }
     }
 
-    @SuppressLint("Range")
-    fun songExist(songName: String): Boolean {
+    private fun songExist(songName: String): Boolean {
 
         val db = this.readableDatabase
         val query = "select $ID_COL from $TABLE_NAME where $TITLE_COL = '$songName'"
-        val cursor = db.rawQuery(query,null)
+        val cursor = db.rawQuery(query, null)
         var value: String? = null
 
-        if(cursor.moveToFirst()) {
-            value = cursor.getString(cursor.getColumnIndex(ID_COL))
+        if (cursor.moveToFirst()) {
+            value = cursor.getString(cursor.getColumnIndexOrThrow(ID_COL))
         }
         cursor.close()
         if(value != null) {
@@ -92,7 +90,6 @@ class RecentDB(context: Context, factory: CursorFactory?): SQLiteOpenHelper(cont
         db.close()
     }
 
-    @SuppressLint("Range")
     fun getAllSongs(): ArrayList<SongsData> {
         val query = "select * from $TABLE_NAME order by $TIME_COL DESC"
         val cursor = this.readableDatabase.rawQuery(query,null)
@@ -100,14 +97,21 @@ class RecentDB(context: Context, factory: CursorFactory?): SQLiteOpenHelper(cont
         val songsList: ArrayList<SongsData> = ArrayList()
 
         if(cursor.moveToFirst()) {
+            val idColumn = cursor.getColumnIndexOrThrow(ID_COL)
+            val titleColumn = cursor.getColumnIndexOrThrow(TITLE_COL)
+            val albumColumn = cursor.getColumnIndexOrThrow(ALBUM_COL)
+            val artistColumn = cursor.getColumnIndexOrThrow(ARTIST_COL)
+            val durationColumn = cursor.getColumnIndexOrThrow(DURATION_COL)
+            val pathColumn = cursor.getColumnIndexOrThrow(PATH_COL)
+            val artUriColumn = cursor.getColumnIndexOrThrow(ART_URI_COL)
             do {
-                val idC = cursor.getString(cursor.getColumnIndex(ID_COL))
-                val titleC = cursor.getString(cursor.getColumnIndex(TITLE_COL))
-                val albumC = cursor.getString(cursor.getColumnIndex(ALBUM_COL))
-                val artistC = cursor.getString(cursor.getColumnIndex(ARTIST_COL))
-                val durationC = cursor.getLong(cursor.getColumnIndex(DURATION_COL))
-                val pathC = cursor.getString(cursor.getColumnIndex(PATH_COL))
-                val artUriC = cursor.getString(cursor.getColumnIndex(ART_URI_COL))
+                val idC = cursor.getString(idColumn)
+                val titleC = cursor.getString(titleColumn)
+                val albumC = cursor.getString(albumColumn)
+                val artistC = cursor.getString(artistColumn)
+                val durationC = cursor.getLong(durationColumn)
+                val pathC = cursor.getString(pathColumn)
+                val artUriC = cursor.getString(artUriColumn)
 
                 val music = SongsData(
                     id = Uri.parse(idC),
