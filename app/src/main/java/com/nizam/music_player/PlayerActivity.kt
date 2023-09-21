@@ -205,8 +205,12 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
 
         when (intent.getStringExtra("class")) {
             "MusicAdapter" -> {
-                if (musicService != null && songPosition == intent.getIntExtra("index", 0)) {
-                    setLayout(baseContext,false)
+                if (musicService != null && intent.getStringExtra("class") == "MusicAdapter" && songPosition == intent.getIntExtra(
+                        "index",
+                        0
+                    )
+                ) {
+                    setLayout(baseContext, false)
                     musicListPA.addAll(MainActivity.musicListMA)
                 } else {
                     startPlayerService()
@@ -224,8 +228,12 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
             }
 
             "MainActivity" -> {
-                if (musicService != null && songPosition == intent.getIntExtra("index", 0)) {
-                    setLayout(baseContext,false)
+                if (musicService != null && intent.getStringExtra("class") == "MainActivity" && songPosition == intent.getIntExtra(
+                        "index",
+                        0
+                    )
+                ) {
+                    setLayout(baseContext, false)
                     musicListPA.addAll(MainActivity.musicListMA)
                 } else {
                     startPlayerService()
@@ -236,8 +244,12 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
             }
 
             "FavoriteActivity" -> {
-                if (musicService != null && songPosition == intent.getIntExtra("index", 0)) {
-                    setLayout(baseContext,false)
+                if (musicService != null && intent.getStringExtra("class") == "FavoriteActivity" && songPosition == intent.getIntExtra(
+                        "index",
+                        0
+                    )
+                ) {
+                    setLayout(baseContext, false)
                     musicListPA.addAll(FavoriteActivity.favoritesList)
                 } else {
                     startPlayerService()
@@ -252,8 +264,12 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
             }
 
             "FavoritesAdapter" -> {
-                if (musicService != null && songPosition == intent.getIntExtra("index", 0)) {
-                    setLayout(baseContext,false)
+                if (musicService != null && intent.getStringExtra("class") == "FavoritesAdapter" && songPosition == intent.getIntExtra(
+                        "index",
+                        0
+                    )
+                ) {
+                    setLayout(baseContext, false)
                     musicListPA.addAll(FavoriteActivity.favoritesList)
                 } else {
                     startPlayerService()
@@ -264,20 +280,20 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
             }
 
             "PlayList" -> {
-                if (musicService != null && songPosition == intent.getIntExtra("index", 0)) {
-                    setLayout(baseContext,false)
-                    musicListPA.addAll(PlayListSongsActivity.musicListPL)
-                } else {
-                    startPlayerService()
-                    musicListPA = ArrayList()
-                    musicListPA.addAll(PlayListSongsActivity.musicListPL)
-                    songPosition = intent.getIntExtra("index", 0)
-                }
+                startPlayerService()
+                musicListPA = ArrayList()
+                musicListPA.addAll(PlayListSongsActivity.musicListPL)
+                songPosition = intent.getIntExtra("index", 0)
+
             }
 
             "RecentlyPlayed" -> {
-                if (musicService != null && songPosition == intent.getIntExtra("index", 0)) {
-                    setLayout(baseContext,false)
+                if (musicService != null && intent.getStringExtra("class") == "RecentlyPlayed" && songPosition == intent.getIntExtra(
+                        "index",
+                        0
+                    )
+                ) {
+                    setLayout(baseContext, false)
                     musicListPA.addAll(RecentActivity.musicListRP)
                 } else {
                     startPlayerService()
