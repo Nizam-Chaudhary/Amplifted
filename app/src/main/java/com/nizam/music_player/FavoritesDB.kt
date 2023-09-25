@@ -1,6 +1,5 @@
 package com.nizam.music_player
 
-import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
@@ -53,7 +52,7 @@ class FavoritesDB(val context: Context, factory: SQLiteDatabase.CursorFactory?):
         db.close()
     }
 
-    @SuppressLint("Range")
+
     fun songExists(name: String): Boolean {
         val db = this.readableDatabase
 
