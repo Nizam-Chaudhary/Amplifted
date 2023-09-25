@@ -41,16 +41,17 @@ class RecentActivity : AppCompatActivity() {
         menu?.findItem(R.id.clearRecent)?.setOnMenuItemClickListener {
 
             if (musicListRP.isNotEmpty())
-            MaterialAlertDialogBuilder(this@RecentActivity)
-                .setTitle("Clear Recently Played!")
-                .setMessage("Do you want to clear recently played?")
-                .setPositiveButton("Yes") { _, _ ->
-                    musicListRP.clear()
-                    recentDB.clearRecent()
-                    setAdapter()
-                }
-                .setNegativeButton("No") {_,_ ->}
-                .show()
+                MaterialAlertDialogBuilder(this@RecentActivity)
+                    .setTitle("Clear Recently Played!")
+                    .setMessage("Do you want to clear recently played?")
+                    .setPositiveButton("Yes") { _, _ ->
+                        musicListRP.clear()
+                        recentDB.clearRecent()
+                        setAdapter()
+                    }
+                    .setNegativeButton("No") { _, _ -> }
+                    .show()
+
             true
         }
         return super.onCreateOptionsMenu(menu)
