@@ -31,13 +31,6 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
         FavoritesDB(this@PlayerActivity, null)
     }
 
-    override fun onPause() {
-        super.onPause()
-        if(external) {
-            keepPlaying = true
-        }
-    }
-
     companion object {
         var isSongPlaying = false
         var musicListPA = ArrayList<SongsData>()
@@ -313,9 +306,7 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
 
             "External" -> {
                 if(keepPlaying) {
-                    println("not")
                     external = true
-                    keepPlaying = false
                     setLayout(baseContext,true)
                 } else {
                     startPlayerService()
@@ -335,6 +326,7 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
     override fun onDestroy() {
         super.onDestroy()
         if((external && !keepPlaying) || (external && isFinishing)) {
+                println("working")
                 if(musicService != null) {
                     @Suppress("DEPRECATION")
                     musicService!!.audioManager.abandonAudioFocus(musicService)
@@ -396,13 +388,14 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
                 }
                 .setNegativeButton("No") {_,_ ->
                     keepPlaying = false
-                    super.onBackPressed()
-                    onDestroy()
+                    this.finishAffinity()
+                    this.finishAffinity()
                 }
                 .show()
         } else if(external && !musicService!!.mediaPlayer!!.isPlaying && !MainActivity.main) {
             super.onBackPressed()
             keepPlaying = false
+            external = false
             onDestroy()
         } else {
             super.onBackPressed()
@@ -439,6 +432,10 @@ class PlayerActivity : AppCompatActivity(), ServiceConnection, MediaPlayer.OnCom
     }
 
     override fun onCompletion(p0: MediaPlayer?) {
+        if(external) {
+            musicService!!.createMediaPlayer(true)
+            return
+        }
         if (!repeat)
             playNextSong()
         if (!repeat && shuffle) {
