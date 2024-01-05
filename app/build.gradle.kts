@@ -48,7 +48,7 @@ dependencies {
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.9.0")
+    implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.core:core-splashscreen:1.0.1")
     testImplementation("junit:junit:4.13.2")
@@ -60,5 +60,9 @@ dependencies {
     //for refresh layout
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     //for mediaPlayer
-    implementation("androidx.media:media:1.6.0")
+    implementation("androidx.media:media:1.7.0")
+
+    // Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 }
